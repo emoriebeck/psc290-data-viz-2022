@@ -6,6 +6,8 @@ format:
     theme: white
     highlight-style: tango
     df-print: paged
+    footer: "PSC 290 - Data Visualization"
+    logo: "/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
 editor: visual
 ---
 
@@ -15,7 +17,13 @@ library(psych)
 library(plyr)
 library(tidyverse)
 ```
+# PSC 290 - Data Visualization  
 
+## Why Should I Care About Data Visualization  
+- Summarizing huge amounts of information
+- Seeing the forest and the trees
+- Errors in probabilistic reasoning
+- It's fun!
 
 ## Why Visualize Data in R  
 :::: {.columns}
@@ -54,7 +62,9 @@ knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-in
 :::
 
 ::: {.column width="40%"}
-![](/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/RStudio-Logo-Flat.png)
+```{r}
+knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/RStudio-Logo-Flat.png")
+```
 :::
 
 ::::
@@ -63,7 +73,7 @@ knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-in
 
 :::: {.columns}
 
-::: {.column width="80%"}
+::: {.column width="70%"}
 
 - Maintained by RStudio (Pivot)
 - No one should have to use a for loop to change data from long to wide
@@ -72,8 +82,10 @@ knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-in
 
 :::
 
-::: {.column width="20%"}
-![](/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/tidyverse.png)
+::: {.column width="30%"}
+```{r, fig.align='center'}
+knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/tidyverse.png")
+```
 :::
 
 ::::
