@@ -1,15 +1,23 @@
 ---
 title: "Week 1 - Getting Situated in R and tidyverse "
+author: "Emorie D Beck"
 format: 
   revealjs:
     incremental: true  
-    theme: white
-    highlight-style: tango
-    df-print: paged
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    css: custom.css
+    theme: psc290
+    highlight-style: atom-one-dark
     footer: "PSC 290 - Data Visualization"
-    logo: "/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
+
 
 ```{r}
 library(knitr)
@@ -41,7 +49,7 @@ library(tidyverse)
 
 ::: {.column width="40%"}
 ```{r}
-knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/R_logo.svg.png")
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/R_logo.svg.png")
 ```
 :::
 
@@ -63,7 +71,7 @@ knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-in
 
 ::: {.column width="40%"}
 ```{r}
-knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/RStudio-Logo-Flat.png")
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/RStudio-Logo-Flat.png")
 ```
 :::
 
@@ -84,7 +92,7 @@ knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-in
 
 ::: {.column width="30%"}
 ```{r, fig.align='center'}
-knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-intro/02-code/02-images/tidyverse.png")
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/tidyverse.png")
 ```
 :::
 
@@ -95,18 +103,31 @@ knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-in
 - **Review** core principles of: 
   * `dyplr` (data manipulation)
   * `tidyr` (data transformation and reshaping)  
-  
-# Data Manipulation in `dplyr`
+
+----
+
+:::: {.columns .v-center-container}
+::: {.column width="70%"}
+<p style="font-size:160%;">Data Manipulation in `dplyr`</p>
+:::
+
+::: {.column width="30%"}
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/dplyr.png")
+```
+:::
+::::
+
 
 ## Core Functions
 
-1. `%>%`: <font color="red">The pipe.</font> Read as "and then."
-2. `filter()`: Pick observations (rows) by their values.
-3. `select()`: Pick variables (columns) by their names.
-4. `arrange()`: Reorder the rows.
-5. `group_by()`: Implicitly split the data set by grouping by names (columns).
-6. `mutate()`: Create new variables with functions of existing variables.
-7. `summarize()` / `summarise()`: Collapse many values down to a single summary.
+1. **`%>%`**: The pipe. Read as "and then."
+2. **`filter()`**: Pick observations (rows) by their values.
+3. **`select()`**: Pick variables (columns) by their names.
+4. **`arrange()`**: Reorder the rows.
+5. **`group_by()`**: Implicitly split the data set by grouping by names (columns).
+6. **`mutate()`**: Create new variables with functions of existing variables.
+7. **`summarize()` / `summarise()`**: Collapse many values down to a single summary.
 
 ## Core Functions  
 
@@ -114,17 +135,17 @@ knitr::include_graphics("/Volumes/Emorie/GitHub/psc290-data-viz-2022/01-week1-in
 
 ::: {.column width="40%"}
 ::: {.nonincremental}
-1. `%>%`
-2. `filter()`
-3. `select()`
-4. `arrange()`
-5. `group_by()`
-6. `mutate()`
-7. `summarize()`
+1. **`%>%`**
+2. **`filter()`**
+3. **`select()`**
+4. **`arrange()`**
+5. **`group_by()`**
+6. **`mutate()`**
+7. **`summarize()`**
 :::
 :::
 
-::: {.column width="60%" style="text-align: center; background-color: cornflowerblue; color: white; border: 5px solid black;"}
+::: {.column width="60%" style="text-align: center; background-color: #FFD966; color: black; border: 5px solid #033266;"}
 Although each of these functions are powerful alone, they are incredibly powerful in conjunction with one another. So below, I'll briefly introduce each function, then link them all together using an example of basic data cleaning and summary.  
 :::
 
@@ -137,7 +158,6 @@ Although each of these functions are powerful alone, they are incredibly powerfu
 ::: {.fragment}
 ```{r, echo = T}
 sqrt(43)
-
 round(sqrt(43), 2)
 ```
 :::
@@ -188,6 +208,7 @@ Often times, when conducting research (experiments or otherwise), there are obse
 
 :::{.fragment}
 ```{r, echo = T}
+#| code-line-numbers: "|2"
 bfi2 <- bfi %>% # see a pipe!
   filter(age <= 18) # filter to age up to 18
 
@@ -232,7 +253,7 @@ bfi$education <- plyr::mapvalues(bfi$education, 1:5, c("Below HS", "HS", "Some C
 
 Now let's try a few things: 
 
-<font color = "blue">**1. Create a data set with only individuals with some college (`==`).**</font>  
+<font color = "#033266">**1. Create a data set with only individuals with some college (`==`).**</font>  
 
 ::: {.fragment} 
 ```{r, echo = T}
@@ -246,7 +267,7 @@ unique(bfi2$education)
 
 Now let's try a few things: 
 
-<font color = "blue">**2. Create a data set with only people age 18 (`==`).**</font>  
+<font color = "#033266">**2. Create a data set with only people age 18 (`==`).**</font>  
 
 ::: {.fragment} 
 ```{r, echo = T}
@@ -260,7 +281,7 @@ summary(bfi2$age)
 
 Now let's try a few things: 
 
-<font color = "blue">**3. Create a data set with individuals with some college or above (`%in%`).**</font>  
+<font color = "#033266">**3. Create a data set with individuals with some college or above (`%in%`).**</font>  
 
 ::: {.fragment} 
 ```{r, echo = T}
@@ -271,7 +292,7 @@ unique(bfi2$education)
 :::
 
 ::: {.fragment} 
-The `%in%` operator is wonderful. Instead of comparing a column to a single value, you can compare it to several. So above, when we wanted ages between 12 and 18, we could have done:  
+`%in%` is great. It compares a column to a vector rather than just a single value, you can compare it to several
 
 ```{r, echo = T}
 bfi2 <- bfi %>%
@@ -292,33 +313,44 @@ summary(bfi2$age)
 ## 3. `select()`: 
 ### A. Bare quote columns we want to keep:  
 
+:::: {.columns}
+::: {.column}
 ::: {.fragment}
-```{r}
+```{r, echo = T}
+#| code-line-numbers: "|2"
 bfi %>%
-  select(C1, C2, C3, C4, C5)
+  select(C1, C2, C3, C4, C5) %>%
+  print(n = 6)
 ```
 :::
-
-I'm going to stop there because I don't want to name the additional 17 columns we want to keep. Instead we'll use `:` to grab a *range* of columns.  
-
-::: {.fragment}
-```{r}
-bfi %>%
-  select(C1:O5, education, age)
-```
 :::
+
+:::{.column}
+::: {.fragment}
+
+```{r, echo=T}
+#| code-line-numbers: "|2"
+bfi %>%
+  select(C1:C5) %>%
+  print(n = 6)
+```
+
+<!-- We can also use `:` to grab a *range* of columns.   -->
+:::
+:::
+::::
 
 ## 3. `select()`: 
 ### B. Bare quote columns we don't want to keep:
 
 ::: {.fragment}
-```{r}
+```{r, echo = T}
+#| code-line-numbers: "|2"
 bfi %>% 
-  select(-(A1:A5), -gender)
+  select(-(A1:A5), -gender) %>% # Note the `()` around the columns
+  print(n = 6)
 ```
 :::
-
-Note the `()` around the columns. That is necessary when you want to remove a range of columns. 
 
 ## 3. `select()`: 
 ### C. Add or remove using `select()` helper functions.  
@@ -336,7 +368,7 @@ Note the `()` around the columns. That is necessary when you want to remove a ra
 
 ::: {.column width="60%"}
 ::: {.fragment}
-```{r}
+```{r, echo = T}
 bfi %>%
   select(starts_with("C"))
 ```
@@ -356,11 +388,12 @@ So in our previous examples, we could also `arrange()` our data by age or educat
 ::: {.column width="50%"}
 ::: {.fragment}
 ```{r, echo = T}
+#| code-line-numbers: "|4"
 # sort by age
 bfi %>% 
   select(gender:age) %>%
   arrange(age) %>% 
-  head(6)
+  print(n = 6)
 ```
 :::
 :::
@@ -368,11 +401,12 @@ bfi %>%
 ::: {.column width="50%"}
 ::: {.fragment}
 ```{r, echo=TRUE}
+#| code-line-numbers: "|4"
 # sort by education
 bfi %>%
   select(gender:age) %>%
   arrange(education) %>%
-  head(6)
+  print(n = 6)
 ```
 :::
 :::
@@ -386,7 +420,7 @@ We can also arrange by multiple columns, like if we wanted to sort by gender the
 bfi %>%
   select(gender:age) %>%
   arrange(gender, education) %>% 
-  head(6)
+  print(n = 6)
 ```
 :::
 
@@ -477,7 +511,8 @@ bfi %>%
 ## 6. `mutate()`  
 `mutate()` is also super useful even when you aren't grouping
 
-We could also just overwrite it:  
+We could also just overwrite it:
+
 ::: {.fragment}
 ```{r, echo = T}
 bfi %>%
@@ -487,10 +522,14 @@ bfi %>%
 :::
 
 ## 7. `summarize()` / `summarise()`  
+:::: {.columns}
+::: {.column}
 * `summarize()` is one of your "apply" functions
-* When you use `summarize()`, the resulting data frame will have the same number of rows as your grouping variable
+* The resulting data frame will have the same number of rows as your grouping variable
 * You number of groups is 1 for ungrouped data frames
+:::
 
+::: {.column}
 ::: {.fragment}
 ```{r, echo = T}
 # group_by() education
@@ -501,14 +540,20 @@ bfi %>%
   summarize(age_by_edu = mean(age, na.rm = T))  
 ```
 :::
+:::
+::::
 
 ## 7. `summarize()` / `summarise()`  
+:::: {.columns}
+::: {.column}
 ::: {.nonincremental}
 * `summarize()` is one of your "apply" functions
-* When you use `summarize()`, the resulting data frame will have the same number of rows as your grouping variable
+* The resulting data frame will have the same number of rows as your grouping variable
 * You number of groups is 1 for ungrouped data frames
 :::
+:::
 
+::: {.column}
 ::: {.fragment}
 ```{r, echo = T}
 # no groups  
@@ -518,6 +563,9 @@ bfi %>%
   summarize(age_by_edu = mean(age, na.rm = T))  
 ```
 :::
+:::
+
+::::
 
 # `tidyr`
 ## `tidyr`
@@ -540,9 +588,9 @@ bfi %>%
 :::
 
 # Key `tidyr` Functions  
-## 1. `pivot_longer()`  
+## 1. `pivot_longer()` {.smaller}
 * (Formerly `gather()`) Makes wide data long, based on a key
-<font size="6">
+<font size="5">
 * Core arguments:
   + `data`: the data, blank if piped
   + `cols`: columns to be made long, selected via `select()` calls
@@ -587,7 +635,7 @@ bfi %>%
 ::::
 
 ## 1. `pivot_longer()`: More Advanced Application  
-Let's start with an harder one -- two keys, one value:  
+Now a harder one -- two keys, one value:  
 
 :::: {.columns}
 ::: {.column}
@@ -622,7 +670,7 @@ bfi %>%
 :::
 ::::
 
-## 2. `pivot_wider()`  
+## 2. `pivot_wider()` {.smaller}
 * (Formerly `spread()`) Makes wide data long, based on a key
 <font size="6">
 * Core arguments:
@@ -636,6 +684,7 @@ bfi %>%
 
 ## 2. `pivot_wider()`: Basic Application  
 ```{r, results = 'hide'}
+
 bfi_long <- bfi %>%
   rownames_to_column("SID") %>%
   pivot_longer(
@@ -647,6 +696,7 @@ bfi_long <- bfi %>%
 ```
 
 ```{r, echo=TRUE}
+#| code-line-numbers: "|2|3"
 bfi_long %>%
   pivot_wider(
     names_from = "item"
@@ -654,7 +704,7 @@ bfi_long %>%
   )
 ```
 
-## 2. `pivot_wider()`: More Advanced Application  
+## 2. `pivot_wider()`: More Advanced   
 ```{r, results = 'hide'}
 bfi_long <- bfi %>%
   rownames_to_column("SID") %>%
@@ -676,7 +726,7 @@ bfi_long %>%
   )
 ```
 
-## 2. `pivot_wider()`: A Little More Advanced Application  
+## 2. `pivot_wider()`: A Little More Advanced   
 
 ```{r, echo = T}
 bfi_long %>%
@@ -694,19 +744,18 @@ bfi_long %>%
 
 :::: {.columns}
 
-::: {.column width="40%"}
+::: {.column width="60%"}
 * Often we may need to pull different data from different sources
 * There are lots of reasons to need to do this
 * We don't have time to get into all the use cases here, so we'll talk about them in high level terms
 :::
 
-::: {.column width="40%" style="text-align: center; background-color: cornflowerblue; color: white; border: 5px solid black;"}
+::: {.column width="40%"}
 * We'll focus on: 
   + `full_join()`
   + `inner_join()`
   + `left_join()`
   + `right_join()`
-:::
 :::
 
 ::::
@@ -718,6 +767,7 @@ bfi_long %>%
 ::: {.column}
 ::: {.fragment}
 ```{r, echo = T}
+#| code-line-numbers: "|3"
 bfi_only <- bfi %>% 
   rownames_to_column("SID") %>%
   select(SID, matches("[0-9]"))
@@ -729,6 +779,7 @@ bfi_only %>% print(n = 6)
 ::: {.column}
 ::: {.fragment}
 ```{r, echo = T}
+#| code-line-numbers: "|3"
 bfi_dem <- bfi %>%
   rownames_to_column("SID") %>%
   select(SID, education, gender, age)
@@ -772,6 +823,7 @@ We can also keep all rows present in *both* data frames
 ::: {.column}
 ::: {.fragment}
 ```{r, echo = T}
+#| code-line-numbers: "|1-2|4-5|3"
 bfi_dem %>%
   filter(row_number() %in% 1:1700) %>%
   inner_join(
@@ -802,6 +854,7 @@ Or all rows present in the left (first) data frame, perhaps if it's a subset of 
 ::: {.column}
 ::: {.fragment}
 ```{r, echo = T}
+#| code-line-numbers: "|2|3"
 bfi_dem %>%
   drop_na() %>%
   left_join(bfi_only) %>%
@@ -830,6 +883,7 @@ Or all rows present in the right (second) data frame, such as I do when I join a
 ::: {.column}
 ::: {.fragment}
 ```{r, echo = T}
+#| code-line-numbers: "|3"
 bfi_dem %>%
   drop_na() %>%
   right_join(bfi_only) %>%
