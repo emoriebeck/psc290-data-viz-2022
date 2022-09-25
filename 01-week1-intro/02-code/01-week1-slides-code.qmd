@@ -122,6 +122,34 @@ Additional Topics:
 
 # Questions on the Syllabus and Course? 
 
+# Data Viz of the Week and Discussion
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/leo-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/acre-map-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/vote-map-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/mmr-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/batman-viz.png")
+```
+
+
 # Data Visualization 
 
 ## Why Should I Care About Data Visualization  
