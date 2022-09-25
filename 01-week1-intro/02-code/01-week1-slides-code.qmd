@@ -149,6 +149,11 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/batman-viz.png")
 ```
 
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/BadVizWk1.png")
+```
+
 
 # Data Visualization 
 
