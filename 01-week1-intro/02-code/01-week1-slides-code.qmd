@@ -25,7 +25,142 @@ library(psych)
 library(plyr)
 library(tidyverse)
 ```
-# PSC 290 - Data Visualization  
+## Course Goals & Learning Outcomes 
+1.	Understand the cognitive and psychological underpinnings of perceiving data visualization.
+2.	Identify good data visualizations and describe what makes them good.
+3.	Produce data visualizations according to types of questions, data, and more, with a particular emphasis on building a toolbox that you can carry into your own research.
+
+## Course Expectations  
+* ~50\% of the course will be in R
+* You will get the most from this course if you:
+  + have your own data you can apply course content to
+  + know how to clean clean, transform, and manage that data
+  + today's workshop is a good litmus test for this
+  
+## Course Materials
+* All materials (required and optional) are free and online
+  + Wickham & Grolemond: *R for Data Science* [https://r4ds.had.co.nz](https://r4ds.had.co.nz)
+  + Wickham: *Advanced R* [http://adv-r.had.co.nz](http://adv-r.had.co.nz)
+  + Wilke: *Fundamentals of Data Visualization* [https://clauswilke.com/dataviz/](https://clauswilke.com/dataviz/)
+  + Healy: *Data Visualization: A Practical Introduction* [https://socviz.co](https://socviz.co)
+  + [Data Camp](https://www.datacamp.com/groups/shared_links/bd4b5bf66c2195741f388ca82c1b19c89b6f37754c7cfa0eb5aded5f16678360): All paid content unlocked
+  
+## Assignments  
+Assignment Weights                  |   Percent
+---------------------------------   |   -------
+Class Participation	                |   20\%
+Response Papers + Visualizations    |   20\%
+Final Project Proposal              |   10\%
+Class Presentation                  |   20\%
+Final Project	                      |   30\%
+**Total**                           |   **100\%**
+
+## Assignments  
+### Class Participation  
+* There are lots of ways to participate, both in and outside class meetings
+* Classes will be technologically hybrid
+* The goal of this is for accessibility and to create recordings 
+* If you need to miss 2 classes (i.e. 20% of total class time), maybe consider taking the course in a different year
+* If you must miss class, please let me know ahead of time if possible
+
+## Assignments  
+### Response Papers / Visualizations  
+* The main homework in the course is your weekly visualization assignment
+* The goal is to demonstrate how the principles and skills you learn in the class function "in the wild."
+* These should be fun and not taken too seriously! No one is judging you for a pulling a graphic from Instagram instead of Nature.
+* Due 12:01 AM each Monday (last class is "free points")
+
+## Assigments 
+### Final Projects  
+* I don't want you to walk out of this course and not know how to apply what you learned
+* Final project replaces final exam (there are no exams)
+* Create a visualization for an ongoing project!
+  + Stage 1: Proposal (due 10/31/22)
+  + Stage 2: 1-on-1 meetings + feedback
+  + Stage 3: In-class presentations (11/28)
+  + Stage 4: Final visualization + brief write-up (??)
+
+## Assignments
+### Extra Credit
+* Lots of job searches this fall
+* 1 pt extra credit for each one you: 
+  + go to, 
+  + take a snap of a data viz, 
+  + and critique it according to what you've learned in class
+* max 5 pts
+
+## Class Time
+* ~5-10 min: welcome and review (if needed)
+* ~10-20 min: data viz of the week
+* ~30-45 min: discussion of readings 
+* ~5-10 min: break
+* ~60-90 min: workshop
+* ~20-30 min: open lab
+
+## Course Topics
+:::: {.columns}
+::: {.column}
+1. Intro and Overview
+2. Cognitive Perspectives
+3. Proportions and Probability
+4. Differences and Associations
+5. Change and Time Series
+6. Uncertainty
+7. Piecing Visualizations Together
+:::
+
+::: {.column}
+8. Polishing Visualizations
+9. Interactive Visualizations
+Additional Topics: 
+* Spatial Information
+* Automated Reports
+* Diagrams
+* More?
+:::
+::::
+
+# Questions on the Syllabus and Course? 
+
+# Data Viz of the Week and Discussion
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/leo-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/acre-map-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/vote-map-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/mmr-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/batman-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/BadVizWk1.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/chaos-viz.png")
+```
+
+
+# Data Visualization 
 
 ## Why Should I Care About Data Visualization  
 - Summarizing huge amounts of information
