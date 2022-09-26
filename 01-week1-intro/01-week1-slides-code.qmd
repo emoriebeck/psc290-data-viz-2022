@@ -159,6 +159,20 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/chaos-viz.png")
 ```
 
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/diff-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/monkeypox-viz.png")
+```
+
+## Good or Bad? 
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/water-use-viz.jpg")
+```
 
 # Data Visualization 
 
@@ -232,6 +246,60 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 :::
 
 ::::
+
+## Why Use the `tidyverse`
+
+::: {layout="[[1,1, 1, 1, 1, 1], [1,1, 1, 1, 1,1]]"}
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/tidyr.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/stringr.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/shiny.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/rmarkdown.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/quarto.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/knitr.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/ggplot2.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/forcats.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/dplyr.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/broom.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/tibble.png")
+```
+
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/purrr.png")
+```
+
+:::
 
 ## Goals for Today  
 
@@ -702,7 +770,19 @@ bfi %>%
 
 ::::
 
-# `tidyr`
+----
+
+:::: {.columns .v-center-container}
+::: {.column width="70%"}
+<p style="font-size:160%;">Data Wrangling in `tidyr`</p>
+:::
+
+::: {.column width="30%"}
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/tidyr.png")
+```
+:::
+::::
 ## `tidyr`
 * Now, let's build off what we learned from dplyr and focus on *reshaping* and *merging* our data. 
 * First, the reshapers:
