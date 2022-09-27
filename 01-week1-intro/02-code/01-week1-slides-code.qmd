@@ -3,16 +3,28 @@ title: "Week 1 - Getting Situated in R and tidyverse "
 author: "Emorie D Beck"
 format: 
   revealjs:
-    incremental: true  
+    incremental: true
     code-tools: true
     code-copy: true
     code-line-numbers: true
     code-link: true
+    self-contained: true
     css: custom.css
     theme: psc290
     highlight-style: atom-one-dark
     footer: "PSC 290 - Data Visualization"
     logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+  # pptx: 
+  #   incremental: true  
+  #   # code-tools: true
+  #   # code-copy: true
+  #   # code-line-numbers: true
+  #   # code-link: true
+  #   css: custom.css
+  #   theme: psc290
+  #   highlight-style: atom-one-dark
+  #   footer: "PSC 290 - Data Visualization"
+  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
 editor: visual
 editor_options: 
   chunk_output_type: console
