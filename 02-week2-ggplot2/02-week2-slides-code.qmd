@@ -1,0 +1,60 @@
+---
+title: "Introduction to ggplot2"
+author: "Emorie D Beck"
+format: 
+  revealjs:
+    incremental: true
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    self-contained: true
+    css: custom.css
+    theme: psc290
+    highlight-style: atom-one-dark
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+  # pptx: 
+  #   incremental: true  
+  #   # code-tools: true
+  #   # code-copy: true
+  #   # code-line-numbers: true
+  #   # code-link: true
+  #   css: custom.css
+  #   theme: psc290
+  #   highlight-style: atom-one-dark
+  #   footer: "PSC 290 - Data Visualization"
+  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+---
+
+:::: {.columns .v-center-container}
+::: {.column width="70%"}
+<p style="font-size:160%;">Visualizing Data in `ggplot2`</p>
+:::
+
+::: {.column width="30%"}
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/ggplot2.png")
+```
+:::
+::::
+
+## What is ggplot2 trying to do?  
+
+* Create a grammar of graphics
+* Aims to help draw connections across diverse plots
+* Create order in the chaos of complicated plots
+
+::: {.fragment}
+From Wickham (2010): 
+
+>A grammar of graphics is a tool that enables us to concisely describe the components of a graphic.
+:::
+
+## What are the core elements of ggplot2 grammar?
+* **Mappings**: base layer
+* **Scales**: control and modify your mappings
+* **Geoms**: plot elements
+* **Facets**: panel your plot
+* **Grobs**: things that aren't geoms that we want to layer on like text, arrows, other things
+* **Themes**:style your figure
