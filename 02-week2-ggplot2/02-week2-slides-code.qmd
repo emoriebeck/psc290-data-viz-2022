@@ -1,0 +1,1759 @@
+---
+title: "Week 2: Cognitive Perspectives and Introduction to ggplot2"
+author: "Emorie D Beck"
+format: 
+  revealjs:
+    incremental: true
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    preview-links: true
+    slide-number: true
+    self-contained: true
+    css: custom.css
+    theme: psc290
+    highlight-style: atom-one-dark
+    margin-left: "0"
+    margin-right: "0"
+    width: 1400
+    # height: 900
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+  # pptx: 
+  #   incremental: true  
+  #   # code-tools: true
+  #   # code-copy: true
+  #   # code-line-numbers: true
+  #   # code-link: true
+  #   css: custom.css
+  #   theme: psc290
+  #   highlight-style: atom-one-dark
+  #   footer: "PSC 290 - Data Visualization"
+  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+---
+
+```{r}
+library(plyr)
+library(tidyverse)
+```
+
+# Part 1: Good/Bad Data Visualizations and Reading Discussion
+
+
+----
+
+:::: {.columns}
+::: {.column}
+
+### Good or Bad? 
+
+:::
+
+::: {.column}
+```{r, fig.align='center', out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-emp-int.png")
+```
+:::
+::::
+
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-natl-parks.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-wtf-537.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-comb-plots.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-covid-vacc.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-mid-class-jobs-int.png")
+```
+
+[https://nyti.ms/2k5jxOf](https://nyti.ms/2k5jxOf)
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-network-trans.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-profession.png")
+```
+
+## Good or Bad?
+[https://ourworldindata.org/grapher/ai-training-computation?endpointsOnly=1&time=earliest..latest](https://ourworldindata.org/grapher/ai-training-computation?endpointsOnly=1&time=earliest..latest)
+
+<!-- ## Good or Bad?  -->
+<!-- ```{r, fig.align='center'} -->
+<!-- knitr::include_graphics("") -->
+<!-- ``` -->
+
+<!-- ## Good or Bad?  -->
+<!-- ```{r, fig.align='center'} -->
+<!-- knitr::include_graphics("") -->
+<!-- ``` -->
+
+<!-- ## Good or Bad?  -->
+<!-- ```{r, fig.align='center'} -->
+<!-- knitr::include_graphics("") -->
+<!-- ``` -->
+
+----
+
+:::: {.columns .v-center-container}
+::: {.column width="70%"}
+<p style="font-size:160%;">Visualizing Data in `ggplot2`</p>
+:::
+
+::: {.column width="30%"}
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/ggplot2.png")
+```
+:::
+::::
+
+## What is ggplot2 trying to do?  
+
+* Create a grammar of graphics
+* Aims to help draw connections across diverse plots
+* Create order in the chaos of complicated plots
+
+::: {.fragment}
+From Wickham (2010): 
+
+>A grammar of graphics is a tool that enables us to concisely describe the components of a graphic.
+:::
+
+## What are the core elements of ggplot2 grammar?
+* **Mappings**: base layer
+* **Scales**: control and modify your mappings
+* **Geoms**: plot elements
+* **Facets**: panel your plot
+* **Grobs**: things that aren't geoms that we want to layer on like text, arrows, other things
+* **Themes**: style your figure
+
+## But first, our data 
+:::: {.columns}
+::: {.column}
+* These are some Experience Sampling Method data I collected during my time in graduate school 
+* Specifically, these include data from Beck \& Jackson (2022) 
+* In that paper I built personalized machine learning models of behaviors and experiences from sets of: 
+  + psychological
+  + situational 
+  + and time variables
+:::
+
+::: {.column}
+::: {.fragment}
+```{r, echo = T}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/01-data/ipcs_data.RData"))
+ipcs_data %>% 
+  print(n = 6)
+```
+
+```{r}
+ipcs_data <- ipcs_data %>%
+  group_by(SID) %>%
+  mutate(beep = 1:n()) %>%
+  ungroup()
+```
+
+:::
+:::
+::::
+## Mappings 
+:::: {.columns}
+::: {.column}
+* The first thing we call with `ggplot2` is always the `ggplot()` function, which has two core arguments:
+  + `data`: your data object (can also be piped)  
+:::
+
+::: {.column}
+::: {.fragment}
+```{r, echo = T, fig.dim= c(7,3.5)}
+ggplot(
+  data = ipcs_data
+)
+```
+:::
+:::
+::::
+  
+## Mappings 
+:::: {.columns}
+::: {.column}
+::: {.nonincremental}
+* The first thing we call with `ggplot2` is always the `ggplot()` function, which has two core arguments:
+  + `data`: your data object (can also be piped)  
+  + `mapping`: you aesthetic mappings for the plot, wrapped in `aes()`
+:::
+:::
+
+::: {.column}
+::: {.fragment}
+```{r, echo = T, fig.dim= c(5,3.5)}
+ggplot(
+  data = ipcs_data
+  , mapping = aes(x = linear, y = happy)
+)
+```
+:::
+:::
+::::
+
+## Mappings 
+* How many aesthetic mappings are there? 
+
+:::: {.columns}
+::: {.column}
+  + `x`
+  + `y`
+  + `col` / `color`
+  + `fill`
+  + `shape`
+:::
+
+::: {.column}
+  + `size`
+  + `linetype`
+  + `xmin` / `xmax`
+  + `ymin` / `ymax`
+  + `alpha`
+:::
+::::
+
+* There are lots of geom-specific ones, too
+* Use ?geom_whatever() to get more info on a specific geom
+
+## Scales  
+* Every mapping is a scale
+* Scales can be lots of different things
+* In ggplot2 language, some core ones are: 
+
+:::: {.columns}
+::: {.column}
+  + `continuous`
+  + `discrete`
+  + `manual`
+  + `ordinal`
+:::
+
+::: {.column}
+  + `binned`
+  + `date`
+  + `brewer`
+:::
+::::
+
+* All of these have specific arguments based on the type of scale 
+
+## Scales 
+### `continuous`
+
+:::: {.columns}
+::: {.column width="40%"}
+* Let's try the `continuous` scale with our `y` mapping 
+* We'll use the following three arguments
+  + `limits`: vector length 2
+  + `breaks`: vector of any length
+  + `labels`: numeric or character vector
+:::
+
+::: {.column width="60"}
+::: {.fragment}
+```{r, echo = T, fig.align='center',fig.dim= c(5,3.5)}
+ggplot(
+  data = ipcs_data
+  , mapping = aes(x = linear, y = happy)
+) + 
+  scale_y_continuous(
+    limits = c(1, 5)
+    , breaks = seq(1, 5, by = 2)
+    , labels = c("one", "three", "five")
+  )
+```
+:::
+:::
+::::
+
+## Geoms
+:::: {.columns}
+::: {.column}
+* We'll loop back to scales after talking about some geoms
+* It's not possible to go through all the possible geoms (that's what the rest of the class is for!)
+* We'll focus on some basic ones for now
+:::
+
+::: {.column}
+* `geom_point()`
+* `geom_jitter()`
+* `geom_smooth()`
+* `geom_hline()` / `geom_vline()`
+* `geom_bar()`
+* `geom_boxplot()`
+* `geom_density()`
+* `geom_histogram()`
+:::
+::::
+
+## Geoms: `geom_point()`
+Your basic scatterplot!  
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    )) + 
+    geom_point() + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    )) + 
+    geom_point() + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+::::
+
+## Geoms: `geom_point()`
+Your basic scatterplot!  
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    , color = happy
+    )) + 
+    geom_point() + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    , color = happy
+    )) + 
+    geom_point() + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+::::
+
+## Geoms: `geom_point()` {.smaller}
+Your basic scatterplot!  
+
+:::: {.columns}
+::: {.column}
+```{r, echo = T, out.height="50%",  fig.align='center', fig.dim= c(5,3.5)}
+#| code-line-numbers: "8"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    , color = happy
+    )) + 
+    scale_color_continuous(type = "viridis") +
+    geom_point() + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+
+::: {.column}
+::: {.fragment}
+```{r, echo = T, out.height="50%",  fig.align='center', fig.dim= c(5,3.5)}
+#| code-line-numbers: "8"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    , color = happy
+    )) + 
+    scale_color_gradient(low = "red", high = "blue") +
+    geom_point() + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+:::
+::::
+
+## Geoms: `geom_jitter()`
+:::: {.columns}
+::: {.column}
+
+* Sometimes we have data that have lots of repeating values, especially with ordinal response scales where the variables aren't composited / latent
+* jitter adds random noise to the point to allow you to see more of the points
+
+:::
+
+::: {.column}
+::: {.fragment}
+```{r, echo = T,  fig.align='center', fig.dim= c(5,3.5)}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    )) + 
+    geom_jitter() + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+:::
+::::
+
+This may be too much jitter
+
+## Geoms: `geom_jitter()` 
+:::: {.columns}
+::: {.column}
+:::{.nonincremental}
+* Sometimes we have data that have lots of repeating values, especially with ordinal response scales where the variables aren't composited / latent
+* jitter adds random noise to the point to allow you to see more of the points
+:::
+:::
+
+::: {.column} 
+```{r, echo = T,  fig.align='center', fig.dim= c(5,3.5)}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(
+    x = purposeful
+    , y = happy
+    )) + 
+    geom_jitter(width = .1, height = .1) + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+::::
+
+## Geoms: `geom_jitter()` {.smaller}
+### `alpha`
+
+:::: {.columns}
+::: {.column}
+
+Alpha can help us understand how many points are stacked when using jitter (or other overlapping data)
+
+:::
+
+::: {.column}
+
+```{r, echo = T, fig.show='show', fig.align='center', fig.dim= c(5,3.5)}
+#| code-line-numbers: "|7"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(
+      width = .1
+      , height = .1
+      , alpha = .25
+      ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+::::
+
+## Geoms: `geom_smooth()`
+* `geom_smooth()` allows you to apply statistical functions to your data
+* There are other ways to do this that we won't cover today
+* Core arguments are: 
+  + `method`: "loess", "lm", "glm", "gam"
+  + `formula`: e.g., `y ~ x` or `y ~ poly(x, 2)`
+  + `se`: display standard error of estimate (`T`/ `F`)
+  + `aes()` wrapped aesthetics or directly mapped aesthetics
+  
+## Geoms: `geom_smooth()` {.smaller}
+Remember: it's a **LAYERED** grammar of graphics, so let's layer!
+
+:::: {.columns}
+::: {.column}
+::: {.fragment}
+
+#### `method = "lm"`
+
+```{r, echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "|5-9"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = F
+      , color = "blue"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+:::
+::: {.column}
+::: {.fragment}
+
+#### `method = "loess"`
+```{r, echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "5-9"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "loess"
+      , formula = y ~ x
+      , se = F
+      , color = "blue"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+:::
+::::
+
+## Geoms: `geom_smooth()` {.smaller}
+Remember: it's a **LAYERED** grammar of graphics, so let's layer!
+
+:::: {.columns}
+::: {.column}
+::: {.fragment}
+
+#### `method = "lm"`
+
+```{r, echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "5-9"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+:::
+::: {.column}
+::: {.fragment}
+
+#### `method = "loess"`
+```{r, echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "5-9"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "loess"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+:::
+::::
+
+## Geoms:  
+
+### `geom_hline()`/`geom_vline()`
+
+* Sometimes, we will want to place lines at various intercepts
+* We'll get into specific use cases as the course progresses
+* `geom_hline()`: horizontal lines have `yintercept` mappings
+* `geom_vline()`: vertical lines have `xintercept` mappings
+
+## Geoms: {.smaller}  
+### `geom_hline()`/`geom_vline()`  
+
+:::: {.columns}
+::: {.column}
+
+`geom_hline()`: horizontal lines have `yintercept` mappings
+
+::: {.fragment}
+```{r, echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "5-8"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_hline(
+      aes(yintercept = mean(happy, na.rm = T))
+      , linetype = "dashed"
+      ) + 
+    geom_smooth(method = "lm", formula = y ~ x, se = F, color = "blue") + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+:::
+
+::: {.column}
+`geom_vline()`: vertical lines have `xintercept` mappings
+
+::: {.fragment}
+
+```{r, echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "5-8"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_vline(
+      aes(xintercept = mean(purposeful, na.rm = T))
+      , linetype = "dashed"
+      ) + 
+    geom_smooth(method = "lm", formula = y ~ x, se = F, color = "blue") + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+:::
+::::
+
+## Geoms: `geom_line()`
+
+:::: {.columns}
+::: {.column}
+
+* Line graphs are great for showing relationships among variables as well as showing changes over time
+* Be careful, `geom_line()` in `ggplot2` is pretty literal
+* We'll come back to this several times, so I'll just show one example of a time series
+:::
+
+::: {.column}
+::: {.fragment}
+
+```{r, echo = T, fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|4"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = beep, y = happy)) + 
+    geom_line(color = "blue") + 
+    geom_point(size = 1) + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+:::
+::::
+
+## Geoms: `geom_bar()`
+* Bar graphs can be useful for showing relative differences
+* My hot take is that they are rarely that useful
+  + (This is mostly because of how we perceive errorbars and differences, which we'll talk more about in a few weeks!)
+* But let's look at using them for frequency and means / se's
+
+## Geoms: `geom_bar()` 
+### Frequency  
+How often did our participant have an argument, interact with others, study, and feel tired?  
+
+::: {.fragment}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show = 'hide', fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID == "216") %>% 
+  select(SID, Full_Date, argument, interacted, study, tired) %>%
+  pivot_longer(
+    cols = argument:tired
+    , names_to = "item"
+    , values_to = "value"
+    , values_drop_na = T
+  ) %>%
+  group_by(item) %>%
+  summarize(value = sum(value == 1)) %>%
+  ggplot(aes(x = item, fill = item, y = value)) + 
+    geom_col(color = "black") + 
+    theme_classic()
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID == "216") %>% 
+  select(SID, Full_Date, argument, interacted, study, tired) %>%
+  pivot_longer(
+    cols = argument:tired
+    , names_to = "item"
+    , values_to = "value"
+    , values_drop_na = T
+  ) %>%
+  group_by(item) %>%
+  summarize(value = sum(value == 1)) %>%
+  ggplot(aes(x = item, fill = item, y = value)) + 
+    geom_col(color = "black") + 
+    theme_classic()
+```
+:::
+::::
+:::
+
+## Geoms: `geom_bar()` {.smaller}
+### Mean differences  
+Were there mean-level in our continuous variables?
+
+::: {.fragment}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show = 'hide', fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|3-9|10-14|16|17-22"
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+    , values_drop_na = T
+  ) %>%
+  group_by(item) %>%
+  summarize(
+    mean = mean(value)
+    , ci = 1.96*(sd(value)/sqrt(n()))
+    ) %>%
+  ggplot(aes(x = item, fill = item, y = mean)) + 
+    geom_col(color = "black") + 
+    geom_errorbar(
+      aes(ymin = mean - ci, ymax = mean + ci)
+      , position = position_dodge(width = .1)
+      , width = .1
+      , stat = "identity"
+    ) + 
+    theme_classic()
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+    , values_drop_na = T
+  ) %>%
+  group_by(item) %>%
+  summarize(
+    mean = mean(value)
+    , ci = 1.96*(sd(value)/sqrt(n()))
+    ) %>%
+  ggplot(aes(x = item, fill = item, y = mean)) + 
+    geom_col(color = "black") + 
+    geom_errorbar(
+      aes(ymin = mean - ci, ymax = mean + ci)
+      , position = position_dodge(width = .1)
+      , width = .1
+      , stat = "identity"
+    ) + 
+    theme_classic()
+```
+:::
+::::
+:::
+
+## Geoms: `geom_boxplot()` 
+* Sometimes called box and whisker plots
+* A method for summarizing a distribution of data without showing raw data
+* Box instead shows 25th, 50th, and 75th percentile (quartiles)
+* Whiskers show 1.5 * interquartile range (75%tile-25%tile)
+* More fun when we want to compare distributions across variables (IMO)
+
+## Geoms: `geom_boxplot()` 
+### One boxplot
+```{r , echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "4"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(aes(y = SID, x = happy)) + 
+    geom_boxplot(width = .5) + 
+    theme_classic()
+```
+
+
+## Geoms: `geom_boxplot()` 
+### Multiple boxplots
+
+:::: {.columns}
+::: {.fragment}
+::: {.column}
+
+* We can compare multiple participants
+* Later, we'll also talk about how to order the boxplots (and other axes) by means, medians, etc. 
+
+
+```{r , echo = T, fig.show='hide', fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "|5"
+ipcs_data %>%
+  filter(SID %in% c("216", "211", "174", "150", "171")) %>%
+  ggplot(aes(
+    y = SID, x = happy
+    , fill = SID
+    )) + 
+    geom_boxplot(width = .5) + 
+    theme_classic()
+```
+
+:::
+
+
+::: {.column}
+
+```{r , echo = F,fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID %in% c("216", "211", "174", "150", "171")) %>%
+  ggplot(aes(
+    y = SID, x = happy
+    , fill = SID
+    )) + 
+    geom_boxplot(width = .5) + 
+    theme_classic()
+```
+:::
+:::
+::::
+
+## Geoms: `geom_boxplot()` {.smaller}
+### Multiple boxplots
+* We can also compare multiple variables
+
+::: {.fragment}
+:::: {.columns}
+::: {.column}
+```{r , echo = T, fig.show='hide', fig.align='center', fig.dim= c(5,3.5)}
+#| code-line-numbers: "|5-8|10,12"
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(
+    y = item
+    , x = value
+    , fill = item
+    )) + 
+    geom_boxplot(width = .5) + 
+    theme_classic()
+```
+:::
+
+
+::: {.column}
+```{r , echo = F, fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(
+    y = item
+    , x = value
+    , fill = item
+    )) + 
+    geom_boxplot(width = .5) + 
+    theme_classic()
+```
+:::
+:::
+::::
+
+
+## Geoms: `geom_boxplot()` {.smaller}
+### Advanced!  
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "4-14"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    scale_x_continuous(limits = c(1,7), breaks = seq(1,5,2)) + 
+    scale_y_continuous(limits = c(1,7), breaks = seq(1,5,2)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_boxplot(aes(
+      x = 6
+      , y = happy
+      )) + 
+    geom_boxplot(aes(
+      y = 6
+      , x = purposeful
+      )) +
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = F
+      , color = "blue"
+      ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "5-8"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    scale_x_continuous(limits = c(1,7), breaks = seq(1,5,2)) + 
+    scale_y_continuous(limits = c(1,7), breaks = seq(1,5,2)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_boxplot(aes(x = 6, y = happy)) + 
+    geom_boxplot(aes(y = 6, x = purposeful)) +
+    geom_smooth(method = "lm", formula = y ~ x, se = F, color = "blue") + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+::::
+
+## Geoms: {.smaller}
+### `geom_histogram()` \& `geom_density()`
+* Useful for showing raw / smoothed distributions of data 
+
+:::: {.columns}
+::: {.column}
+::: {.fragment}
+#### Histogram   
+```{r , echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "4-7"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(aes(y = happy)) + 
+    geom_histogram(
+      fill = "grey"
+      , color = "black"
+    ) + 
+    coord_flip() +
+    theme_classic()
+```
+:::
+:::
+
+::: {.column}
+::: {.fragment}
+
+#### Density Distribution   
+```{r , echo = T, fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "4-7"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(aes(x = happy, y = ..density..)) + 
+    geom_histogram(
+      fill = "grey"
+      , color = "black"
+    ) + 
+    theme_classic()
+```
+:::
+:::
+::::
+
+## Geoms: {.smaller}
+### `geom_histogram()` \& `geom_density()`
+### Multiple histograms / density distributions
+* We can compare multiple participants
+
+::: {.fragment}
+:::: {.columns}
+::: {.column}
+```{r , echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|5"
+ipcs_data %>%
+  filter(SID %in% c("216", "211", "174", "150", "171")) %>%
+  ggplot(aes(
+     y = happy
+    , fill = SID
+    )) + 
+    geom_density(alpha = .2) + 
+    coord_flip() +
+    theme_classic()
+```
+:::
+
+
+::: {.column}
+```{r , echo = F,fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID %in% c("216", "211", "174", "150", "171")) %>%
+  ggplot(aes(
+     y = happy
+    , fill = SID
+    )) + 
+    geom_density(alpha = .2) + 
+    coord_flip() +
+    theme_classic()
+```
+:::
+:::
+::::
+
+# Plot Appearance Beyond Mappings: Facets and Themes
+
+## Plot Appearance  
+* So far, we have only changed appearance via the `scale_()` functions
+* But that doesn't change things like axis, text, title, and more
+* Nor does it help when we want to split the plot into multiple panels
+* Let's do those next!
+
+## Plot Apperance: Facets  
+
+:::: {.columns}
+::: {.column}
+* Often, we have lots of other reasons we need to reproduce the same plot multiple times 
+  + multiple variables
+  + multiple people
+  + multiple conditions
+  + etc. 
+* There are more ways to do this than we'll cover today, like piecing plots together and more
+
+:::
+
+::: {.column}
+::: {.fragment}
+```{r, echo = F,fig.align='center', fig.dim= c(5,5)}
+ipcs_data %>%
+  filter(SID %in% c("216", "211", "174", "150")) %>%
+  ggplot(aes(x = beep, y = happy, group = SID)) + 
+    geom_point() + 
+    geom_line() + 
+    facet_wrap(~SID, ncol = 1) +
+    theme_classic()
+```
+:::
+
+:::
+::::
+
+## Appearance: Facets 
+:::: {.columns}
+::: {.column}
+* The core of directly faceting within ggplot is that you have to facet according to variables in your data set
+* This is part of why we covered moving your data to long
+* Say that you want to facet by variable, for example, but your data is in wide form
+  + Facets couldn't handle that
+:::
+
+::: {.column}
+::: {.fragment}
+```{r, echo = T}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  print(n = 8)
+```
+:::
+:::
+::::
+
+## Appearance: Facets 
+* In `ggplot2`, there are two core faceting functions
+  + `facet_grid()`
+  + `facet_wrap()`
+
+:::: {.columns}
+::: {.column}
+* `facet_grid()`
+  + snaps figures in a grid; no wrapping
+  + especially useful for 1-2 faceting variables
+:::
+
+::: {.column}
+* `facet_wrap()`
+  + treats each facet a separate
+  + wraps according to `nrow` and `ncol` arguments
+:::
+::::
+
+## Appearance: Facets {.smaller}
+:::: {.columns}
+::: {.column}
+### `facet_grid()`
+
+Core arguments: 
+
+* `rows`, `cols`: list of variables or formula, e.g., `x ~ y`
+* `scales`: same x or y scale on all facets?
+* `space`: same space for unequal length x or y facets?
+* `switch`: move labels from left to right or top to bottom?
+* `drop`: drop unused factor levels
+:::
+
+::: {.column}
+### `facet_wrap()`
+
+Core arguments: 
+
+* `facets`: barequoted or one-sided formula, e.g., `~ x + y`
+* `nrow` / `ncol`: number of rows and columns
+* `scales`: same x or y scale on all facets?
+* `switch`: move labels from left to right or top to bottom?
+* `drop`: drop unused factor levels
+* `dir`: horizontal or vertical
+* `strip.position`: where to put the labels
+
+:::
+::::
+
+## Appearance: Facets 
+### `facet_grid()`
+:::: {.columns}
+::: {.column}
+```{r , echo = T, fig.show='hide', fig.align='center'}
+#| code-line-numbers: "|12"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_point() + 
+    geom_line() + 
+    facet_grid(item~.) +
+    theme_classic()
+```
+
+:::
+
+::: {.column}
+```{r , echo = F, fig.align='center', fig.dim= c(6,4), out.width="100%"}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_point() + 
+    geom_line() + 
+    facet_grid(item~.) +
+    theme_classic()
+```
+:::
+::::
+
+## Appearance: Facets 
+### `facet_wrap()`
+:::: {.columns}
+::: {.column}
+```{r , echo = T, fig.show='hide', fig.align='center'}
+#| code-line-numbers: "|12-16"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_point() + 
+    geom_line() + 
+    facet_wrap(
+      ~item
+      , ncol = 1
+      , strip.position = "right"
+      ) +
+    theme_classic()
+```
+
+:::
+
+::: {.column}
+```{r , echo = F, fig.align='center', fig.dim= c(6,4), out.width="100%"}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_point() + 
+    geom_line() + 
+    facet_wrap(
+      ~item
+      , ncol = 1
+      , strip.position = "right"
+      ) +
+    theme_classic()
+```
+:::
+::::
+
+## Appearance: Facets 
+### `facet_wrap()`: Change scale and space
+:::: {.columns}
+::: {.column}
+```{r , echo = T, fig.show='hide', fig.align='center'}
+#| code-line-numbers: "|12-16"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_point() + 
+    geom_line() + 
+    facet_grid(
+      item ~ . 
+      , scales = "free_y"
+      , space = "free_y"
+      ) +
+    theme_classic()
+```
+
+:::
+
+::: {.column}
+```{r , echo = F, fig.align='center', fig.dim= c(6,4), out.width="100%"}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_point() + 
+    geom_line() + 
+    facet_grid(
+      item ~ . 
+      , scales = "free_y"
+      , space = "free_y"
+      ) +
+    theme_classic()
+```
+:::
+::::
+
+## Appearance: Labels & Titles
+
+* APA style says titles are bad
+* Common sense says titles help understanding
+* Ask for forgiveness, not permission
+
+## Appearance: Labels & Titles  
+
+Remember this? 
+
+:::: {.columns}
+::: {.column}
+```{r, echo = T, fig.show = 'hide', fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "5-9"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "5-9"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+::::
+
+## Appearance: Labels & Titles  
+:::: {.columns}
+::: {.column}
+```{r, echo = T, fig.show = 'hide', fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|11-15"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    labs(
+      x = "Momentary Purpose (1-5)"
+      , y = "Momentary Happiness (1-5)"
+      , title = "Zero-Order Associations 
+                  Between Momentary Happiness and Purpose"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|11-15"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    labs(
+      x = "Momentary Purpose (1-5)"
+      , y = "Momentary Happiness (1-5)"
+      , title = "Zero-Order Associations Between Momentary Happiness and Purpose"
+    ) + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+::::
+
+## Appearance: Labels & Titles  
+Labels also apply to other mappings like color
+
+:::: {.columns}
+::: {.column}
+```{r , echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|9-13"
+ipcs_data %>%
+  filter(SID %in% c("216", "211", "174", "150", "171")) %>%
+  ggplot(aes(
+     y = happy
+    , fill = SID
+    )) + 
+    geom_density(alpha = .2) + 
+    coord_flip() +
+    labs(
+      x = "Momentary Happiness"
+      , y = "Smoothed Density"
+      , fill = "Participant\nID"
+    ) + 
+    theme_classic()
+```
+:::
+
+
+::: {.column}
+```{r , echo = F,fig.align='center', fig.dim= c(6,4), out.width="100%"}
+ipcs_data %>%
+  filter(SID %in% c("216", "211", "174", "150", "171")) %>%
+  ggplot(aes(
+     y = happy
+    , fill = SID
+    )) + 
+    geom_density(alpha = .2) + 
+    coord_flip() +
+    labs(
+      x = "Momentary Happiness"
+      , y = "Smoothed Density"
+      , fill = "Participant\nID"
+    ) + 
+    theme_classic()
+```
+
+:::
+::::
+
+## Appearance: Labels & Titles  
+
+You can also use labels to **remove** axis labels
+
+:::: {.columns}
+::: {.column}
+
+```{r , echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|5-8|15-19"
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(
+    y = item
+    , x = value
+    , fill = item
+    )) +
+    geom_boxplot(width = .5) + 
+    labs(
+      x = "Momentart Rating (1-5)"
+      , y = NULL
+      , fill = "Item"
+    ) + 
+    theme_classic()
+```
+:::
+
+::: {.column}
+```{r , echo = F, fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(
+    y = NULL
+    , x = value
+    , fill = item
+    )) + 
+    labs(
+      x = "Momentart Rating (1-5)"
+      , y = NULL
+      , fill = "Item"
+    ) + 
+    geom_boxplot(width = .5) + 
+    theme_classic()
+```
+:::
+::::
+
+
+## Appearance: Themes (Basic)
+* There are lots of themes you can use in ggplot that are pre-built into the package
+* Try tying `theme_` into your R console, and look at the functions that pop up
+* Some stand-out ones are: 
+  + `theme_classic()` (what we've been using)
+  + `theme_bw()`
+  + `theme_minimal()` (but is there a theme_maximal?)
+  + `theme_void`
+
+## Appearance: Themes (Advanced)
+* Custom themes are one of the best ways to "hack" your ggplots
+* You will not remember all of them
+* You will have to google them all time
+* Here's the site: [https://ggplot2.tidyverse.org/reference/theme.html](https://ggplot2.tidyverse.org/reference/theme.html)
+* Rather than give details on a bunch of these, I'm going to demonstrate theme modifications I often use 
+
+## Appearance: Themes {.smaller}
+:::: {.columns}
+::: {.column}
+```{r, echo = T, fig.show = 'hide', fig.align='center', fig.dim= c(4,2.75)}
+#| code-line-numbers: "17-31"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    labs(
+      x = "Momentary Purpose (1-5)"
+      , y = "Momentary Happiness (1-5)"
+      , title = "Zero-Order Associations Between Momentary Happiness and Purpose"
+    ) + 
+    theme_classic() + 
+    theme(
+      plot.title = element_text(
+        face = "bold"
+        , size = rel(1.1)
+        , hjust = .5
+        )
+      , axis.title = element_text(
+        face = "bold"
+        , size = rel(1.1)
+        )
+      , axis.text = element_text(
+        face = "bold"
+        , size = rel(1.2)
+        )
+    )
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|11-15"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+    geom_jitter(width = .1, height = .1, alpha = .25) + 
+    geom_smooth(
+      method = "lm"
+      , formula = y ~ x
+      , se = T
+      , color = "blue"
+    ) + 
+    labs(
+      x = "Momentary Purpose (1-5)"
+      , y = "Momentary Happiness (1-5)"
+      , title = "Zero-Order Associations Between Momentary Happiness and Purpose"
+    ) + 
+    theme_classic()  + 
+    theme(
+      plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+    )
+```
+:::
+::::
+
+## Appearance: Themes {.smaller}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show = 'hide', fig.align='center', fig.dim= c(5,3.5)}
+#| code-line-numbers: "|23-27|29-34"
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+    , values_drop_na = T
+  ) %>%
+  group_by(item) %>%
+  summarize(
+    mean = mean(value)
+    , ci = 1.96*(sd(value)/sqrt(n()))
+    ) %>%
+  ggplot(aes(x = item, fill = item, y = mean)) + 
+    geom_col(color = "black") + 
+    geom_errorbar(
+      aes(ymin = mean - ci, ymax = mean + ci)
+      , position = position_dodge(width = .1)
+      , width = .1
+      , stat = "identity"
+    ) + 
+    labs(
+      x = NULL
+      , y = "Mean Momentary Rating (CI)\n[Range 1-5]"
+      , title = "Descriptive Statistics of Momentary Emotion Ratings"
+    ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+  )
+```
+
+:::
+
+::: {.column}
+```{r, echo = F, fig.align='center', fig.dim= c(6,4)}
+ipcs_data %>%
+  filter(SID %in% c("216")) %>%
+  select(SID, Full_Date, happy, purposeful, afraid, attentive) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , names_to = "item"
+    , values_to = "value"
+    , values_drop_na = T
+  ) %>%
+  group_by(item) %>%
+  summarize(
+    mean = mean(value)
+    , ci = 1.96*(sd(value)/sqrt(n()))
+    ) %>%
+  ggplot(aes(x = item, fill = item, y = mean)) + 
+    geom_col(color = "black") + 
+    geom_errorbar(
+      aes(ymin = mean - ci, ymax = mean + ci)
+      , position = position_dodge(width = .1)
+      , width = .1
+      , stat = "identity"
+    ) + 
+    labs(
+      x = NULL
+      , y = "Mean Momentary Rating (CI)\n[Range 1-5]"
+      , title = "Descriptive Statistics of Momentary Emotion Ratings"
+    ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+  )
+```
+:::
+::::
+
+## Appearance: Themes {.smaller}
+:::: {.columns}
+::: {.column}
+```{r , echo = T, fig.show='hide', fig.align='center'}
+#| code-line-numbers: "|13-18|20-29|21-22|26-27"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_line(aes(color = item)) + 
+    geom_point(size = 1) + 
+    facet_grid(item~.) +
+    labs(
+      x = "ESM Beep (#)"
+      , y = "Rated Momentary Value (1-5)"
+      , title = "Time Series of Four Momentary Emotion Items for Participant 216"
+      , color = NULL
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "bottom"
+      , legend.text = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+      , strip.background = element_rect(color = "black", fill = "cornflowerblue")
+      , strip.text = element_text(face = "bold", size = rel(1.2), color = "white")
+    )
+```
+
+:::
+
+::: {.column}
+```{r , echo = F, fig.align='center', fig.dim= c(6,6), out.width="100%"}
+ipcs_data %>%
+  filter(SID == "216") %>%
+  select(SID, beep, afraid:content) %>%
+  pivot_longer(
+    cols = afraid:content
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value, group = item)) + 
+    geom_line(aes(color = item)) + 
+    geom_point(size = 1) + 
+    facet_grid(item~.) +
+    labs(
+      x = "ESM Beep (#)"
+      , y = "Rated Momentary Value (1-5)"
+      , title = "Time Series of Four Momentary Emotion Items for Participant 216"
+      , color = NULL
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "bottom"
+      , legend.text = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+      , strip.background = element_rect(color = "black", fill = "cornflowerblue")
+      , strip.text = element_text(face = "bold", size = rel(1.2), color = "white")
+    )
+```
+:::
+::::
+
+<!-- * **Facets**: panel your plot -->
+<!-- * **Grobs**: things that aren't geoms that we want to layer on like text, arrows, other things -->
+<!-- * **Themes**: style your figure -->
+
+:::: {.columns}
+::: {.column}
+
+:::
+
+::: {.column}
+
+:::
+::::
