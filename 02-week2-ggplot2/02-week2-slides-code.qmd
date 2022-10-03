@@ -1,5 +1,5 @@
 ---
-title: "Introduction to ggplot2"
+title: "Week 2: Cognitive Perspectives and Introduction to ggplot2"
 author: "Emorie D Beck"
 format: 
   revealjs:
@@ -8,6 +8,7 @@ format:
     code-copy: true
     code-line-numbers: true
     code-link: true
+    preview-links: true
     slide-number: true
     self-contained: true
     css: custom.css
@@ -37,6 +38,82 @@ library(plyr)
 library(tidyverse)
 ```
 
+# Part 1: Good/Bad Data Visualizations and Reading Discussion
+
+
+----
+
+:::: {.columns}
+::: {.column}
+
+### Good or Bad? 
+
+:::
+
+::: {.column}
+```{r, fig.align='center', out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-emp-int.png")
+```
+:::
+::::
+
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-natl-parks.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-wtf-537.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-comb-plots.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-covid-vacc.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-mid-class-jobs-int.png")
+```
+
+[https://nyti.ms/2k5jxOf](https://nyti.ms/2k5jxOf)
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-network-trans.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-profession.png")
+```
+
+## Good or Bad?
+[https://ourworldindata.org/grapher/ai-training-computation?endpointsOnly=1&time=earliest..latest](https://ourworldindata.org/grapher/ai-training-computation?endpointsOnly=1&time=earliest..latest)
+
+<!-- ## Good or Bad?  -->
+<!-- ```{r, fig.align='center'} -->
+<!-- knitr::include_graphics("") -->
+<!-- ``` -->
+
+<!-- ## Good or Bad?  -->
+<!-- ```{r, fig.align='center'} -->
+<!-- knitr::include_graphics("") -->
+<!-- ``` -->
+
+<!-- ## Good or Bad?  -->
+<!-- ```{r, fig.align='center'} -->
+<!-- knitr::include_graphics("") -->
+<!-- ``` -->
+
+----
 
 :::: {.columns .v-center-container}
 ::: {.column width="70%"}
@@ -577,6 +654,32 @@ ipcs_data %>%
       , linetype = "dashed"
       ) + 
     geom_smooth(method = "lm", formula = y ~ x, se = F, color = "blue") + 
+    theme_classic() # I just hate grey backgrounds
+```
+:::
+:::
+::::
+
+## Geoms: `geom_line()`
+
+:::: {.columns}
+::: {.column}
+
+* Line graphs are great for showing relationships among variables as well as showing changes over time
+* Be careful, `geom_line()` in `ggplot2` is pretty literal
+* We'll come back to this several times, so I'll just show one example of a time series
+:::
+
+::: {.column}
+::: {.fragment}
+
+```{r, echo = T, fig.align='center', fig.dim= c(6,4)}
+#| code-line-numbers: "|4"
+ipcs_data %>%
+  filter(SID == "216") %>%
+  ggplot(mapping = aes(x = beep, y = happy)) + 
+    geom_line(color = "blue") + 
+    geom_point(size = 1) + 
     theme_classic() # I just hate grey backgrounds
 ```
 :::
