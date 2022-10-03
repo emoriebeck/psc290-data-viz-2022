@@ -92,26 +92,42 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ## Good or Bad?
 ```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-focal-order.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-profession.png")
 ```
 
 ## Good or Bad?
 [https://ourworldindata.org/grapher/ai-training-computation?endpointsOnly=1&time=earliest..latest](https://ourworldindata.org/grapher/ai-training-computation?endpointsOnly=1&time=earliest..latest)
 
-<!-- ## Good or Bad?  -->
-<!-- ```{r, fig.align='center'} -->
-<!-- knitr::include_graphics("") -->
-<!-- ``` -->
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-3d.png")
+```
 
-<!-- ## Good or Bad?  -->
-<!-- ```{r, fig.align='center'} -->
-<!-- knitr::include_graphics("") -->
-<!-- ``` -->
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-busy.png")
+```
 
-<!-- ## Good or Bad?  -->
-<!-- ```{r, fig.align='center'} -->
-<!-- knitr::include_graphics("") -->
-<!-- ``` -->
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-symmetry.png")
+```
+
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/bad-vaccines.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center'}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/02-week2-ggplot2/03-images/good-serena.png.webp")
+```
 
 ----
 
