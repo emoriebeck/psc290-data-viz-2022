@@ -1,0 +1,70 @@
+---
+title: "Week 2: Cognitive Perspectives and Introduction to ggplot2"
+author: "Emorie D Beck"
+format: 
+  revealjs:
+    incremental: true
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    preview-links: true
+    slide-number: true
+    self-contained: true
+    css: custom.css
+    theme: psc290
+    highlight-style: atom-one-dark
+    margin-left: "0"
+    margin-right: "0"
+    width: 1400
+    # height: 900
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+  # pptx: 
+  #   incremental: true  
+  #   # code-tools: true
+  #   # code-copy: true
+  #   # code-line-numbers: true
+  #   # code-link: true
+  #   css: custom.css
+  #   theme: psc290
+  #   highlight-style: atom-one-dark
+  #   footer: "PSC 290 - Data Visualization"
+  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+---
+
+# Quick Review  
+## Review  
+### What are the core elements of ggplot2 grammar?
+
+From last week:
+
+* **Mappings**: base layer 
+  + `ggplot()` and `aes()`
+* **Scales**: control and modify your mappings 
+  + e.g., `scale_x_continuous()` and `scale_fill_manual()`
+* **Geoms**: plot elements 
+  + e.g., `geom_point()` and `geom_line()`
+* **Facets**: panel your plot 
+  + `facet_wrap()` and `facet_grid()`
+* **Themes**: style your figure 
+  + Built-in: e.g., `theme_classic()`
+  + Manual: `theme()` (`legend`, `strip`, `axis`, `plot`, `panel`)
+
+# Part 1: Proportions  
+## Visualizating Proportions
+* Proportions are often important in our research
+* From describing sample-level differences to describing the frequency of behaviors / events / experiences, etc., we often reach toward describing amounts relative to the whole
+* But the goals we are trying to achieve are varied, which necesssitates the use of different graphics
+
+## Part 1: Agenda
+* We will cover X kinds of ways of visualizations, all of which were covered in your readings
+* We will cover both when to use them and how to create them
+  + Pie Charts 
+  + Bar Charts (Stacked)
+  + Bar Charts (Side-by-Side)
+  + Bar Charts and Density Across Continuous Variables
+  + Mosaic Plots
+  + Parallel Sets
+
+# Part 2: Probability  

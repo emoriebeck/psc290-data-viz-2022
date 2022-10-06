@@ -234,11 +234,11 @@ Alpha can help us understand how many points are stacked when using jitter (or o
 #| code-line-numbers: "|7"
 ipcs_data %>%
   filter(SID == "216") %>%
-  ggplot(mapping = aes(x = purposeful, y = happy)) + 
+  ggplot(mapping = aes(x = purposeful, y = happy, alpha = .25)) + 
     geom_jitter(
       width = .1
       , height = .1
-      , alpha = .25
+      # , alpha = .25
       ) + 
     theme_classic() # I just hate grey backgrounds
 ```

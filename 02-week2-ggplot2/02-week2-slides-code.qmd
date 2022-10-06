@@ -692,9 +692,9 @@ ipcs_data %>%
 ```{r, echo = T, fig.align='center', fig.dim= c(6,4)}
 #| code-line-numbers: "|4"
 ipcs_data %>%
-  filter(SID == "216") %>%
-  ggplot(mapping = aes(x = beep, y = happy)) + 
-    geom_line(color = "blue") + 
+  filter(SID == c("216", "02")) %>%
+  ggplot(mapping = aes(x = beep, y = happy, group = SID)) + 
+    geom_line(aes(color = SID)) + 
     geom_point(size = 1) + 
     theme_classic() # I just hate grey backgrounds
 ```
