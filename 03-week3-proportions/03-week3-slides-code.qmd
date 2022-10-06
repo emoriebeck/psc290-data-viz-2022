@@ -83,9 +83,10 @@ From last week:
 
 ```{r gsoep clean fun, eval = F}
 gsoep_read_fun <- function(Year, WL){
-  print(YEAR)
+  print(Year)
   old.names <- (gsoep_codebook %>% filter(year == Year))$orig_itemname 
   p <- sprintf("%s/gsoep/%sp.sav", data_path, WL) %>% haven::read_sav(.) %>%
+    full_join(sprintf("%s/gsoep/%spequiv.sav", data_path, WL) %>% haven::read_sav(.)) %>%
     select(SID = persnr, HID = hhnr, one_of(old.names)) %>%
     pivot_longer(
       cols = c(-SID, -HID)
@@ -97,7 +98,7 @@ gsoep_read_fun <- function(Year, WL){
 ```
 
 ```{r gsoep codebook}
-gsoep_codebook <- read_csv("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/01-codebook.csv") %>%
+gsoep_codebook <- read_csv("https://raw.githubusercontent.com/emoriebeck/psc290-data-viz-2022/main/03-week3-proportions/01-codebook.csv") %>%
   mutate(orig_itemname = str_to_lower(orig_itemname))
 gsoep_codebook
 ```
