@@ -33,6 +33,12 @@ format:
   #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
 ---
 
+
+```{r}
+library(plyr)
+library(tidyverse)
+```
+
 # Quick Review  
 ## Review  
 ### What are the core elements of ggplot2 grammar?
@@ -66,5 +72,116 @@ From last week:
   + Bar Charts and Density Across Continuous Variables
   + Mosaic Plots
   + Parallel Sets
+
+## But First, Our Data  
+* Today, we'll use the teaching sample from the German Socioeconomic Panel Study (GSOEP)
+* GSOEP is an ongoing longitudinal panel study that began in 1984 (26 waves of data!)
+* ~20,000 people are sampled each year
+* Samples households in Germany
+* Has additional sub-projects (e.g., innovation studies, migrant panel, etc.)
+* The data are publicly available via application
+
+```{r gsoep clean fun, eval = F}
+gsoep_read_fun <- function(Year, WL){
+  print(YEAR)
+  old.names <- (gsoep_codebook %>% filter(year == Year))$orig_itemname 
+  p <- sprintf("%s/gsoep/%sp.sav", data_path, WL) %>% haven::read_sav(.) %>%
+    select(SID = persnr, HID = hhnr, one_of(old.names)) %>%
+    pivot_longer(
+      cols = c(-SID, -HID)
+      , values_to = "value"
+      , names_to = "orig_itemname"
+      , values_drop_na = T
+    )
+}
+```
+
+```{r gsoep codebook}
+gsoep_codebook <- read_csv("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/01-codebook.csv") %>%
+  mutate(orig_itemname = str_to_lower(orig_itemname))
+gsoep_codebook
+```
+
+```{r gsoep data, eval = F}
+data_path <- "/Volumes/Emorie/data"
+
+gsoep <- gsoep_codebook %>% 
+  select(wave, waveletter, year) %>%
+  filter(complete.cases(.)) %>%
+  distinct() %>%
+  arrange(year) %>%
+  mutate(data = map2(year, waveletter, gsoep_read_fun)) 
+
+gsoep_long <- gsoep %>% unnest(data) %>%
+  select(-hhnr) %>%
+  filter(persnr %in% gsoep_cog_subs) %>%
+  full_join(gsoep_cog) %>%
+  select(-wave, -waveletter) %>%
+  rename(SID = persnr)
+
+save(gsoep, file = sprintf("%s/data/clean/gsoep_raw.RData", res_path))
+rm(gsoep)
+```
+
+### Recoding & Reverse Scoring  
+```{r gsoep recode}
+gsoep_waves <- p_waves %>% filter(Study == "GSOEP") %>% select(Used) %>% distinct()
+
+# join data with recoding info 
+gsoep_recode <- gsoep_codebook %>%
+  filter(category %in% c("pers", "outcome", "covariates")) %>%
+  select(category, name, itemname, wave, year, orig_itemname, reverse_code:long_rule) %>%
+  group_by(category, name) %>% 
+  nest() %>%
+  ungroup() %>%
+  mutate(data = map(data, ~(.) %>% left_join(gsoep_long))) 
+
+# recode 
+recode_fun <- function(rule, y, year, p_year){
+  x <- y$value
+  if(!is.na(rule)){y$value <- eval(parse(text = rule))}
+  return(y)
+}
+
+gsoep_recode <- gsoep_recode %>% 
+  mutate(data = map(data, ~(.) %>% 
+    mutate(p_year = 2005) %>%
+    group_by(recode, year, p_year) %>%
+    nest() %>%
+    ungroup() %>%
+    mutate(data = pmap(list(recode, data, year, p_year), recode_fun)) %>%
+    unnest(data) %>%
+    mutate(value = ifelse(value < 0 | is.nan(value) | is.infinite(value), NA, value))))
+
+
+# reverse code 
+gsoep_recode <- gsoep_recode %>%
+  mutate(data = map(data, ~(.) %>%
+    mutate(value = ifelse(reverse_code == "no" | is.na(reverse_code), value, 
+                        reverse.code(-1, value, mini = mini, maxi = maxi)))))
+
+fun_call <- function(x, rule){
+    switch(rule,
+           average = mean(x, na.rm = T),
+           mode = Mode(x)[1],
+           sum = sum(x, na.rm = T),
+           skip = unique(x)[1],
+           select = unique(x)[1],
+           max = max(x, na.rm = T),
+           min = min(x, na.rm = T))
+  }
+```
+
+
+```
+
+  
+## Pie Charts  
+* You may be wondering if you should ever use a pie chart
+* The answer is, of course, it depends
+* Pie charts are great when: 
+  + What you want to visualize is simple (e.g., basic fractions)
+  + You want to clearly emphasize proportion relative to the whole
+  + You have a small data set
 
 # Part 2: Probability  

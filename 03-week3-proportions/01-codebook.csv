@@ -1,18 +1,18 @@
-﻿study,dataset,name,itemname,wave,year,waveletter,orig_itemname,stem,description,scale,reverse_code,recode,mini,maxi,comp_rule
-shp,P,SID,SID,,0,,IDPERS,,person ID,,,,,,
+﻿study,dataset,name,itemname,wave,year,waveletter,orig_itemname,stem,description,scale,reverse_code,recode,mini,maxi,comp_rule,,,,,,,,,,,,,,,,,,,
+shp,P,SID,SID,,0,,IDPERS,,person ID,,,,,,,,,,,,,,,,,,,,,,,,,
 shp,BIRTHY,yearBrth,yrofbirth,,0,,gebjahr,,Date of birth: Year,"Numeric with -8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
--1	does not know)",,"ifelse(is.na(x) | x < 0, NA, x)",,,mode
+-1	does not know)",,"ifelse(is.na(x) | x < 0, NA, x)",,,mode,,,,,,,,,,,,,,,,,,,
 shp,,gender,sex,1,1999,p,sex,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,P,mortality,interviewStat,1,1999,p,RNPX99,RNPX,Last available participation status,"-8	other error
+2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode,,,,,,,,,,,,,,,,,,,
+shp,P,mortality,yearDeath,,0,p,todjahr,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -32,427 +32,7 @@ shp,P,mortality,interviewStat,1,1999,p,RNPX99,RNPX,Last available participation 
 12	Left household permanently and refusal
 13	Non-contact
 14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,2,2000,q,RNPX00,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,3,2001,r,RNPX01,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,4,2002,s,RNPX02,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,5,2003,t,RNPX03,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,6,2004,u,RNPX04,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,7,2005,v,RNPX05,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,8,2006,w,RNPX06,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,9,2007,x,RNPX07,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,10,2008,y,RNPX08,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,11,2009,z,RNPX09,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,12,2010,ba,RNPX10,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,13,2011,bb,RNPX11,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,14,2012,bc,RNPX12,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,15,2013,bd,RNPX13,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,16,2014,be,RNPX14,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,17,2015,bf,RNPX15,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,18,2016,bg,RNPX16,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,19,2017,bh,RNPX17,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,20,2018,bi,RNPX18,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,21,2019,bj,RNPX19,RNPX,Last available participation status,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-0	Participation
-1	Proxy
-2	Deceased
-3	Institutionalisation
-4	Left household permanently
-5	Left household temporarely
-6	Emigration
-7	Problems due to language
-8	Problems due to age or health
-9	Family-related problems
-10	Household refusal
-11	Individual refusal
-12	Left household permanently and refusal
-13	Non-contact
-14	Left household permanently and non-contact
-15	Other",,"ifelse(x == 2, 1, 0)",,,
+15	Other",,"ifelse(x == 2, 1, 0)",,,,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,2,2000,q,NOGA2M00,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -474,7 +54,7 @@ shp,NOGA2M,employed,currentjob,2,2000,q,NOGA2M00,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,3,2001,r,NOGA2M01,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -496,7 +76,7 @@ shp,NOGA2M,employed,currentjob,3,2001,r,NOGA2M01,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,4,2002,s,NOGA2M02,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -518,7 +98,7 @@ shp,NOGA2M,employed,currentjob,4,2002,s,NOGA2M02,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,5,2003,t,NOGA2M03,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -540,7 +120,7 @@ shp,NOGA2M,employed,currentjob,5,2003,t,NOGA2M03,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,6,2004,u,NOGA2M04,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -562,7 +142,7 @@ shp,NOGA2M,employed,currentjob,6,2004,u,NOGA2M04,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,7,2005,v,NOGA2M05,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -584,7 +164,7 @@ shp,NOGA2M,employed,currentjob,7,2005,v,NOGA2M05,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,8,2006,w,NOGA2M06,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -606,7 +186,7 @@ shp,NOGA2M,employed,currentjob,8,2006,w,NOGA2M06,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,9,2007,x,NOGA2M07,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -628,7 +208,7 @@ shp,NOGA2M,employed,currentjob,9,2007,x,NOGA2M07,N/A,Current main job: Nomenclat
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,10,2008,y,NOGA2M08,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -650,7 +230,7 @@ shp,NOGA2M,employed,currentjob,10,2008,y,NOGA2M08,N/A,Current main job: Nomencla
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,11,2009,z,NOGA2M09,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -672,7 +252,7 @@ shp,NOGA2M,employed,currentjob,11,2009,z,NOGA2M09,N/A,Current main job: Nomencla
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,12,2010,ba,NOGA2M10,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -694,7 +274,7 @@ shp,NOGA2M,employed,currentjob,12,2010,ba,NOGA2M10,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,13,2011,bb,NOGA2M11,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -716,7 +296,7 @@ shp,NOGA2M,employed,currentjob,13,2011,bb,NOGA2M11,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,14,2012,bc,NOGA2M12,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -738,7 +318,7 @@ shp,NOGA2M,employed,currentjob,14,2012,bc,NOGA2M12,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,15,2013,bd,NOGA2M13,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -760,7 +340,7 @@ shp,NOGA2M,employed,currentjob,15,2013,bd,NOGA2M13,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,16,2014,be,NOGA2M14,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -782,7 +362,7 @@ shp,NOGA2M,employed,currentjob,16,2014,be,NOGA2M14,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,17,2015,bf,NOGA2M15,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -804,7 +384,7 @@ shp,NOGA2M,employed,currentjob,17,2015,bf,NOGA2M15,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,18,2016,bg,NOGA2M16,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -826,7 +406,7 @@ shp,NOGA2M,employed,currentjob,18,2016,bg,NOGA2M16,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,19,2017,bh,NOGA2M17,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -848,7 +428,7 @@ shp,NOGA2M,employed,currentjob,19,2017,bh,NOGA2M17,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,20,2018,bi,NOGA2M18,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -870,7 +450,7 @@ shp,NOGA2M,employed,currentjob,20,2018,bi,NOGA2M18,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,21,2019,bj,NOGA2M19,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -892,7 +472,7 @@ shp,NOGA2M,employed,currentjob,21,2019,bj,NOGA2M19,N/A,Current main job: Nomencl
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
 shp,NOGA2M,employed,currentjob,1,1999,p,P99W28,W28,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
@@ -914,417 +494,398 @@ shp,NOGA2M,employed,currentjob,1,1999,p,P99W28,W28,Current main job: Nomenclatur
 14 Health and social work
 15 Other community, social and personal service activities
 16 Private households with employed persons
-17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,P,chldbrth,lifeevents,2,2000,q,P04L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,3,2001,r,P05L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,4,2002,s,P06L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,5,2003,t,P07L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,6,2004,u,P04L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,7,2005,v,P05L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,8,2006,w,P06L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,9,2007,x,P07L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,10,2008,y,P08L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,11,2009,z,P09L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,12,2010,ba,P10L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,13,2011,bb,P11L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,14,2012,bc,P12L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,15,2013,bd,P13L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,16,2014,be,P14L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,17,2015,bf,P15L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,18,2016,bg,P16L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,19,2017,bh,P17L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,20,2018,bi,P18L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,21,2019,bj,P19L91,L91,Children: yes-no,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1	does not know
-1	yes
-2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,CIVSTA,marital,civilstatus,1,1999,CIVSTA99,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,2,2000,CIVSTA00,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,3,2001,CIVSTA01,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,4,2002,CIVSTA02,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,5,2003,CIVSTA03,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,6,2004,CIVSTA04,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,7,2005,CIVSTA05,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,8,2006,CIVSTA06,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,9,2007,CIVSTA07,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,10,2008,CIVSTA08,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,11,2009,CIVSTA09,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,12,2010,CIVSTA10,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,13,2011,CIVSTA11,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,14,2012,CIVSTA12,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,15,2013,CIVSTA13,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,16,2014,CIVSTA14,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,17,2015,CIVSTA15,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,18,2016,CIVSTA16,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,19,2017,CIVSTA17,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,20,2018,CIVSTA18,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
-shp,CIVSTA,marital,civilstatus,21,2019,CIVSTA19,N/A,Civil status in year of interview,"-8	other error
--7	filter error
--3	inapplicable
--2	no answer
--1 does not know
-1 single, never married
-2 married
-3 separated
-4 divorced
-5 widower/widow
-6 registered partnership
-7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
+17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max,,,,,,,,,,,,,,,,,,,
+gsoep,ppequiv,marital,marStat,16,p,1999,d1110499,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,qpequiv,marital,marStat,17,q,2000,d1110400,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,rpequiv,marital,marStat,18,r,2001,d1110401,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,spequiv,marital,marStat,19,s,2002,d1110402,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,tpequiv,marital,marStat,20,t,2003,d1110403,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,upequiv,marital,marStat,21,u,2004,d1110404,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,vpequiv,marital,marStat,22,v,2005,d1110405,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,wpequiv,marital,marStat,23,w,2006,d1110406,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,xpequiv,marital,marStat,24,x,2007,d1110407,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,ypequiv,marital,marStat,25,y,2008,d1110408,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,zpequiv,marital,marStat,26,z,2009,d1110409,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bapequiv,marital,marStat,27,ba,2010,d1110410,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bbpequiv,marital,marStat,28,bb,2011,d1110411,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bcpequiv,marital,marStat,29,bc,2012,d1110412,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bdpequiv,marital,marStat,30,bd,2013,d1110413,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bepequiv,marital,marStat,31,be,2014,d1110414,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfpequiv,marital,marStat,32,bf,2015,d1110415,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfpequiv,marital,marStat,33,bg,2016,d1110416,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfpequiv,marital,marStat,34,bh,2017,d1110417,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
+[-5] Not included in this version of the questionnaire
+[-4] Inadmissible multiple response
+[-3] Answer improbable
+[-2] Does not apply
+[-1] No Answer
+[1] Married 1
+[2] Single 2
+[3] Widowed 3
+[4] Divorced 4
+[5] Separated 5
+[6] Over 18 and NotW,Partnr6
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,pp,chldbrth,chldBrth,16,p,1999,pp13319,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,qp,chldbrth,chldBrth,17,q,2000,qp14219,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,rp,chldbrth,chldBrth,18,r,2001,rp13319,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,sp,chldbrth,chldBrth,19,s,2002,sp13319,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,tp,chldbrth,chldBrth,20,t,2003,tp14107,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,up,chldbrth,chldBrth,21,u,2004,up14407,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,vp,chldbrth,chldBrth,22,v,2005,VP15307,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,wp,chldbrth,chldBrth,23,w,2006,WP14107,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,xp,chldbrth,chldBrth,24,x,2007,XP14807,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,yp,chldbrth,chldBrth,25,y,2008,YP15407,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,zp,chldbrth,chldBrth,26,z,2009,ZP15607,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bap,chldbrth,chldBrth,27,ba,2010,BAP15907,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bbp,chldbrth,chldBrth,28,bb,2011,BBP15110,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bcp,chldbrth,chldBrth,29,bc,2012,BCP15010,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bdp,chldbrth,chldBrth,30,bd,2013,BDP15710,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bep,chldbrth,chldBrth,31,be,2014,BEP15010,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfp,chldbrth,chldBrth,32,bf,2015,BFP17310,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfp,chldbrth,chldBrth,33,bg,2016,bgp17010,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfp,chldbrth,chldBrth,34,bh,2017,bhp_204_10,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfp,chldbrth,chldBrth,35,bi,2018,bip_201_10,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+gsoep,bfp,chldbrth,chldBrth,36,bj,2019,bjp_209_10,Child Born,"-6	[-6] Version of questionnaire with modified filtering
+-5	[-5] Not included in this version of the questionnaire
+-4	[-4] Inadmissible multiple response
+-3	[-3] Answer improbable
+-2	[-2] Does not apply
+-1	[-1] No Answer
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
