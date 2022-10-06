@@ -1,11 +1,11 @@
-﻿study,dataset,name,itemname,wave,year,new_itemname,orig_itemname,stem,description,scale,reverse_code,recode,mini,maxi,comp_rule
-shp,P,SID,SID,,0,SID,IDPERS,,person ID,,,,,,
-shp,BIRTHY,yearBrth,yrofbirth,,0,shp__match_yearBrth..yrofbirth.1999,BIRTHY,,Date of birth: Year,"Numeric with -8	other error
+﻿study,dataset,name,itemname,wave,year,waveletter,orig_itemname,stem,description,scale,reverse_code,recode,mini,maxi,comp_rule
+shp,P,SID,SID,,0,,IDPERS,,person ID,,,,,,
+shp,BIRTHY,yearBrth,yrofbirth,,0,,BIRTHY,,Date of birth: Year,"Numeric with -8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know)",,"ifelse(is.na(x) | x < 0, NA, x)",,,mode
-shp,P,mortality,interviewStat,1,1999,shp__out_mortality..interviewStat.1999,RNPX99,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,1,1999,p,RNPX99,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -26,7 +26,7 @@ shp,P,mortality,interviewStat,1,1999,shp__out_mortality..interviewStat.1999,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,2,2000,shp__out_mortality..interviewStat.2000,RNPX00,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,2,2000,q,RNPX00,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -47,7 +47,7 @@ shp,P,mortality,interviewStat,2,2000,shp__out_mortality..interviewStat.2000,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,3,2001,shp__out_mortality..interviewStat.2001,RNPX01,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,3,2001,r,RNPX01,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -68,7 +68,7 @@ shp,P,mortality,interviewStat,3,2001,shp__out_mortality..interviewStat.2001,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,4,2002,shp__out_mortality..interviewStat.2002,RNPX02,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,4,2002,s,RNPX02,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -89,7 +89,7 @@ shp,P,mortality,interviewStat,4,2002,shp__out_mortality..interviewStat.2002,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,5,2003,shp__out_mortality..interviewStat.2003,RNPX03,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,5,2003,t,RNPX03,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -110,7 +110,7 @@ shp,P,mortality,interviewStat,5,2003,shp__out_mortality..interviewStat.2003,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,6,2004,shp__out_mortality..interviewStat.2004,RNPX04,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,6,2004,u,RNPX04,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -131,7 +131,7 @@ shp,P,mortality,interviewStat,6,2004,shp__out_mortality..interviewStat.2004,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,7,2005,shp__out_mortality..interviewStat.2005,RNPX05,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,7,2005,v,RNPX05,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -152,7 +152,7 @@ shp,P,mortality,interviewStat,7,2005,shp__out_mortality..interviewStat.2005,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,8,2006,shp__out_mortality..interviewStat.2006,RNPX06,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,8,2006,w,RNPX06,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -173,7 +173,7 @@ shp,P,mortality,interviewStat,8,2006,shp__out_mortality..interviewStat.2006,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,9,2007,shp__out_mortality..interviewStat.2007,RNPX07,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,9,2007,x,RNPX07,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -194,7 +194,7 @@ shp,P,mortality,interviewStat,9,2007,shp__out_mortality..interviewStat.2007,RNPX
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,10,2008,shp__out_mortality..interviewStat.2008,RNPX08,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,10,2008,y,RNPX08,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -215,7 +215,7 @@ shp,P,mortality,interviewStat,10,2008,shp__out_mortality..interviewStat.2008,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,11,2009,shp__out_mortality..interviewStat.2009,RNPX09,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,11,2009,z,RNPX09,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -236,7 +236,7 @@ shp,P,mortality,interviewStat,11,2009,shp__out_mortality..interviewStat.2009,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,12,2010,shp__out_mortality..interviewStat.2010,RNPX10,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,12,2010,ba,RNPX10,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -257,7 +257,7 @@ shp,P,mortality,interviewStat,12,2010,shp__out_mortality..interviewStat.2010,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,13,2011,shp__out_mortality..interviewStat.2011,RNPX11,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,13,2011,bb,RNPX11,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -278,7 +278,7 @@ shp,P,mortality,interviewStat,13,2011,shp__out_mortality..interviewStat.2011,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,14,2012,shp__out_mortality..interviewStat.2012,RNPX12,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,14,2012,bc,RNPX12,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -299,7 +299,7 @@ shp,P,mortality,interviewStat,14,2012,shp__out_mortality..interviewStat.2012,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,15,2013,shp__out_mortality..interviewStat.2013,RNPX13,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,15,2013,bd,RNPX13,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -320,7 +320,7 @@ shp,P,mortality,interviewStat,15,2013,shp__out_mortality..interviewStat.2013,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,16,2014,shp__out_mortality..interviewStat.2014,RNPX14,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,16,2014,be,RNPX14,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -341,7 +341,7 @@ shp,P,mortality,interviewStat,16,2014,shp__out_mortality..interviewStat.2014,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,17,2015,shp__out_mortality..interviewStat.2015,RNPX15,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,17,2015,bf,RNPX15,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -362,7 +362,7 @@ shp,P,mortality,interviewStat,17,2015,shp__out_mortality..interviewStat.2015,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,18,2016,shp__out_mortality..interviewStat.2016,RNPX16,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,18,2016,bg,RNPX16,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -383,7 +383,7 @@ shp,P,mortality,interviewStat,18,2016,shp__out_mortality..interviewStat.2016,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,19,2017,shp__out_mortality..interviewStat.2017,RNPX17,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,19,2017,bh,RNPX17,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -404,7 +404,7 @@ shp,P,mortality,interviewStat,19,2017,shp__out_mortality..interviewStat.2017,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,20,2018,shp__out_mortality..interviewStat.2018,RNPX18,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,20,2018,bi,RNPX18,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -425,7 +425,7 @@ shp,P,mortality,interviewStat,20,2018,shp__out_mortality..interviewStat.2018,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,P,mortality,interviewStat,21,2019,shp__out_mortality..interviewStat.2019,RNPX19,RNPX,Last available participation status,"-8	other error
+shp,P,mortality,interviewStat,21,2019,bj,RNPX19,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
@@ -446,7 +446,7 @@ shp,P,mortality,interviewStat,21,2019,shp__out_mortality..interviewStat.2019,RNP
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,
-shp,NOGA2M,employed,currentjob,2,2000,shp__match_employed..currentjob.2000,NOGA2M00,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,2,2000,q,NOGA2M00,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -468,7 +468,7 @@ shp,NOGA2M,employed,currentjob,2,2000,shp__match_employed..currentjob.2000,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,3,2001,shp__match_employed..currentjob.2001,NOGA2M01,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,3,2001,r,NOGA2M01,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -490,7 +490,7 @@ shp,NOGA2M,employed,currentjob,3,2001,shp__match_employed..currentjob.2001,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,4,2002,shp__match_employed..currentjob.2002,NOGA2M02,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,4,2002,s,NOGA2M02,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -512,7 +512,7 @@ shp,NOGA2M,employed,currentjob,4,2002,shp__match_employed..currentjob.2002,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,5,2003,shp__match_employed..currentjob.2003,NOGA2M03,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,5,2003,t,NOGA2M03,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -534,7 +534,7 @@ shp,NOGA2M,employed,currentjob,5,2003,shp__match_employed..currentjob.2003,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,6,2004,shp__match_employed..currentjob.2004,NOGA2M04,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,6,2004,u,NOGA2M04,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -556,7 +556,7 @@ shp,NOGA2M,employed,currentjob,6,2004,shp__match_employed..currentjob.2004,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,7,2005,shp__match_employed..currentjob.2005,NOGA2M05,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,7,2005,v,NOGA2M05,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -578,7 +578,7 @@ shp,NOGA2M,employed,currentjob,7,2005,shp__match_employed..currentjob.2005,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,8,2006,shp__match_employed..currentjob.2006,NOGA2M06,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,8,2006,w,NOGA2M06,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -600,7 +600,7 @@ shp,NOGA2M,employed,currentjob,8,2006,shp__match_employed..currentjob.2006,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,9,2007,shp__match_employed..currentjob.2007,NOGA2M07,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,9,2007,x,NOGA2M07,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -622,7 +622,7 @@ shp,NOGA2M,employed,currentjob,9,2007,shp__match_employed..currentjob.2007,NOGA2
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,10,2008,shp__match_employed..currentjob.2008,NOGA2M08,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,10,2008,y,NOGA2M08,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -644,7 +644,7 @@ shp,NOGA2M,employed,currentjob,10,2008,shp__match_employed..currentjob.2008,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,11,2009,shp__match_employed..currentjob.2009,NOGA2M09,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,11,2009,z,NOGA2M09,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -666,7 +666,7 @@ shp,NOGA2M,employed,currentjob,11,2009,shp__match_employed..currentjob.2009,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,12,2010,shp__match_employed..currentjob.2010,NOGA2M10,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,12,2010,ba,NOGA2M10,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -688,7 +688,7 @@ shp,NOGA2M,employed,currentjob,12,2010,shp__match_employed..currentjob.2010,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,13,2011,shp__match_employed..currentjob.2011,NOGA2M11,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,13,2011,bb,NOGA2M11,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -710,7 +710,7 @@ shp,NOGA2M,employed,currentjob,13,2011,shp__match_employed..currentjob.2011,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,14,2012,shp__match_employed..currentjob.2012,NOGA2M12,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,14,2012,bc,NOGA2M12,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -732,7 +732,7 @@ shp,NOGA2M,employed,currentjob,14,2012,shp__match_employed..currentjob.2012,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,15,2013,shp__match_employed..currentjob.2013,NOGA2M13,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,15,2013,bd,NOGA2M13,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -754,7 +754,7 @@ shp,NOGA2M,employed,currentjob,15,2013,shp__match_employed..currentjob.2013,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,16,2014,shp__match_employed..currentjob.2014,NOGA2M14,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,16,2014,be,NOGA2M14,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -776,7 +776,7 @@ shp,NOGA2M,employed,currentjob,16,2014,shp__match_employed..currentjob.2014,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,17,2015,shp__match_employed..currentjob.2015,NOGA2M15,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,17,2015,bf,NOGA2M15,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -798,7 +798,7 @@ shp,NOGA2M,employed,currentjob,17,2015,shp__match_employed..currentjob.2015,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,18,2016,shp__match_employed..currentjob.2016,NOGA2M16,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,18,2016,bg,NOGA2M16,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -820,7 +820,7 @@ shp,NOGA2M,employed,currentjob,18,2016,shp__match_employed..currentjob.2016,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,19,2017,shp__match_employed..currentjob.2017,NOGA2M17,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,19,2017,bh,NOGA2M17,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -842,7 +842,7 @@ shp,NOGA2M,employed,currentjob,19,2017,shp__match_employed..currentjob.2017,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,20,2018,shp__match_employed..currentjob.2018,NOGA2M18,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,20,2018,bi,NOGA2M18,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -864,7 +864,7 @@ shp,NOGA2M,employed,currentjob,20,2018,shp__match_employed..currentjob.2018,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,21,2019,shp__match_employed..currentjob.2019,NOGA2M19,N/A,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,21,2019,bj,NOGA2M19,N/A,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -886,7 +886,7 @@ shp,NOGA2M,employed,currentjob,21,2019,shp__match_employed..currentjob.2019,NOGA
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,NOGA2M,employed,currentjob,1,1999,shp__match_employed..currentoccupation.1999,P99W28,W28,Current main job: Nomenclature of economic activities,"-8 other error
+shp,NOGA2M,employed,currentjob,1,1999,p,P99W28,W28,Current main job: Nomenclature of economic activities,"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
@@ -908,287 +908,287 @@ shp,NOGA2M,employed,currentjob,1,1999,shp__match_employed..currentoccupation.199
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,,gender,sex,1,1999,#REF!,SEX99,SEX,Sex,"-8        other error
+shp,,gender,sex,1,1999,p,SEX99,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,2,2000,#REF!,SEX00,SEX,Sex,"-8        other error
+shp,,gender,sex,2,2000,q,SEX00,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,3,2001,#REF!,SEX01,SEX,Sex,"-8        other error
+shp,,gender,sex,3,2001,r,SEX01,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,4,2002,#REF!,SEX02,SEX,Sex,"-8        other error
+shp,,gender,sex,4,2002,s,SEX02,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,5,2003,#REF!,SEX03,SEX,Sex,"-8        other error
+shp,,gender,sex,5,2003,t,SEX03,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,6,2004,#REF!,SEX04,SEX,Sex,"-8        other error
+shp,,gender,sex,6,2004,u,SEX04,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,7,2005,#REF!,SEX05,SEX,Sex,"-8        other error
+shp,,gender,sex,7,2005,v,SEX05,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,8,2006,#REF!,SEX06,SEX,Sex,"-8        other error
+shp,,gender,sex,8,2006,w,SEX06,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,9,2007,#REF!,SEX07,SEX,Sex,"-8        other error
+shp,,gender,sex,9,2007,x,SEX07,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,10,2008,#REF!,SEX08,SEX,Sex,"-8        other error
+shp,,gender,sex,10,2008,y,SEX08,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,11,2009,#REF!,SEX09,SEX,Sex,"-8        other error
+shp,,gender,sex,11,2009,z,SEX09,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,12,2010,#REF!,SEX10,SEX,Sex,"-8        other error
+shp,,gender,sex,12,2010,ba,SEX10,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,13,2011,#REF!,SEX11,SEX,Sex,"-8        other error
+shp,,gender,sex,13,2011,bb,SEX11,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,14,2012,#REF!,SEX12,SEX,Sex,"-8        other error
+shp,,gender,sex,14,2012,bc,SEX12,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,15,2013,#REF!,SEX13,SEX,Sex,"-8        other error
+shp,,gender,sex,15,2013,bd,SEX13,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,16,2014,#REF!,SEX14,SEX,Sex,"-8        other error
+shp,,gender,sex,16,2014,be,SEX14,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,17,2015,#REF!,SEX15,SEX,Sex,"-8        other error
+shp,,gender,sex,17,2015,bf,SEX15,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,18,2016,#REF!,SEX16,SEX,Sex,"-8        other error
+shp,,gender,sex,18,2016,bg,SEX16,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,19,2017,#REF!,SEX17,SEX,Sex,"-8        other error
+shp,,gender,sex,19,2017,bh,SEX17,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,20,2018,#REF!,SEX18,SEX,Sex,"-8        other error
+shp,,gender,sex,20,2018,bi,SEX18,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,21,2019,#REF!,SEX19,SEX,Sex,"-8        other error
+shp,,gender,sex,21,2019,bj,SEX19,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
 -1        does not know
 1        man
 2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,P,chldbrth,lifeevents,2,2000,shp__out_chldbrth..lifeevents.2004,P04L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,2,2000,q,P04L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,3,2001,shp__out_chldbrth..lifeevents.2005,P05L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,3,2001,r,P05L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,4,2002,shp__out_chldbrth..lifeevents.2006,P06L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,4,2002,s,P06L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,5,2003,shp__out_chldbrth..lifeevents.2007,P07L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,5,2003,t,P07L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,6,2004,shp__out_chldbrth..lifeevents.2004,P04L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,6,2004,u,P04L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,7,2005,shp__out_chldbrth..lifeevents.2005,P05L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,7,2005,v,P05L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,8,2006,shp__out_chldbrth..lifeevents.2006,P06L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,8,2006,w,P06L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,9,2007,shp__out_chldbrth..lifeevents.2007,P07L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,9,2007,x,P07L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,10,2008,shp__out_chldbrth..lifeevents.2008,P08L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,10,2008,y,P08L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,11,2009,shp__out_chldbrth..lifeevents.2009,P09L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,11,2009,z,P09L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,12,2010,shp__out_chldbrth..lifeevents.2010,P10L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,12,2010,ba,P10L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,13,2011,shp__out_chldbrth..lifeevents.2011,P11L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,13,2011,bb,P11L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,14,2012,shp__out_chldbrth..lifeevents.2012,P12L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,14,2012,bc,P12L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,15,2013,shp__out_chldbrth..lifeevents.2013,P13L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,15,2013,bd,P13L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,16,2014,shp__out_chldbrth..lifeevents.2014,P14L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,16,2014,be,P14L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,17,2015,shp__out_chldbrth..lifeevents.2015,P15L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,17,2015,bf,P15L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,18,2016,shp__out_chldbrth..lifeevents.2016,P16L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,18,2016,bg,P16L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,19,2017,shp__out_chldbrth..lifeevents.2017,P17L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,19,2017,bh,P17L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,20,2018,shp__out_chldbrth..lifeevents.2018,P18L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,20,2018,bi,P18L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
-shp,P,chldbrth,lifeevents,21,2019,shp__out_chldbrth..lifeevents.2019,P19L91,L91,Children: yes-no,"-8	other error
+shp,P,chldbrth,lifeevents,21,2019,bj,P19L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
