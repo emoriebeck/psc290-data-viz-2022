@@ -1067,7 +1067,7 @@ shp,CIVSTA,marital,civilstatus,1,1999,CIVSTA99,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,2,2000,CIVSTA00,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1080,7 +1080,7 @@ shp,CIVSTA,marital,civilstatus,2,2000,CIVSTA00,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,3,2001,CIVSTA01,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1093,7 +1093,7 @@ shp,CIVSTA,marital,civilstatus,3,2001,CIVSTA01,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,4,2002,CIVSTA02,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1106,7 +1106,7 @@ shp,CIVSTA,marital,civilstatus,4,2002,CIVSTA02,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,5,2003,CIVSTA03,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1119,7 +1119,7 @@ shp,CIVSTA,marital,civilstatus,5,2003,CIVSTA03,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,6,2004,CIVSTA04,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1132,7 +1132,7 @@ shp,CIVSTA,marital,civilstatus,6,2004,CIVSTA04,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,7,2005,CIVSTA05,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1145,7 +1145,7 @@ shp,CIVSTA,marital,civilstatus,7,2005,CIVSTA05,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,8,2006,CIVSTA06,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1158,7 +1158,7 @@ shp,CIVSTA,marital,civilstatus,8,2006,CIVSTA06,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,9,2007,CIVSTA07,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1171,7 +1171,7 @@ shp,CIVSTA,marital,civilstatus,9,2007,CIVSTA07,N/A,Civil status in year of inter
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,10,2008,CIVSTA08,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1184,7 +1184,7 @@ shp,CIVSTA,marital,civilstatus,10,2008,CIVSTA08,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,11,2009,CIVSTA09,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1197,7 +1197,7 @@ shp,CIVSTA,marital,civilstatus,11,2009,CIVSTA09,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,12,2010,CIVSTA10,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1210,7 +1210,7 @@ shp,CIVSTA,marital,civilstatus,12,2010,CIVSTA10,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,13,2011,CIVSTA11,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1223,7 +1223,7 @@ shp,CIVSTA,marital,civilstatus,13,2011,CIVSTA11,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,14,2012,CIVSTA12,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1236,7 +1236,7 @@ shp,CIVSTA,marital,civilstatus,14,2012,CIVSTA12,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,15,2013,CIVSTA13,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1249,7 +1249,7 @@ shp,CIVSTA,marital,civilstatus,15,2013,CIVSTA13,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,16,2014,CIVSTA14,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1262,7 +1262,7 @@ shp,CIVSTA,marital,civilstatus,16,2014,CIVSTA14,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,17,2015,CIVSTA15,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1275,7 +1275,7 @@ shp,CIVSTA,marital,civilstatus,17,2015,CIVSTA15,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,18,2016,CIVSTA16,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1288,7 +1288,7 @@ shp,CIVSTA,marital,civilstatus,18,2016,CIVSTA16,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,19,2017,CIVSTA17,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1301,7 +1301,7 @@ shp,CIVSTA,marital,civilstatus,19,2017,CIVSTA17,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,20,2018,CIVSTA18,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1314,7 +1314,7 @@ shp,CIVSTA,marital,civilstatus,20,2018,CIVSTA18,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
 shp,CIVSTA,marital,civilstatus,21,2019,CIVSTA19,N/A,Civil status in year of interview,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1327,4 +1327,4 @@ shp,CIVSTA,marital,civilstatus,21,2019,CIVSTA19,N/A,Civil status in year of inte
 5 widower/widow
 6 registered partnership
 7 dissolved partnership
-",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,,max
