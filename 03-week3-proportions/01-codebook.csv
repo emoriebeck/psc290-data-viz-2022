@@ -1,10 +1,17 @@
 ﻿study,dataset,name,itemname,wave,year,waveletter,orig_itemname,stem,description,scale,reverse_code,recode,mini,maxi,comp_rule
 shp,P,SID,SID,,0,,IDPERS,,person ID,,,,,,
-shp,BIRTHY,yearBrth,yrofbirth,,0,,BIRTHY,,Date of birth: Year,"Numeric with -8	other error
+shp,BIRTHY,yearBrth,yrofbirth,,0,,gebjahr,,Date of birth: Year,"Numeric with -8	other error
 -7	filter error
 -3	inapplicable
 -2	no answer
 -1	does not know)",,"ifelse(is.na(x) | x < 0, NA, x)",,,mode
+shp,,gender,sex,1,1999,p,sex,SEX,Sex,"-8        other error
+-7        filter error
+-3        inapplicable
+-2        no answer
+-1        does not know
+1        man
+2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
 shp,P,mortality,interviewStat,1,1999,p,RNPX99,RNPX,Last available participation status,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -908,153 +915,6 @@ shp,NOGA2M,employed,currentjob,1,1999,p,P99W28,W28,Current main job: Nomenclatur
 15 Other community, social and personal service activities
 16 Private households with employed persons
 17 Extra-territorial organizations and bodies",,"ifelse(x == -3, 0, ifelse(is.na(x) | x < 0, NA, 1))",,,max
-shp,,gender,sex,1,1999,p,SEX99,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,2,2000,q,SEX00,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,3,2001,r,SEX01,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,4,2002,s,SEX02,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,5,2003,t,SEX03,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,6,2004,u,SEX04,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,7,2005,v,SEX05,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,8,2006,w,SEX06,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,9,2007,x,SEX07,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,10,2008,y,SEX08,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,11,2009,z,SEX09,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,12,2010,ba,SEX10,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,13,2011,bb,SEX11,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,14,2012,bc,SEX12,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,15,2013,bd,SEX13,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,16,2014,be,SEX14,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,17,2015,bf,SEX15,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,18,2016,bg,SEX16,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,19,2017,bh,SEX17,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,20,2018,bi,SEX18,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
-shp,,gender,sex,21,2019,bj,SEX19,SEX,Sex,"-8        other error
--7        filter error
--3        inapplicable
--2        no answer
--1        does not know
-1        man
-2        woman",,"ifelse(is.na(x) | x < 0, NA, x -  1)",,,mode
 shp,P,chldbrth,lifeevents,2,2000,q,P04L91,L91,Children: yes-no,"-8	other error
 -7	filter error
 -3	inapplicable
@@ -1195,3 +1055,276 @@ shp,P,chldbrth,lifeevents,21,2019,bj,P19L91,L91,Children: yes-no,"-8	other error
 -1	does not know
 1	yes
 2	no",,"ifelse(x == 1, 1, 0)",,,
+shp,CIVSTA,marital,civilstatus,1,1999,CIVSTA99,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,2,2000,CIVSTA00,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,3,2001,CIVSTA01,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,4,2002,CIVSTA02,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,5,2003,CIVSTA03,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,6,2004,CIVSTA04,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,7,2005,CIVSTA05,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,8,2006,CIVSTA06,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,9,2007,CIVSTA07,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,10,2008,CIVSTA08,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,11,2009,CIVSTA09,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,12,2010,CIVSTA10,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,13,2011,CIVSTA11,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,14,2012,CIVSTA12,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,15,2013,CIVSTA13,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,16,2014,CIVSTA14,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,17,2015,CIVSTA15,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,18,2016,CIVSTA16,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,19,2017,CIVSTA17,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,20,2018,CIVSTA18,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
+shp,CIVSTA,marital,civilstatus,21,2019,CIVSTA19,N/A,Civil status in year of interview,"-8	other error
+-7	filter error
+-3	inapplicable
+-2	no answer
+-1 does not know
+1 single, never married
+2 married
+3 separated
+4 divorced
+5 widower/widow
+6 registered partnership
+7 dissolved partnership
+",,"ifelse(is.na(x) | x < 0, NA, ifelse(x == 2, 1, ifelse(x %in% c(3,4,7), 3, ifelse(x == 5, 2, ifelse(x == 1, 4, NA)))))",,,max,max
