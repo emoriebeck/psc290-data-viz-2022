@@ -5,7 +5,7 @@ shp,BIRTHY,yearBrth,yrofbirth,,0,,gebjahr,,Date of birth: Year,"Numeric with -8	
 -3	inapplicable
 -2	no answer
 -1	does not know)",,"ifelse(is.na(x) | x < 0, NA, x)",,,mode,,,,,,,,,,,,,,,,,,,
-shp,,gender,sex,1,1999,p,sex,SEX,Sex,"-8        other error
+shp,,gender,sex,,0,p,sex,SEX,Sex,"-8        other error
 -7        filter error
 -3        inapplicable
 -2        no answer
@@ -33,7 +33,7 @@ shp,P,mortality,yearDeath,,0,p,todjahr,,Last available participation status,"-8	
 13	Non-contact
 14	Left household permanently and non-contact
 15	Other",,"ifelse(x == 2, 1, 0)",,,,,,,,,,,,,,,,,,,,,,
-shp,biojob,employed,currentjob,2,2000,q,nacelj,N/A,2-Digit NACE Industry Sector(Last Job),"-8 other error
+shp,biojob,employed,currentjob,,0,q,nacelj,N/A,2-Digit NACE Industry Sector(Last Job),"-8 other error
 -7 filter error
 -3 inapplicable
 -2 no answer
