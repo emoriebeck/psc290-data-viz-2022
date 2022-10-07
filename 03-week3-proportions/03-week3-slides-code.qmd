@@ -31,6 +31,8 @@ format:
   #   highlight-style: atom-one-dark
   #   footer: "PSC 290 - Data Visualization"
   #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -87,6 +89,8 @@ gsoep_read_fun <- function(Year, WL){
   old.names <- (gsoep_codebook %>% filter(year == Year))$orig_itemname 
   p <- sprintf("%s/gsoep/%sp.sav", data_path, WL) %>% haven::read_sav(.) %>%
     full_join(sprintf("%s/gsoep/%spequiv.sav", data_path, WL) %>% haven::read_sav(.)) %>%
+    full_join(ref) %>%
+    filter(rgroup20 > 10) %>%
     select(SID = persnr, HID = hhnr, one_of(old.names)) %>%
     pivot_longer(
       cols = c(-SID, -HID)
@@ -95,16 +99,21 @@ gsoep_read_fun <- function(Year, WL){
       , values_drop_na = T
     )
 }
-```
 
-```{r gsoep codebook}
 gsoep_codebook <- read_csv("https://raw.githubusercontent.com/emoriebeck/psc290-data-viz-2022/main/03-week3-proportions/01-codebook.csv") %>%
   mutate(orig_itemname = str_to_lower(orig_itemname))
 gsoep_codebook
-```
 
-```{r gsoep data, eval = F}
 data_path <- "/Volumes/Emorie/data"
+ref <- sprintf("%s/gsoep/cirdef.sav", data_path) %>% haven::read_sav(.) %>% select(cid, rgroup20)
+gsoep_st <- sprintf("%s/gsoep/ppath.sav", data_path) %>% haven::read_sav(.) %>% 
+  full_join(ref) %>% 
+  filter(rgroup20 > 10) %>%
+  left_join(
+    sprintf("%s/gsoep/biojob.sav", data_path) %>% haven::read_sav(.) %>%
+      select(pid = persnr, job = nacelj)) %>%
+  select(SID = pid, gender = sex, yearBrth = gebjahr, mortality = todjahr, job) %>%
+  distinct() 
 
 gsoep <- gsoep_codebook %>% 
   select(wave, waveletter, year) %>%
@@ -113,53 +122,28 @@ gsoep <- gsoep_codebook %>%
   arrange(year) %>%
   mutate(data = map2(year, waveletter, gsoep_read_fun)) 
 
-gsoep_long <- gsoep %>% unnest(data) %>%
-  select(-hhnr) %>%
-  filter(persnr %in% gsoep_cog_subs) %>%
-  full_join(gsoep_cog) %>%
-  select(-wave, -waveletter) %>%
-  rename(SID = persnr)
+gsoep_long <- gsoep %>%
+  unnest(data)
 
-save(gsoep, file = sprintf("%s/data/clean/gsoep_raw.RData", res_path))
-rm(gsoep)
-```
+Mode <- function(x) {
+  ux <- unique(x)
+  ux <- ux[!is.na(ux)]
+  ux[which.max(tabulate(match(x, ux)))]
+}
 
-### Recoding & Reverse Scoring  
-```{r gsoep recode}
-gsoep_waves <- p_waves %>% filter(Study == "GSOEP") %>% select(Used) %>% distinct()
-
-# join data with recoding info 
-gsoep_recode <- gsoep_codebook %>%
-  filter(category %in% c("pers", "outcome", "covariates")) %>%
-  select(category, name, itemname, wave, year, orig_itemname, reverse_code:long_rule) %>%
-  group_by(category, name) %>% 
+gsoep_recode <- gsoep_long %>%
+  left_join(gsoep_codebook %>%
+    select(name, itemname, wave, year, orig_itemname, reverse_code:comp_rule)) %>%
+  group_by(name) %>% 
   nest() %>%
-  ungroup() %>%
-  mutate(data = map(data, ~(.) %>% left_join(gsoep_long))) 
+  ungroup()
 
 # recode 
-recode_fun <- function(rule, y, year, p_year){
+recode_fun <- function(rule, y, year){
   x <- y$value
   if(!is.na(rule)){y$value <- eval(parse(text = rule))}
   return(y)
 }
-
-gsoep_recode <- gsoep_recode %>% 
-  mutate(data = map(data, ~(.) %>% 
-    mutate(p_year = 2005) %>%
-    group_by(recode, year, p_year) %>%
-    nest() %>%
-    ungroup() %>%
-    mutate(data = pmap(list(recode, data, year, p_year), recode_fun)) %>%
-    unnest(data) %>%
-    mutate(value = ifelse(value < 0 | is.nan(value) | is.infinite(value), NA, value))))
-
-
-# reverse code 
-gsoep_recode <- gsoep_recode %>%
-  mutate(data = map(data, ~(.) %>%
-    mutate(value = ifelse(reverse_code == "no" | is.na(reverse_code), value, 
-                        reverse.code(-1, value, mini = mini, maxi = maxi)))))
 
 fun_call <- function(x, rule){
     switch(rule,
@@ -167,16 +151,40 @@ fun_call <- function(x, rule){
            mode = Mode(x)[1],
            sum = sum(x, na.rm = T),
            skip = unique(x)[1],
-           select = unique(x)[1],
            max = max(x, na.rm = T),
            min = min(x, na.rm = T))
   }
+
+gsoep_recode <- gsoep_recode %>% 
+  mutate(data = map(data, ~(.) %>% 
+    group_by(recode, year) %>%
+    nest() %>%
+    ungroup() %>%
+    mutate(data = pmap(list(recode, data, year), recode_fun)) %>%
+    unnest(data) %>%
+    mutate(value = ifelse(value < 0 | is.nan(value) | is.infinite(value), NA, value))))
+
+gsoep <- gsoep_recode %>%
+  unnest(data) %>%
+  select(name, year, SID, value) %>%
+  pivot_wider(
+    names_from = "name"
+    , values_from = "value"
+  ) %>%
+  left_join(gsoep_st) %>%
+  mutate(
+    age = year - yearBrth
+    , mortality = ifelse(mortality < 0, 0, ifelse(mortality <= year, 1, 0))
+    , job = ifelse(job < 0, NA, job)
+  )
+save(gsoep, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/03-week3-proportions/04-data/gsoep.RData")
 ```
 
-
+```{r}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/04-data/gsoep.RData"))
+gsoep
 ```
 
-  
 ## Pie Charts  
 * You may be wondering if you should ever use a pie chart
 * The answer is, of course, it depends
@@ -184,5 +192,49 @@ fun_call <- function(x, rule){
   + What you want to visualize is simple (e.g., basic fractions)
   + You want to clearly emphasize proportion relative to the whole
   + You have a small data set
+  
+## Pie Charts  
+* In our data, we have a few variables that follow this, but we'll focus on two:
+  + marital status (4 groups)
+  + gender (2 groups)
+* `ggplot2` doesn't specifically support pie charts
+* Why? Because it's a layered grammar of graphics and an explicit function for it would be redundant with some of the built in coordinates
+  + specifically, `coord_polar()`
+* So to make a pie chart, we'll use `geom_bar() + coord_polar()`
+
+```{r}
+gsoep %>%
+  filter(year == 2009 & !is.na(marital)) %>% # random
+  group_by(marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  ggplot(aes(x = "", y = n, fill = marital)) + 
+    geom_bar(stat = "identity", width = 1, color = "white") + 
+    coord_polar("y", start = 0) + 
+    theme_void()
+```
+
+## Pie Charts  
+### Improvements
+
+```{r}
+gsoep %>%
+  filter(year == 2009 & !is.na(marital)) %>% # random
+  group_by(marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  arrange(desc(marital)) %>%
+  mutate(prop = n / sum(n) * 100
+         , ypos = cumsum(prop)- 0.5*prop) %>%
+  ggplot(aes(x = "", y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", width = 1, color = "white") + 
+    geom_text(aes(y = ypos, label = marital), color = "white", size=4) +
+    scale_fill_brewer(palette="Set1") + 
+    coord_polar("y", start = 0) + 
+    theme_void() + 
+    theme(legend.position = "none")
+```
+
+
 
 # Part 2: Probability  
