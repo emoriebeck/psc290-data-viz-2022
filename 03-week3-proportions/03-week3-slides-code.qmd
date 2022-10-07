@@ -37,9 +37,11 @@ editor_options:
 
 
 ```{r}
+library(RColorBrewer)
 library(plyr)
 library(tidyverse)
 ```
+
 
 # Quick Review  
 ## Review  
@@ -58,6 +60,25 @@ From last week:
 * **Themes**: style your figure 
   + Built-in: e.g., `theme_classic()`
   + Manual: `theme()` (`legend`, `strip`, `axis`, `plot`, `panel`)
+
+## Quick Review 
+### Colorblindness and accessible plots
+* Adding in a colorblind-friendly palette from [Wong (2011)](https://www.nature.com/articles/nmeth.1618)
+```{r}
+cbsafe_pal <- tribble(
+  ~name, ~rgb
+  , "black", c(0, 0, 0)
+  , "sky blue", c(86, 180, 233)
+  , "bluish green", c(0, 158, 115)
+  , "yellow", c(240, 228, 66)
+  , "orange", c(230, 159, 0)
+  , "blue", c(0, 114, 178)
+  , "vermillion", c(213, 94, 0)
+  , "reddish purple", c(204, 121, 167)
+) %>%
+  mutate(hex = map_chr(rgb, function(x) rgb(x[1], x[2], x[3], maxColorValue = 255)))
+cbsafe_pal
+```
 
 # Part 1: Proportions  
 ## Visualizating Proportions
@@ -176,6 +197,7 @@ gsoep <- gsoep_recode %>%
     age = year - yearBrth
     , mortality = ifelse(mortality < 0, 0, ifelse(mortality <= year, 1, 0))
     , job = ifelse(job < 0, NA, job)
+    , SRhealth = mapvalues(SRhealth, seq(1,5), seq(5,1))
   )
 save(gsoep, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/03-week3-proportions/04-data/gsoep.RData")
 ```
@@ -229,12 +251,345 @@ gsoep %>%
   ggplot(aes(x = "", y = prop, fill = marital)) + 
     geom_bar(stat = "identity", width = 1, color = "white") + 
     geom_text(aes(y = ypos, label = marital), color = "white", size=4) +
-    scale_fill_brewer(palette="Set1") + 
+    scale_fill_manual(values = cbsafe_pal$hex[c(2, 8, 3, 4)]) + 
     coord_polar("y", start = 0) + 
     theme_void() + 
     theme(legend.position = "none")
 ```
 
+## Pie Charts  
+### More Improvements
 
+```{r}
+gsoep %>%
+  filter(year == 2009 & !is.na(marital)) %>% # random
+  group_by(marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  arrange(desc(marital)) %>%
+  mutate(prop = n / sum(n) * 100
+         , ypos = cumsum(prop)- 0.5*prop) %>%
+  ggplot(aes(x = "", y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", width = 1, color = "black") + 
+    geom_label(
+      aes(y = ypos, label = marital)
+      , color = "white"
+      , size = 6
+      , fontface = 2) +
+    scale_fill_manual(values = c(rev(brewer.pal(9,"Greens")[c(4,6,8)]), "grey60")) + 
+    coord_polar("y", start = 0) + 
+    labs(
+      title = "In 2009, the majority of GSOEP participants\nwere or had been married/partnered"
+    ) + 
+    theme_void() + 
+    theme(
+      legend.position = "none"
+      , plot.title = element_text(face = "bold.italic", size = rel(1.4), hjust = .5)
+      )
+```
+
+## Stacked Bar Charts  
+
+* Like pie charts, stacked bar charts have their time and place
+* In particular: 
+  + Show proportions relative to the total
+  + Can be used to show changes over time 
+* To demonstrate, let's look at marriage across emerging adulthood (18-26)
+
+```{r}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))
+         , age = factor(age)
+         , prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    theme_classic()
+```
+
+## Stacked Bar Charts  
+### Improvements: Color  
+
+```{r}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(marital = factor(marital, seq(4,1,-1), rev(c("Married", "Separated", "Widowed", "Never Married")))
+         , age = factor(age)
+         , prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    theme_classic()
+```
+
+## Stacked Bar Charts  
+### Improvements: Label & Scales 
+
+```{r}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(marital = factor(marital, seq(4,1,-1), rev(c("Married", "Separated", "Widowed", "Never Married")))
+         , age = factor(age)
+         , prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    scale_y_continuous(
+      limits = c(0,1)
+      , breaks = seq(0, 1, .25)
+      , labels = c("0%", "25%", "50%", "75%", "100%")
+      ) + 
+    labs(
+      x = "Age"
+      , y = "Percent of Sample"
+      , title = "Rates of relationships increase in emerging adulthood"
+      , subtitle = "But most remain unpartnered by 26"
+      ) +
+    theme_classic()
+```
+
+## Stacked Bar Charts  
+### Improvements: Legend
+
+```{r}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(marital = factor(marital, seq(4,1,-1), rev(c("Married", "Separated", "Widowed", "Never Married")))
+         , age = factor(age)
+         , prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    scale_y_continuous(
+      limits = c(0,1)
+      , breaks = seq(0, 1, .25)
+      , labels = c("0%", "25%", "50%", "75%", "100%")
+      ) + 
+    annotate("text", x = "26", y = .60, label = "Never Married", angle = 90) + 
+    annotate("text", x = "26", y = .13, label = "Married", angle = 90, color = "white") + 
+    labs(
+      x = "Age"
+      , y = "Percent of Sample"
+      , title = "Rates of relationships increase in emerging adulthood"
+      , subtitle = "But most remain unpartnered by 26"
+      , fill = NULL
+      ) +
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+## Stacked Bar Charts  
+### Improvements: Theme Elements Exercise
+1. Bold axis text and increase size
+2. Bold axis titles and increase size
+3. Bold title and subtitle and center (hint, you will also need to wrap the title text)
+
+```{r}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(marital = factor(marital, seq(4,1,-1), rev(c("Married", "Separated", "Widowed", "Never Married")))
+         , age = factor(age)
+         , prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    scale_y_continuous(
+      limits = c(0,1)
+      , breaks = seq(0, 1, .25)
+      , labels = c("0%", "25%", "50%", "75%", "100%")
+      ) + 
+    annotate("text", x = "26", y = .60, label = "Never Married", angle = 90) + 
+    annotate("text", x = "26", y = .13, label = "Married", angle = 90, color = "white") + 
+    labs(
+      x = "Age"
+      , y = "Percent of Sample"
+      , title = "Rates of relationships increase in emerging adulthood"
+      , subtitle = "But most remain unpartnered by 26"
+      , fill = NULL
+      ) +
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+## Stacked Bar Charts  
+### Improvements: Theme Elements Exercise
+1. Bold axis text and increase size
+2. Bold axis titles and increase size
+3. Bold title and subtitle and center (hint, you will also need to wrap the title text)
+
+```{r}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(marital = factor(marital, seq(4,1,-1), rev(c("Married", "Separated", "Widowed", "Never Married")))
+         , age = factor(age)
+         , prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    scale_y_continuous(
+      limits = c(0,1)
+      , breaks = seq(0, 1, .25)
+      , labels = c("0%", "25%", "50%", "75%", "100%")
+      ) + 
+    annotate("text", x = "26", y = .60, label = "Never Married", angle = 90) + 
+    annotate("text", x = "26", y = .13, label = "Married", angle = 90, color = "white") + 
+    labs(
+      x = "Age"
+      , y = "Percent of Sample"
+      , title = "Rates of relationships increase in\nemerging adulthood"
+      , subtitle = "But most remain unpartnered by 26"
+      , fill = NULL
+      ) +
+    theme_classic() + 
+    theme(
+      legend.position = "bottom"
+      , axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+      , plot.subtitle = element_text(face = "italic", size = rel(1.1), hjust = .5)
+      )
+```
+
+## Side-by-Side Bar Charts  
+* Stacked bar charts are great for showing sequences but can make it difficult to compare *within* a stack
+* Side-by-side bar charts make it much easier to compare across categories and work well when broken into many categories
+* But they can be difficult to understand across sequences
+* To demonstrate, let's look at marriage rates across three waves 
+
+```{r}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = year, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    theme_classic()
+```
+
+## Side-by-Side Bar Charts  
+### Improvements: Order  
+```{r}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = year, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    theme_classic()
+```
+
+## Side-by-Side Bar Charts  
+### Improvements: Labels  
+We could label the bars, but let's label the axes instead
+```{r}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = marital, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    scale_y_continuous(
+      limits = c(0,.7), breaks = seq(0,.7, .2), labels = c("0%", "20%", "40%", "60%")
+    ) +
+    facet_grid(~year) + 
+    labs(
+      x = NULL
+      , y = "Percentage of Participants"
+      , title = "Marital Status Has Remained Consistent Throughout the 21st Century"
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text.x = element_text(angle = 45, hjust = 1)
+      ) 
+```
+
+## Side-by-Side Bar Charts  
+### Improvements: Theme Elements  
+We could label the bars, but let's label the axes instead
+```{r}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = marital, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    scale_y_continuous(
+      limits = c(0,.7), breaks = seq(0,.7, .2), labels = c("0%", "20%", "40%", "60%")
+    ) +
+    facet_grid(~year) + 
+    labs(
+      x = NULL
+      , y = "Percentage of Participants"
+      , title = "Marital Status Has Remained Consistent\nThroughout the 21st Century"
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+      , axis.text.x = element_text(angle = 45, hjust = 1, size = rel(1))
+      , axis.title = element_text(face = "bold", size = rel(1.2))
+      , strip.background = element_rect(fill = "grey90", color = "black")
+      , strip.text = element_text(face = "bold", size = rel(1.2))
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      ) 
+```
+
+## Side-by-Side Bar Charts  
+### Improvements: Colors   
+Exercise: 
+* Improve the colors by making them: 
+  + Colorblind-friendly
+  + Match the goal of the plot (see title)
+
+```{r}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = year, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    scale_fill_manual(values = cbsafe_pal$hex[2:5]) +
+    theme_classic()
+```
+
+## Time Series and Bar Charts
+
+  + Bar Charts and Density Across Continuous Variables
+  + Mosaic Plots
+  + Parallel Sets
 
 # Part 2: Probability  
