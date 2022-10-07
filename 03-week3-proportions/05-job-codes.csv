@@ -1,0 +1,65 @@
+﻿old,job,cat
+1,Agriculture Hunting Rel.Serv.Activities,Agriculture
+2,Forestry Logging Rel.Service activities,Agriculture
+5,Fishing Fish Hatcheries Fish Farms,Agriculture
+10,Mining Coal Lignite; Extraction Of Peat,Energy and Utilities
+11,Extraction Crude Petroleum Natural Gas,Energy and Utilities
+12,Mining Of Uranium And Thorium Ores,Energy and Utilities
+13,Mining Of Metal Ores,Energy and Utilities
+14,Other Mining And Quarrying,Energy and Utilities
+15,Manuf Food Products And Beverages,Manufacturing
+16,Manuf Tobacco Products,Manufacturing
+17,Manuf Textiles,Manufacturing
+18,Manuf Wear. Apparel; Dressing Dyeing Fur,Manufacturing
+19,Tanning Dress.Leather; luggage Footwear,Manufacturing
+20,Manuf Wood Products Except Furniture,Manufacturing
+21,Manuf Pulp Paper And Paper Products,Manufacturing
+22,Publishing Printing Recorded Media,Sales and Service
+23,Manuf Coke Ref.Petroleum Nuclear Fuel,Manufacturing
+24,Manuf Chemicals And Chemical Products,Manufacturing
+25,Manuf Rubber And Plastic Products,Manufacturing
+26,Manuf Other Non-metallic Mineral Product,Manufacturing
+27,Manuf Basic Metals,Manufacturing
+28,Manuf Fabric.Metal Prod. Ex.Machin. Equi,Manufacturing
+29,Manuf Machinery And Equipment NEC,Manufacturing
+30,Manuf Office Machinery And Computers,Manufacturing
+31,Manuf Electrical Machinery Apparatus NE,Manufacturing
+32,Manuf Radio Television Communic.Equipmen,Manufacturing
+33,Manuf Medical Precision Optical Instrum.,Manufacturing
+34,Manuf Motor Vehicles Trailers Semi-tr.,Manufacturing
+35,Manuf Other Transport Equipment,Manufacturing
+36,Manuf Furniture; Manufacturing NEC,Manufacturing
+37,Recycling,Energy and Utilities
+40,Electricity Gas Steam Hot Water Supply,Energy and Utilities
+41,Collection Purification Distrib.Of Water,Manufacturing
+45,Construction,Sales and Service
+50,Sale Maint Rep.Mot.Vehicles;Ret.Sale Fue,Sales and Service
+51,Wholesale Commission Trade Exc.Mot.Vehic,Sales and Service
+52,Retail Trade Exc.Mot.Vehic;Mot.Cyc Repai,Sales and Service
+55,Hotels And Restaurants,Sales and Service
+60,Land Transport; Transport Via Pipelines,Transportation
+61,Water Transport,Transportation
+62,Air Transport,Transportation
+63,Supporting Aux.Transp.Activ;Trav.Agencie,Transportation
+64,Post And Telecommunications,Sales and Service
+65,Financ.Intermediat. Exc.Insur. Pens.Fund,Finance and Tech
+66,Insurance Pens.Funding Ex.Compuls.SocSe,Finance and Tech
+67,Activ.Aux.To Financial Intermediation,Finance and Tech
+70,Real Estate Property Activities,Sales and Service
+71,Rent.Machinery Equip Wo.Oper. P. HH Good,Sales and Service
+72,Computer And Related Activities,Finance and Tech
+73,Research And Development,Finance and Tech
+74,Other Business Activities,Finance and Tech
+75,Publ.Administr. Defense; Compuls.SocSec,Public Service
+80,Education,Public Service
+85,Health And Social Work,Public Service
+90,Sewage Refuse Disposal Sanitationa.a.Re,Energy and Utilities
+91,Activit.of.Membership Organizations NEC.,Public Service
+92,Recreational Cultural Sporting Activity,Sales and Service
+93,Other Service Activities,Public Service
+95,Private Households With Employed Persons,Other
+96,Industry - NEC,Finance and Tech
+97,Handcraft Trade - NEC,Manufacturing
+98,Services - NEC,Sales and Service
+99,Extra-territorial Organizations.a.Bodies,Other
+100,Manufacturing - NEC,Manufacturing

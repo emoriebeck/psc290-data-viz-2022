@@ -580,13 +580,293 @@ gsoep %>%
   mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
   group_by(year) %>%
   mutate(prop = n/sum(n)) %>%
-  ggplot(aes(x = year, y = prop, fill = marital)) + 
+  ggplot(aes(x = marital, y = prop, fill = marital)) + 
     geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    scale_y_continuous(
+      limits = c(0,.7), breaks = seq(0,.7, .2), labels = c("0%", "20%", "40%", "60%")
+    ) +
     scale_fill_manual(values = cbsafe_pal$hex[2:5]) +
+    facet_grid(~year) + 
+    labs(
+      x = NULL
+      , y = "Percentage of Participants"
+      , title = "Marital Status Has Remained Consistent\nThroughout the 21st Century"
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+      , axis.text.x = element_text(angle = 45, hjust = 1, size = rel(1))
+      , axis.title = element_text(face = "bold", size = rel(1.2))
+      , strip.background = element_rect(fill = "grey90", color = "black")
+      , strip.text = element_text(face = "bold", size = rel(1.2))
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      ) 
+```
+
+## Bar Charts and Density Across Continuous Variables
+* One challenge with stacked bar charts is that when there are more than two categories, it can be very difficult to track the visualized trend
+* Relative to side-by-side bar charts, it's easy to see any category relative to the total but somewhat more difficult to also account for differing numbers of people in different categories or across time
+* One possible solution to this is to look at densities across time and groups or relative to the total
+* Let's do both now
+
+```{r}
+gsoep %>%
+  filter(age %in% c(20, 30, 40, 50, 60, 70, 80) & !is.na(SRhealth)) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, seq(5,1,-1), c("Very good", "Good", "Satisfactory", "Poor", "Bad"))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = cbsafe_pal$hex[2:6]) +
     theme_classic()
 ```
 
-## Time Series and Bar Charts
+## Stacked Area Charts  
+
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, seq(5,1,-1), c("Very good", "Good", "Satisfactory", "Poor", "Bad"))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area() + 
+    # scale_fill_manual(values = cbsafe_pal$hex[2:6]) +
+    theme_classic()
+```
+
+## Stacked Area Charts  
+### Improvements: Color  
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, seq(5,1,-1), c("Very good", "Good", "Satisfactory", "Poor", "Bad"))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    scale_fill_viridis_d() +
+    theme_classic()
+```
+
+## Stacked Area Charts  
+### Improvements: Color Labels  
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
+    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
+    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
+    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
+    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
+    scale_fill_viridis_d() +
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+## Stacked Area Charts  
+### Improvements: Theme Elements  
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
+    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
+    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
+    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
+    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
+    scale_fill_viridis_d() +
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+    )
+```
+
+## Stacked Area Charts  
+### Improvements: Labels and Title 
+
+Exercise: 
+
+1. Add plot title
+2. Change `x` and `y` scale labels and titles
+
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
+    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
+    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
+    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
+    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
+    scale_fill_viridis_d() +
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+    )
+```
+
+## Stacked Area Charts  
+### Improvements: Labels and Title 
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
+    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
+    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
+    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
+    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
+    scale_x_continuous(limits = c(18, 100), breaks = seq(20, 100, 10)) + 
+    scale_y_continuous(limits = c(0,1), breaks = seq(0,1, .25), labels = c("0%", "25%", "50%", "75%", "100%")) + 
+    scale_fill_viridis_d() +
+    labs(
+      x = "Age (Years)"
+      , y = "Percentage of Participants"
+      , title = "Levels of Self-Rated Health Decrease Across the Lifespan"
+    ) + 
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+    )
+```
+
+## Total Density Plots  
+* Let's revisit these data but also demonstrating how sample size changes across the lifespan
+* To do this, we need two pieces of information: 
+  + sample size in each self-rated health category at each age group
+  + total in each age group
+  
+## Total Density Plots  
+Let's start by using `stat_smooth()` to get a smoothed `geom_area()` of the total sample size onto the figure
+
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(total_n = sum(n))  %>%
+  ggplot(aes(x = age, y = n)) + 
+    stat_smooth(
+        aes(y = total_n)
+        , geom = 'area'
+        , method = 'loess'
+        , span = 1/3
+        , alpha = .8
+        , fill = "grey"
+        ) + 
+    facet_grid(~SRhealth) + 
+    theme_classic()
+```
+
+## Total Density Plots  
+Let's start by using `stat_smooth()` to get a smoothed `geom_area()` of the total sample size onto the figure
+
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(total_n = sum(n))  %>%
+  ggplot(aes(x = age, y = n)) + 
+    stat_smooth(aes(y = total_n), geom = 'area', method = 'loess'
+        , span = 1/3, alpha = .8, fill = "grey") + 
+    stat_smooth(
+        aes(fill = SRhealth)
+        , geom = 'area'
+        , method = 'loess'
+        , span = 1/3
+        , alpha = .8
+        ) + 
+    annotate("text", x = 45, y = 3000, label = "Total") + 
+    facet_grid(~SRhealth) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+## Total Density Plots  
+Let's not belabor this too much.
+
+```{r}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(total_n = sum(n))  %>%
+  ggplot(aes(x = age, y = n)) + 
+    stat_smooth(aes(y = total_n), geom = 'area', method = 'loess'
+        , span = 1/3, alpha = .8, fill = "grey") + 
+    stat_smooth(
+        aes(fill = SRhealth)
+        , geom = 'area'
+        , method = 'loess'
+        , span = 1/3
+        , alpha = .8
+        ) + 
+    scale_x_continuous(limits = c(18, 100), breaks = seq(20, 100, 10)) + 
+    scale_fill_viridis_d() +
+    annotate("text", x = 45, y = 3000, label = "Total") + 
+    labs(
+      x = "Age (Years)"
+      , y = "Number of People"
+      , title = "Good Self-Rated Health Decreases Across the Lifespan"
+      , subtitle = "But bad decreases less, likely because all-cause sample drop-out"
+      ) + 
+    facet_grid(~SRhealth) + 
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+          , plot.subtitle = element_text(face = "italic", size = rel(1), hjust = .5)
+          , strip.background = element_rect(fill = "grey90", color = "black")
+          , strip.text = element_text(face = "bold", size = rel(1.2))
+          )
+```
 
   + Bar Charts and Density Across Continuous Variables
   + Mosaic Plots
