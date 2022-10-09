@@ -1,5 +1,5 @@
 ---
-title: "Week 2: Cognitive Perspectives and Introduction to ggplot2"
+title: "Week 3: Proportions"
 author: "Emorie D Beck"
 format: 
   revealjs:
@@ -31,12 +31,14 @@ format:
   #   highlight-style: atom-one-dark
   #   footer: "PSC 290 - Data Visualization"
   #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
-editor_options: 
-  chunk_output_type: console
 ---
 
+```{r, echo = F}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F)
+options(knitr.kable.NA = '')
+```
 
-```{r}
+```{r, echo = F}
 library(RColorBrewer)
 library(plyr)
 library(tidyverse)
@@ -49,22 +51,37 @@ library(tidyverse)
 
 From last week:
 
+:::: {.columns}
+::: {.column}
+
 * **Mappings**: base layer 
   + `ggplot()` and `aes()`
 * **Scales**: control and modify your mappings 
   + e.g., `scale_x_continuous()` and `scale_fill_manual()`
 * **Geoms**: plot elements 
   + e.g., `geom_point()` and `geom_line()`
+
+:::
+::: {.column}
+
 * **Facets**: panel your plot 
   + `facet_wrap()` and `facet_grid()`
 * **Themes**: style your figure 
   + Built-in: e.g., `theme_classic()`
   + Manual: `theme()` (`legend`, `strip`, `axis`, `plot`, `panel`)
 
+:::
+::::
+
 ## Quick Review 
 ### Colorblindness and accessible plots
 * Adding in a colorblind-friendly palette from [Wong (2011)](https://www.nature.com/articles/nmeth.1618)
-```{r}
+
+::: {.fragment}
+:::: {.columns}
+::: {.column}
+
+```{r, results='hide'}
 cbsafe_pal <- tribble(
   ~name, ~rgb
   , "black", c(0, 0, 0)
@@ -79,6 +96,29 @@ cbsafe_pal <- tribble(
   mutate(hex = map_chr(rgb, function(x) rgb(x[1], x[2], x[3], maxColorValue = 255)))
 cbsafe_pal
 ```
+
+:::
+::: {.column}
+
+```{r, echo = F, results='show'}
+cbsafe_pal <- tribble(
+  ~name, ~rgb
+  , "black", c(0, 0, 0)
+  , "sky blue", c(86, 180, 233)
+  , "bluish green", c(0, 158, 115)
+  , "yellow", c(240, 228, 66)
+  , "orange", c(230, 159, 0)
+  , "blue", c(0, 114, 178)
+  , "vermillion", c(213, 94, 0)
+  , "reddish purple", c(204, 121, 167)
+) %>%
+  mutate(hex = map_chr(rgb, function(x) rgb(x[1], x[2], x[3], maxColorValue = 255)))
+cbsafe_pal
+```
+
+:::
+:::
+::::
 
 # Part 1: Proportions  
 ## Visualizating Proportions
@@ -97,6 +137,9 @@ cbsafe_pal
   + Parallel Sets
 
 ## But First, Our Data  
+
+:::: {.columns}
+::: {.column}
 * Today, we'll use the teaching sample from the German Socioeconomic Panel Study (GSOEP)
 * GSOEP is an ongoing longitudinal panel study that began in 1984 (26 waves of data!)
 * ~20,000 people are sampled each year
@@ -104,7 +147,9 @@ cbsafe_pal
 * Has additional sub-projects (e.g., innovation studies, migrant panel, etc.)
 * The data are publicly available via application
 
-```{r gsoep clean fun, eval = F}
+:::
+
+```{r gsoep clean fun, eval = F, echo = F}
 gsoep_read_fun <- function(Year, WL){
   print(Year)
   old.names <- (gsoep_codebook %>% filter(year == Year))$orig_itemname 
@@ -192,20 +237,32 @@ gsoep <- gsoep_recode %>%
     names_from = "name"
     , values_from = "value"
   ) %>%
-  left_join(gsoep_st) %>%
+  full_join(gsoep_st) %>%
   mutate(
     age = year - yearBrth
-    , mortality = ifelse(mortality < 0, 0, ifelse(mortality <= year, 1, 0))
+    , mortality = ifelse(mortality < 0, 0, ifelse(year >= mortality, 1, 0))
     , job = ifelse(job < 0, NA, job)
     , SRhealth = mapvalues(SRhealth, seq(1,5), seq(5,1))
   )
-save(gsoep, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/03-week3-proportions/04-data/gsoep.RData")
+gsoep_st <- gsoep_st %>%
+  mutate(
+    mortality = ifelse(mortality < 0, 0, 1)
+    , job = ifelse(job < 0, NA, job)
+    )
+save(gsoep, gsoep_st, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/03-week3-proportions/04-data/gsoep.RData")
 ```
+
+::: {.fragment}
+::: {.column}
 
 ```{r}
 load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/04-data/gsoep.RData"))
 gsoep
 ```
+
+:::
+:::
+::::
 
 ## Pie Charts  
 * You may be wondering if you should ever use a pie chart
@@ -224,43 +281,124 @@ gsoep
   + specifically, `coord_polar()`
 * So to make a pie chart, we'll use `geom_bar() + coord_polar()`
 
-```{r}
+## Pie Charts {.smaller} 
+### Basic Syntax  
+
+:::: {.columns}
+::: {.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-4|10-11|12-13"
 gsoep %>%
   filter(year == 2009 & !is.na(marital)) %>% # random
   group_by(marital) %>%
   tally() %>%
-  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    )) %>%
+  ggplot(aes(x = "", y = n, fill = marital)) + 
+    geom_bar(stat = "identity", width = 1, color = "white") + 
+    coord_polar("y", start = 0) + 
+    theme_void()
+```
+::: 
+
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(5,3), out.width="100%"}
+gsoep %>%
+  filter(year == 2009 & !is.na(marital)) %>% # random
+  group_by(marital) %>%
+  tally() %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    )) %>%
   ggplot(aes(x = "", y = n, fill = marital)) + 
     geom_bar(stat = "identity", width = 1, color = "white") + 
     coord_polar("y", start = 0) + 
     theme_void()
 ```
 
-## Pie Charts  
+::: 
+::::
+
+## Pie Charts {.smaller} 
 ### Improvements
 
-```{r}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide'}
+#| code-line-numbers: "|10-12|13|15-19"
 gsoep %>%
   filter(year == 2009 & !is.na(marital)) %>% # random
   group_by(marital) %>%
   tally() %>%
-  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    )) %>%
   arrange(desc(marital)) %>%
   mutate(prop = n / sum(n) * 100
          , ypos = cumsum(prop)- 0.5*prop) %>%
   ggplot(aes(x = "", y = prop, fill = marital)) + 
     geom_bar(stat = "identity", width = 1, color = "white") + 
-    geom_text(aes(y = ypos, label = marital), color = "white", size=4) +
+    geom_text(
+      aes(y = ypos, label = marital)
+      , color = "white"
+      , size=4
+      ) +
     scale_fill_manual(values = cbsafe_pal$hex[c(2, 8, 3, 4)]) + 
     coord_polar("y", start = 0) + 
     theme_void() + 
     theme(legend.position = "none")
 ```
 
-## Pie Charts  
-### More Improvements
+:::
+::: {.column}
 
-```{r}
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(4,4), out.width="85%"}
+gsoep %>%
+  filter(year == 2009 & !is.na(marital)) %>% # random
+  group_by(marital) %>%
+  tally() %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    )) %>%
+  arrange(desc(marital)) %>%
+  mutate(prop = n / sum(n) * 100
+         , ypos = cumsum(prop)- 0.5*prop) %>%
+  ggplot(aes(x = "", y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", width = 1, color = "white") + 
+    geom_text(
+      aes(y = ypos, label = marital)
+      , color = "white"
+      , size=4
+      ) +
+    scale_fill_manual(values = cbsafe_pal$hex[c(2, 8, 3, 4)]) + 
+    coord_polar("y", start = 0) + 
+    theme_void() + 
+    theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Pie Charts  {.smaller}
+### More Improvements 
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(4,4)}
+#| code-line-numbers: "|18-20|22-25"
 gsoep %>%
   filter(year == 2009 & !is.na(marital)) %>% # random
   group_by(marital) %>%
@@ -288,32 +426,132 @@ gsoep %>%
       )
 ```
 
+:::
+::: {.column}
+
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,6)}
+gsoep %>%
+  filter(year == 2009 & !is.na(marital)) %>% # random
+  group_by(marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  arrange(desc(marital)) %>%
+  mutate(prop = n / sum(n) * 100
+         , ypos = cumsum(prop)- 0.5*prop) %>%
+  ggplot(aes(x = "", y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", width = 1, color = "black") + 
+    geom_label(
+      aes(y = ypos, label = marital)
+      , color = "white"
+      , size = 6
+      , fontface = 2) +
+    scale_fill_manual(values = c(rev(brewer.pal(9,"Greens")[c(4,6,8)]), "grey60")) + 
+    coord_polar("y", start = 0) + 
+    labs(
+      title = "In 2009, the majority of GSOEP participants\nwere or had been married/partnered"
+    ) + 
+    theme_void() + 
+    theme(
+      legend.position = "none"
+      , plot.title = element_text(face = "bold.italic", size = rel(1.4), hjust = .5)
+      )
+```
+:::
+::::
+
 ## Stacked Bar Charts  
 
 * Like pie charts, stacked bar charts have their time and place
 * In particular: 
   + Show proportions relative to the total
   + Can be used to show changes over time 
-* To demonstrate, let's look at marriage across emerging adulthood (18-26)
+* To demonstrate, let's look at marital status across emerging adulthood (18-26)
 
-```{r}
+## Stacked Bar Charts {.smaller} 
+### Basic Syntax
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,6)}
+#| code-line-numbers: "|16"
 gsoep %>%
   filter(age %in% 18:26 & !is.na(marital)) %>%
   group_by(age, marital) %>%
   tally() %>%
   group_by(age) %>%
-  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))
-         , age = factor(age)
-         , prop = n/sum(n)) %>%
+  mutate(
+    marital = factor(
+      marital
+      , 1:4
+      , c("Married", "Separated", "Widowed", "Never Married")
+      )
+    , age = factor(age)
+    , prop = n/sum(n)
+    ) %>%
   ggplot(aes(x = age, y = prop, fill = marital)) + 
     geom_bar(stat = "identity", color = "black") + 
     theme_classic()
 ```
 
-## Stacked Bar Charts  
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(5,3.5), out.width = "90%"}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(
+    marital = factor(
+      marital
+      , 1:4
+      , c("Married", "Separated", "Widowed", "Never Married")
+      )
+    , age = factor(age)
+    , prop = n/sum(n)
+    ) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    theme_classic()
+```
+:::
+::::
+
+## Stacked Bar Charts  {.smaller}
 ### Improvements: Color  
 
-```{r}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(5,3.5)}
+#| code-line-numbers: "|17"
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(
+    marital = factor(
+      marital
+      , seq(4,1,-1)
+      , rev(c("Married", "Separated", "Widowed", "Never Married"))
+      )
+    , age = factor(age)
+    , prop = n/sum(n)
+    ) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    theme_classic()
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(5,3.5), out.width = "90%"}
 gsoep %>%
   filter(age %in% 18:26 & !is.na(marital)) %>%
   group_by(age, marital) %>%
@@ -328,18 +566,31 @@ gsoep %>%
     theme_classic()
 ```
 
-## Stacked Bar Charts  
+:::
+::::
+
+## Stacked Bar Charts  {.smaller}
 ### Improvements: Label & Scales 
 
-```{r}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(5,3.5)}
+#| code-line-numbers: "|18-22|23-28"
 gsoep %>%
   filter(age %in% 18:26 & !is.na(marital)) %>%
   group_by(age, marital) %>%
   tally() %>%
   group_by(age) %>%
-  mutate(marital = factor(marital, seq(4,1,-1), rev(c("Married", "Separated", "Widowed", "Never Married")))
-         , age = factor(age)
-         , prop = n/sum(n)) %>%
+  mutate(
+    marital = factor(
+      marital
+      , seq(4,1,-1)
+      , rev(c("Married", "Separated", "Widowed", "Never Married"))
+      )
+    , age = factor(age)
+    , prop = n/sum(n)
+    ) %>%
   ggplot(aes(x = age, y = prop, fill = marital)) + 
     geom_bar(stat = "identity", color = "black") + 
     scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
@@ -357,10 +608,52 @@ gsoep %>%
     theme_classic()
 ```
 
-## Stacked Bar Charts  
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(5,3.5), out.width = "90%"}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(
+    marital = factor(
+      marital
+      , seq(4,1,-1)
+      , rev(c("Married", "Separated", "Widowed", "Never Married"))
+      )
+    , age = factor(age)
+    , prop = n/sum(n)
+    ) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    scale_y_continuous(
+      limits = c(0,1)
+      , breaks = seq(0, 1, .25)
+      , labels = c("0%", "25%", "50%", "75%", "100%")
+      ) + 
+    labs(
+      x = "Age"
+      , y = "Percent of Sample"
+      , title = "Rates of relationships increase in emerging adulthood"
+      , subtitle = "But most remain unpartnered by 26"
+      ) +
+    theme_classic()
+```
+
+:::
+::::
+
+## Stacked Bar Charts {.smaller} 
 ### Improvements: Legend
 
-```{r}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|17-18,25,28"
 gsoep %>%
   filter(age %in% 18:26 & !is.na(marital)) %>%
   group_by(age, marital) %>%
@@ -390,13 +683,10 @@ gsoep %>%
     theme(legend.position = "bottom")
 ```
 
-## Stacked Bar Charts  
-### Improvements: Theme Elements Exercise
-1. Bold axis text and increase size
-2. Bold axis titles and increase size
-3. Bold title and subtitle and center (hint, you will also need to wrap the title text)
+:::
+::: {.column}
 
-```{r}
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
 gsoep %>%
   filter(age %in% 18:26 & !is.na(marital)) %>%
   group_by(age, marital) %>%
@@ -426,13 +716,23 @@ gsoep %>%
     theme(legend.position = "bottom")
 ```
 
-## Stacked Bar Charts  
+:::
+::::
+
+## Stacked Bar Charts 
 ### Improvements: Theme Elements Exercise
 1. Bold axis text and increase size
 2. Bold axis titles and increase size
 3. Bold title and subtitle and center (hint, you will also need to wrap the title text)
 
-```{r}
+## Stacked Bar Charts {.smaller}
+### Improvements: Theme Elements Exercise
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|27-32"
 gsoep %>%
   filter(age %in% 18:26 & !is.na(marital)) %>%
   group_by(age, marital) %>%
@@ -468,13 +768,60 @@ gsoep %>%
       )
 ```
 
+:::
+::: {.column}
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(age %in% 18:26 & !is.na(marital)) %>%
+  group_by(age, marital) %>%
+  tally() %>%
+  group_by(age) %>%
+  mutate(marital = factor(marital, seq(4,1,-1), rev(c("Married", "Separated", "Widowed", "Never Married")))
+         , age = factor(age)
+         , prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = c("grey80",brewer.pal(9,"Greens")[c(2,4,6)])) + 
+    scale_y_continuous(
+      limits = c(0,1)
+      , breaks = seq(0, 1, .25)
+      , labels = c("0%", "25%", "50%", "75%", "100%")
+      ) + 
+    annotate("text", x = "26", y = .60, label = "Never Married", angle = 90) + 
+    annotate("text", x = "26", y = .13, label = "Married", angle = 90, color = "white") + 
+    labs(
+      x = "Age"
+      , y = "Percent of Sample"
+      , title = "Rates of relationships increase in\nemerging adulthood"
+      , subtitle = "But most remain unpartnered by 26"
+      , fill = NULL
+      ) +
+    theme_classic() + 
+    theme(
+      legend.position = "bottom"
+      , axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+      , plot.subtitle = element_text(face = "italic", size = rel(1.1), hjust = .5)
+      )
+```
+
+:::
+::::
+
 ## Side-by-Side Bar Charts  
 * Stacked bar charts are great for showing sequences but can make it difficult to compare *within* a stack
 * Side-by-side bar charts make it much easier to compare across categories and work well when broken into many categories
 * But they can be difficult to understand across sequences
 * To demonstrate, let's look at marriage rates across three waves 
 
-```{r}
+## Side-by-Side Bar Charts  {.smaller}
+### Basic Syntax
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|9"
 gsoep %>%
   filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
   group_by(year, marital) %>%
@@ -487,9 +834,33 @@ gsoep %>%
     theme_classic()
 ```
 
-## Side-by-Side Bar Charts  
+::: 
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, 1:4, c("Married", "Separated", "Widowed", "Never Married"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = year, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    theme_classic()
+```
+
+:::
+::::
+
+## Side-by-Side Bar Charts  {.smaller}
 ### Improvements: Order  
-```{r}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|5"
 gsoep %>%
   filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
   group_by(year, marital) %>%
@@ -502,10 +873,34 @@ gsoep %>%
     theme_classic()
 ```
 
-## Side-by-Side Bar Charts  
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = year, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    theme_classic()
+```
+
+:::
+::::
+
+## Side-by-Side Bar Charts {.smaller}  
 ### Improvements: Labels  
 We could label the bars, but let's label the axes instead
-```{r}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|9-11|12|13-17|19-22"
 gsoep %>%
   filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
   group_by(year, marital) %>%
@@ -531,10 +926,47 @@ gsoep %>%
       ) 
 ```
 
-## Side-by-Side Bar Charts  
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = marital, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    scale_y_continuous(
+      limits = c(0,.7), breaks = seq(0,.7, .2), labels = c("0%", "20%", "40%", "60%")
+    ) +
+    facet_grid(~year) + 
+    labs(
+      x = NULL
+      , y = "Percentage of Participants"
+      , title = "Marital Status Has Remained Consistent Throughout the 21st Century"
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text.x = element_text(angle = 45, hjust = 1)
+      ) 
+```
+
+:::
+::::
+
+## Side-by-Side Bar Charts  {.smaller}
 ### Improvements: Theme Elements  
 We could label the bars, but let's label the axes instead
-```{r}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|20-28"
 gsoep %>%
   filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
   group_by(year, marital) %>%
@@ -565,14 +997,60 @@ gsoep %>%
       ) 
 ```
 
+::: 
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = marital, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    scale_y_continuous(
+      limits = c(0,.7), breaks = seq(0,.7, .2), labels = c("0%", "20%", "40%", "60%")
+    ) +
+    facet_grid(~year) + 
+    labs(
+      x = NULL
+      , y = "Percentage of Participants"
+      , title = "Marital Status Has Remained Consistent\nThroughout the 21st Century"
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+      , axis.text.x = element_text(angle = 45, hjust = 1, size = rel(1))
+      , axis.title = element_text(face = "bold", size = rel(1.2))
+      , strip.background = element_rect(fill = "grey90", color = "black")
+      , strip.text = element_text(face = "bold", size = rel(1.2))
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      ) 
+```
+
+:::
+::::
+
 ## Side-by-Side Bar Charts  
 ### Improvements: Colors   
+
 Exercise: 
+
 * Improve the colors by making them: 
   + Colorblind-friendly
   + Match the goal of the plot (see title)
 
-```{r}
+## Side-by-Side Bar Charts  {.smaller}
+### Improvements: Colors   
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "8|13"
 gsoep %>%
   filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
   group_by(year, marital) %>%
@@ -604,13 +1082,79 @@ gsoep %>%
       ) 
 ```
 
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(year %in% c(2000, 2005, 2010, 2015) & !is.na(marital)) %>% # random
+  group_by(year, marital) %>%
+  tally() %>%
+  mutate(marital = factor(marital, c(1,4,2,3), c("Married", "Never Married", "Separated", "Widowed"))) %>%
+  group_by(year) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = marital, y = prop, fill = marital)) + 
+    geom_bar(stat = "identity", color = "black", position = "dodge") + 
+    scale_y_continuous(
+      limits = c(0,.7), breaks = seq(0,.7, .2), labels = c("0%", "20%", "40%", "60%")
+    ) +
+    scale_fill_manual(values = cbsafe_pal$hex[2:5]) +
+    facet_grid(~year) + 
+    labs(
+      x = NULL
+      , y = "Percentage of Participants"
+      , title = "Marital Status Has Remained Consistent\nThroughout the 21st Century"
+      ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text = element_text(face = "bold", size = rel(1.2))
+      , axis.text.x = element_text(angle = 45, hjust = 1, size = rel(1))
+      , axis.title = element_text(face = "bold", size = rel(1.2))
+      , strip.background = element_rect(fill = "grey90", color = "black")
+      , strip.text = element_text(face = "bold", size = rel(1.2))
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      ) 
+```
+
+:::
+::::
+
 ## Bar Charts and Density Across Continuous Variables
+
 * One challenge with stacked bar charts is that when there are more than two categories, it can be very difficult to track the visualized trend
 * Relative to side-by-side bar charts, it's easy to see any category relative to the total but somewhat more difficult to also account for differing numbers of people in different categories or across time
 * One possible solution to this is to look at densities across time and groups or relative to the total
 * Let's do both now
 
-```{r}
+## Bar Charts and Density Across Continuous Variables {.smaller}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|1-4|5-9|10-11|12-14"
+gsoep %>%
+  filter(age %in% c(20, 30, 40, 50, 60, 70, 80) & !is.na(SRhealth)) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(
+    SRhealth
+    , seq(5,1,-1)
+    , c("Very good", "Good", "Satisfactory", "Poor", "Bad")
+    )) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    scale_fill_manual(values = cbsafe_pal$hex[2:6]) +
+    theme_classic()
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
 gsoep %>%
   filter(age %in% c(20, 30, 40, 50, 60, 70, 80) & !is.na(SRhealth)) %>% # random
   group_by(age, SRhealth) %>%
@@ -624,9 +1168,36 @@ gsoep %>%
     theme_classic()
 ```
 
-## Stacked Area Charts  
+:::
+::::
 
-```{r}
+## Stacked Area Charts  {.smaller}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|13"
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(
+    SRhealth
+    , seq(5,1,-1)
+    , c("Very good", "Good", "Satisfactory", "Poor", "Bad")
+    )) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area() + 
+    theme_classic()
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
@@ -636,13 +1207,40 @@ gsoep %>%
   mutate(prop = n/sum(n)) %>%
   ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
     geom_area() + 
-    # scale_fill_manual(values = cbsafe_pal$hex[2:6]) +
     theme_classic()
 ```
 
-## Stacked Area Charts  
+:::
+::::
+
+## Stacked Area Charts  {.smaller}
 ### Improvements: Color  
-```{r}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|13-14"
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(
+    SRhealth
+    , seq(5,1,-1)
+    , c("Very good", "Good", "Satisfactory", "Poor", "Bad")
+    )) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    scale_fill_viridis_d() +
+    theme_classic()
+```
+
+:::
+::: {.column}
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
@@ -656,14 +1254,26 @@ gsoep %>%
     theme_classic()
 ```
 
-## Stacked Area Charts  
+:::
+::::
+
+## Stacked Area Charts  {.smaller}
 ### Improvements: Color Labels  
-```{r}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|14-18|21"
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
   tally() %>%
-  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  mutate(SRhealth = factor(
+    SRhealth
+    , 1:5
+    , rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad"))
+    )) %>%
   group_by(age) %>%
   mutate(prop = n/sum(n)) %>%
   ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
@@ -678,9 +1288,44 @@ gsoep %>%
     theme(legend.position = "none")
 ```
 
-## Stacked Area Charts  
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(
+    SRhealth
+    , 1:5
+    , rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad"))
+    )) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
+    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
+    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
+    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
+    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
+    scale_fill_viridis_d() +
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Stacked Area Charts  {.smaller}
 ### Improvements: Theme Elements  
-```{r}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|17-21"
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
@@ -703,6 +1348,36 @@ gsoep %>%
           , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
     )
 ```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
+    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
+    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
+    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
+    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
+    scale_fill_viridis_d() +
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+    )
+```
+
+:::
+::::
 
 ## Stacked Area Charts  
 ### Improvements: Labels and Title 
@@ -712,33 +1387,14 @@ Exercise:
 1. Add plot title
 2. Change `x` and `y` scale labels and titles
 
-```{r}
-gsoep %>%
-  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
-  group_by(age, SRhealth) %>%
-  tally() %>%
-  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
-  group_by(age) %>%
-  mutate(prop = n/sum(n)) %>%
-  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
-    geom_area(color = "white", alpha = .6) + 
-    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
-    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
-    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
-    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
-    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
-    scale_fill_viridis_d() +
-    theme_classic() + 
-    theme(legend.position = "none"
-          , axis.text = element_text(face = "bold", size = rel(1.1))
-          , axis.title = element_text(face = "bold", size = rel(1.1))
-          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
-    )
-```
-
-## Stacked Area Charts  
+## Stacked Area Charts  {.smaller}
 ### Improvements: Labels and Title 
-```{r}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|21|15-16,18-20"
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
@@ -769,16 +1425,57 @@ gsoep %>%
     )
 ```
 
+::: 
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(prop = n/sum(n)) %>%
+  ggplot(aes(x = age, y = prop, fill = SRhealth)) + 
+    geom_area(color = "white", alpha = .6) + 
+    annotate("text", x = 85, y = .95, label = "Bad", color = "white", fontface = 2) + 
+    annotate("text", x = 75, y = .80, label = "Poor", color = "white", fontface = 2) + 
+    annotate("text", x = 62, y = .55, label = "Satisfactory", color = "white", fontface = 2) + 
+    annotate("text", x = 43, y = .3, label = "Good", color = "black", fontface = 2) + 
+    annotate("text", x = 30, y = .07, label = "Very Good", color = "black", fontface = 2) + 
+    scale_x_continuous(limits = c(18, 100), breaks = seq(20, 100, 10)) + 
+    scale_y_continuous(limits = c(0,1), breaks = seq(0,1, .25), labels = c("0%", "25%", "50%", "75%", "100%")) + 
+    scale_fill_viridis_d() +
+    labs(
+      x = "Age (Years)"
+      , y = "Percentage of Participants"
+      , title = "Levels of Self-Rated Health Decrease Across the Lifespan"
+    ) + 
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+    )
+```
+
+:::
+::::
+
 ## Total Density Plots  
 * Let's revisit these data but also demonstrating how sample size changes across the lifespan
 * To do this, we need two pieces of information: 
   + sample size in each self-rated health category at each age group
   + total in each age group
   
-## Total Density Plots  
+## Total Density Plots  {.smaller}
 Let's start by using `stat_smooth()` to get a smoothed `geom_area()` of the total sample size onto the figure
 
-```{r}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|9-16"
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
@@ -799,10 +1496,41 @@ gsoep %>%
     theme_classic()
 ```
 
-## Total Density Plots  
-Let's start by using `stat_smooth()` to get a smoothed `geom_area()` of the total sample size onto the figure
+:::
+::: {.column}
 
-```{r}
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(total_n = sum(n))  %>%
+  ggplot(aes(x = age, y = n)) + 
+    stat_smooth(
+        aes(y = total_n)
+        , geom = 'area'
+        , method = 'loess'
+        , span = 1/3
+        , alpha = .8
+        , fill = "grey"
+        ) + 
+    facet_grid(~SRhealth) + 
+    theme_classic()
+```
+
+:::
+::::
+
+## Total Density Plots  {.smaller}
+Now let's add each of the ordinal values
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|11-17|18"
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
@@ -826,10 +1554,81 @@ gsoep %>%
     theme(legend.position = "none")
 ```
 
-## Total Density Plots  
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(total_n = sum(n))  %>%
+  ggplot(aes(x = age, y = n)) + 
+    stat_smooth(aes(y = total_n), geom = 'area', method = 'loess'
+        , span = 1/3, alpha = .8, fill = "grey") + 
+    stat_smooth(
+        aes(fill = SRhealth)
+        , geom = 'area'
+        , method = 'loess'
+        , span = 1/3
+        , alpha = .8
+        ) + 
+    annotate("text", x = 45, y = 3000, label = "Total") + 
+    facet_grid(~SRhealth) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Total Density Plots  {.smaller}
 Let's not belabor this too much.
 
-```{r}
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|13-14|16-21|24-30"
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(total_n = sum(n))  %>%
+  ggplot(aes(x = age, y = n)) + 
+    stat_smooth(aes(y = total_n), geom = 'area', method = 'loess'
+        , span = 1/3, alpha = .8, fill = "grey") + 
+    stat_smooth(aes(fill = SRhealth), geom = 'area', method = 'loess'
+        , span = 1/3, alpha = .8) + 
+    scale_x_continuous(limits = c(18, 100), breaks = seq(20, 100, 10)) + 
+    scale_fill_viridis_d() +
+    annotate("text", x = 45, y = 3000, label = "Total") + 
+    labs(
+      x = "Age (Years)"
+      , y = "Number of People"
+      , title = "Good Self-Rated Health Decreases Across the Lifespan"
+      , subtitle = "But bad decreases less, likely because all-cause sample drop-out"
+      ) + 
+    facet_grid(~SRhealth) + 
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+          , plot.subtitle = element_text(face = "italic", size = rel(1), hjust = .5)
+          , strip.background = element_rect(fill = "grey90", color = "black")
+          , strip.text = element_text(face = "bold", size = rel(1.2))
+          )
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
 gsoep %>%
   filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
   group_by(age, SRhealth) %>%
@@ -868,8 +1667,555 @@ gsoep %>%
           )
 ```
 
-  + Bar Charts and Density Across Continuous Variables
-  + Mosaic Plots
-  + Parallel Sets
+:::
+::::
 
-# Part 2: Probability  
+## Total Density Plots  {.smaller}
+Ew, squashed
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(8,4), out.width = "90%"}
+gsoep %>%
+  filter(!is.na(SRhealth) & age >= 18 & age <= 100) %>% # random
+  group_by(age, SRhealth) %>%
+  tally() %>%
+  mutate(SRhealth = factor(SRhealth, 1:5, rev(c("Very good", "Good", "Satisfactory", "Poor", "Bad")))) %>%
+  group_by(age) %>%
+  mutate(total_n = sum(n))  %>%
+  ggplot(aes(x = age, y = n)) + 
+    stat_smooth(aes(y = total_n), geom = 'area', method = 'loess'
+        , span = 1/3, alpha = .8, fill = "grey") + 
+    stat_smooth(aes(fill = SRhealth), geom = 'area', method = 'loess'
+        , span = 1/3, alpha = .8) + 
+    scale_x_continuous(limits = c(15, 105), breaks = seq(20, 100, 20)) + 
+    scale_fill_viridis_d() +
+    annotate("text", x = 45, y = 3000, label = "Total") + 
+    labs(
+      x = "Age (Years)"
+      , y = "Number of People"
+      , title = "Good Self-Rated Health Decreases Across the Lifespan"
+      , subtitle = "But bad decreases less, likely because all-cause sample drop-out"
+      ) + 
+    facet_grid(~SRhealth) + 
+    theme_classic() + 
+    theme(legend.position = "none"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.1))
+          , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+          , plot.subtitle = element_text(face = "italic", size = rel(1), hjust = .5)
+          , strip.background = element_rect(fill = "grey90", color = "black")
+          , strip.text = element_text(face = "bold", size = rel(1.2))
+          )
+```
+
+## Nested Proportions  
+* Sometimes, the proportions that we want to visualize are more complex and can't just be simply binned
+* In such cases, there may be hierarchical relationships among the categories
+* Today, we'll cover two core nested proportion plots: 
+  + Mosaic plots
+  + Parallel Sets
+* To do this, we'll use two categorical variables: mortality and marital status  
+  
+  
+## Nested Proportions  {.smaller}
+
+:::: {.columns}
+::: {.column}
+
+* To do this, we'll use 2-Digit NACE Industry Sector codes from participants' last reported jobs in the SOEP, which I've broken down into 9 higher-order categories
+* This is a lot of categories, so we'll further eventually exclude categories that don't have at least 2% of the share of participants
+
+:::
+::: {.column}
+
+```{r, echo = F}
+library(kableExtra)
+jobs <- read_csv("https://raw.githubusercontent.com/emoriebeck/psc290-data-viz-2022/main/03-week3-proportions/05-job-codes.csv")
+jobs %>%
+  select(cat, job, old) %>%
+  arrange(cat, old) %>%
+  kable(.
+        , "html"
+        , col.names = c("Category", "Job", "Code")
+        , caption = "2-Digit NACE Industry Sector Codes and Categories") %>%
+  kable_classic(full_width = F, html_font = "Times New Roman") %>%
+  collapse_rows(1, valign = "top") %>%
+  scroll_box(height = "500px")
+```
+
+:::
+::::
+
+## Mosaic Plots {.smaller}
+* Unlike bar charts, mosaic plots allow us to index relative areas, sizes, proportions, etc. relative to two dimensions (so not just amount)
+* So in our example, this will let us see relative differences within categories vertically and across categories horizontally 
+* To build this, we will finally leave the basic `ggplot2` package and use the `ggmosaic` package
+* There are other packages, but we'll use this one because (1) it's great and (2) it let's us still use everything we've learned about ggplot
+
+## Mosaic Plots:  {.smaller}
+### Wrangle the Data  
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, results='hide'}
+#| code-line-numbers: "|1-2|14"
+if(!"ggmosaic" %in% installed.packages()) install.packages("ggmosaic")
+library(ggmosaic)
+
+gsoep_jobs <- gsoep %>%
+  mutate(age_gr = mapvalues(age, 20:99, rep(seq(20, 90, 10), each = 10))) %>%
+  filter(!is.na(age_gr) & age >= 20 & age < 100) %>%
+  group_by(SID) %>%
+  filter(!is.na(job)) %>%
+  filter(age_gr == max(age_gr)) %>%
+  group_by(SID, age_gr) %>%
+  summarize(job = max(job)) %>%
+  ungroup() %>%
+  rename(code = job) %>%
+  left_join(jobs %>% rename(code = old)) %>%
+  group_by(code) %>%
+  filter(n() / nrow(.) >= .02) %>%
+  ungroup() 
+gsoep_jobs
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, results='show'}
+if(!"ggmosaic" %in% installed.packages()) install.packages("ggmosaic")
+library(ggmosaic)
+
+gsoep_jobs <- gsoep %>%
+  mutate(age_gr = mapvalues(age, 20:99, rep(seq(20, 90, 10), each = 10))) %>%
+  filter(!is.na(age_gr) & age >= 20 & age < 100) %>%
+  group_by(SID) %>%
+  filter(!is.na(job)) %>%
+  filter(age_gr == max(age_gr)) %>%
+  group_by(SID, age_gr) %>%
+  summarize(job = max(job)) %>%
+  ungroup() %>%
+  rename(code = job) %>%
+  left_join(jobs %>% rename(code = old)) %>%
+  group_by(code) %>%
+  filter(n() / nrow(.) >= .02) %>%
+  ungroup() 
+gsoep_jobs
+```
+
+:::
+::::
+
+## Mosaic Plots  {.smaller}
+* Let's say, for example, that we think that functional limitations and more may age people out of some professions 
+* We could look at this simply as a stacked bar chart, but it wouldn't clarify that there are different proportions of people in each job category / age group
+
+::: {.fragment}
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|3"
+gsoep_jobs %>%
+  ggplot() + 
+    geom_mosaic(aes(x = product(age_gr), fill = cat)) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+gsoep_jobs %>%
+  ggplot() + 
+    geom_mosaic(aes(x = product(age_gr), fill = cat)) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+:::
+::::
+
+:::
+
+
+## Treemap  
+
+* Mosaic plots are sort of just fancy stacked bar plots that let you also index by size
+* Treemaps are helpful when we have nested categorical (and sometimes, to a lesser degree continuous) variables
+* We'll use the example of our jobs data, but this could be used for lots of other types of variables
+  + Crossed conditions in an experiment
+  + Intergenerational data 
+  + Average scores on variables within categories
+  + Brain activation across broader and narrower brain regions
+  + Political affiliation across states, demographic groups, and more  
+  
+## Treemap  {.smaller}
+### Wrangle the Data
+
+:::: {.columns}
+::: {.column}
+
+```{r, eval = F}
+gsoep_tm <- gsoep %>%
+  group_by(SID) %>%
+  filter(!is.na(job)) %>%
+  group_by(SID) %>%
+  summarize(job = max(job)) %>%
+  ungroup() %>%
+  rename(code = job) %>%
+  left_join(jobs %>% rename(code = old)) %>%
+  group_by(code, cat, job) %>%
+  tally()  %>%
+  ungroup() %>%
+  filter(n/sum(n) > .02) %>%
+  mutate(job = str_wrap(job, 15))
+gsoep_tm
+```
+
+:::
+::: {.column}
+
+```{r, echo = F}
+gsoep_tm <- gsoep %>%
+  group_by(SID) %>%
+  filter(!is.na(job)) %>%
+  group_by(SID) %>%
+  summarize(job = max(job)) %>%
+  ungroup() %>%
+  rename(code = job) %>%
+  left_join(jobs %>% rename(code = old)) %>%
+  group_by(code, cat, job) %>%
+  tally()  %>%
+  ungroup() %>%
+  filter(n/sum(n) > .02) %>%
+  mutate(job = str_wrap(job, 15))
+gsoep_tm
+```
+
+:::
+::::
+
+## Treemap  {.smaller}
+### Basic  
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|1-2|6-7"
+if(!"treemapify" %in% installed.packages()) install.packages("treemapify")
+library(treemapify)
+
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap(color = "grey", size = 3) 
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+if(!"treemapify" %in% installed.packages()) install.packages("treemapify")
+library(treemapify)
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap(color = "grey", size = 3) 
+```
+
+:::
+::::
+
+## Treemap  {.smaller}
+### Improvements: Remove Legend and Add Labels
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|5-10"
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap() +
+  geom_treemap_text(
+    colour = "white"
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  theme(legend.position = "none")
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,6), out.width = "90%"}
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap() +
+  geom_treemap_text(
+    colour = "white"
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Treemap  {.smaller}
+### Improvements: Add Subgroup Text
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|11-17"
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap() +
+  geom_treemap_text(
+    colour = c(rep("white", 11), rep("black",4))
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = "white"
+    , fontface = "italic"
+    ) +
+  theme(legend.position = "none")
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,6), out.width = "90%"}
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap() +
+  geom_treemap_text(
+    colour = c(rep("white", 11), rep("black",4))
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = "white"
+    , fontface = "italic"
+    ) +
+  scale_fill_viridis_d()  +
+  theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Treemap  {.smaller}
+### Improvements: Color Palette
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|18"
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap() +
+  geom_treemap_text(
+    colour = "white"
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = "white"
+    , fontface = "italic"
+    ) +
+  scale_fill_viridis_d()  +
+  theme(legend.position = "none")
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,6), out.width = "90%"}
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap() +
+  geom_treemap_text(
+    colour = "white"
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = "white"
+    , fontface = "italic"
+    ) +
+  scale_fill_viridis_d()  +
+  theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Treemap  {.smaller}
+### Improvements: Group and Subgroup Borders + Text Color
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|6,15|4,17-20"
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap(color = "grey", size = 3) +
+  geom_treemap_text(
+    colour = c(rep("white", 11), rep("black",4))
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = c(rep("white", 11), rep("black",4))
+    , fontface = "italic"
+    ) +
+  geom_treemap_subgroup_border(
+    colour = "white"
+    , size = 5
+    ) +
+  scale_fill_viridis_d()  +
+  theme(legend.position = "none")
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,6), out.width = "90%"}
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap(color = "grey", size = 3) +
+  geom_treemap_text(
+    colour = c(rep("white", 11), rep("black",4))
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = c(rep("white", 11), rep("black",4))
+    , fontface = "italic"
+    ) +
+  geom_treemap_subgroup_border(
+    colour = "white"
+    , size = 5
+    ) +
+  scale_fill_viridis_d()  +
+  theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Treemap  {.smaller}
+### Improvements: Title
+
+:::: {.columns}
+::: {.column}
+
+```{r, echo = T, fig.show='hide', fig.align='center', fig.dim= c(6,4), out.width = "90%"}
+#| code-line-numbers: "|23,25"
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap(color = "grey", size = 3) +
+  geom_treemap_text(
+    colour = c(rep("white", 11), rep("black",4))
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = c(rep("white", 11), rep("black",4))
+    , fontface = "italic"
+    ) +
+  geom_treemap_subgroup_border(
+    colour = "white"
+    , size = 5
+    ) +
+  scale_fill_viridis_d()  +
+  labs(title = "White Collar Public Service, Sales, and\nFinance Jobs Far Outnumber Blue Collar Jobs") + 
+  theme(legend.position = "none"
+        , plot.title = element_text(face = "bold", hjust = .5))
+```
+
+:::
+::: {.column}
+
+```{r, echo = F, fig.show='show', fig.align='center', fig.dim= c(6,6), out.width = "90%"}
+gsoep_tm %>%
+  arrange(cat, code) %>%
+  ggplot(aes(area = n, fill = cat, label = job, subgroup = cat)) +
+  geom_treemap(color = "grey", size = 3) +
+  geom_treemap_text(
+    colour = c(rep("white", 11), rep("black",4))
+    , place = "centre"
+    , size = 15
+    , grow = FALSE
+    ) +
+  geom_treemap_subgroup_text(
+    place = "bottom"
+    , grow = TRUE
+    , alpha = 0.4
+    , colour = c(rep("white", 11), rep("black",4))
+    , fontface = "italic"
+    ) +
+  geom_treemap_subgroup_border(
+    colour = "white"
+    , size = 5
+    ) +
+  scale_fill_viridis_d()  +
+  labs(title = "White Collar Public Service, Sales, and\nFinance Jobs Far Outnumber Blue Collar Jobs") + 
+  theme(legend.position = "none"
+        , plot.title = element_text(face = "bold", hjust = .5))
+```
+
+:::
+::::
+
+  + Parallel Sets
