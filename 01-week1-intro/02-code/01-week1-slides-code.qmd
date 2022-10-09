@@ -8,10 +8,16 @@ format:
     code-copy: true
     code-line-numbers: true
     code-link: true
+    preview-links: true
+    slide-number: true
     self-contained: true
     css: custom.css
     theme: psc290
     highlight-style: atom-one-dark
+    margin-left: "0"
+    margin-right: "0"
+    # width: 1400
+    # height: 900
     footer: "PSC 290 - Data Visualization"
     logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
   # pptx: 
@@ -30,182 +36,205 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ```{r}
 library(knitr)
 library(psych)
 library(plyr)
 library(tidyverse)
 ```
-## Course Goals & Learning Outcomes 
-1.	Understand the cognitive and psychological underpinnings of perceiving data visualization.
-2.	Identify good data visualizations and describe what makes them good.
-3.	Produce data visualizations according to types of questions, data, and more, with a particular emphasis on building a toolbox that you can carry into your own research.
 
-## Course Expectations  
-* ~50\% of the course will be in R
-* You will get the most from this course if you:
-  + have your own data you can apply course content to
-  + know how to clean clean, transform, and manage that data
-  + today's workshop is a good litmus test for this
-  
+## Course Goals & Learning Outcomes
+
+1.  Understand the cognitive and psychological underpinnings of perceiving data visualization.
+2.  Identify good data visualizations and describe what makes them good.
+3.  Produce data visualizations according to types of questions, data, and more, with a particular emphasis on building a toolbox that you can carry into your own research.
+
+## Course Expectations
+
+-   \~50% of the course will be in R
+-   You will get the most from this course if you:
+    -   have your own data you can apply course content to
+    -   know how to clean clean, transform, and manage that data
+    -   today's workshop is a good litmus test for this
+
 ## Course Materials
-* All materials (required and optional) are free and online
-  + Wickham & Grolemond: *R for Data Science* [https://r4ds.had.co.nz](https://r4ds.had.co.nz)
-  + Wickham: *Advanced R* [http://adv-r.had.co.nz](http://adv-r.had.co.nz)
-  + Wilke: *Fundamentals of Data Visualization* [https://clauswilke.com/dataviz/](https://clauswilke.com/dataviz/)
-  + Healy: *Data Visualization: A Practical Introduction* [https://socviz.co](https://socviz.co)
-  + [Data Camp](https://www.datacamp.com/groups/shared_links/bd4b5bf66c2195741f388ca82c1b19c89b6f37754c7cfa0eb5aded5f16678360): All paid content unlocked
-  
-## Assignments  
-Assignment Weights                  |   Percent
----------------------------------   |   -------
-Class Participation	                |   20\%
-Response Papers + Visualizations    |   20\%
-Final Project Proposal              |   10\%
-Class Presentation                  |   20\%
-Final Project	                      |   30\%
-**Total**                           |   **100\%**
 
-## Assignments  
-### Class Participation  
-* There are lots of ways to participate, both in and outside class meetings
-* Classes will be technologically hybrid
-* The goal of this is for accessibility and to create recordings 
-* If you need to miss 2 classes (i.e. 20% of total class time), maybe consider taking the course in a different year
-* If you must miss class, please let me know ahead of time if possible
-
-## Assignments  
-### Response Papers / Visualizations  
-* The main homework in the course is your weekly visualization assignment
-* The goal is to demonstrate how the principles and skills you learn in the class function "in the wild."
-* These should be fun and not taken too seriously! No one is judging you for a pulling a graphic from Instagram instead of Nature.
-* Due 12:01 AM each Monday (last class is "free points")
-
-## Assigments 
-### Final Projects  
-* I don't want you to walk out of this course and not know how to apply what you learned
-* Final project replaces final exam (there are no exams)
-* Create a visualization for an ongoing project!
-  + Stage 1: Proposal (due 10/31/22)
-  + Stage 2: 1-on-1 meetings + feedback
-  + Stage 3: In-class presentations (11/28)
-  + Stage 4: Final visualization + brief write-up (??)
+-   All materials (required and optional) are free and online
+    -   Wickham & Grolemond: *R for Data Science* <https://r4ds.had.co.nz>
+    -   Wickham: *Advanced R* <http://adv-r.had.co.nz>
+    -   Wilke: *Fundamentals of Data Visualization* <https://clauswilke.com/dataviz/>
+    -   Healy: *Data Visualization: A Practical Introduction* <https://socviz.co>
+    -   [Data Camp](https://www.datacamp.com/groups/shared_links/bd4b5bf66c2195741f388ca82c1b19c89b6f37754c7cfa0eb5aded5f16678360): All paid content unlocked
 
 ## Assignments
+
+| Assignment Weights               | Percent  |
+|----------------------------------|----------|
+| Class Participation              | 20%      |
+| Response Papers + Visualizations | 20%      |
+| Final Project Proposal           | 10%      |
+| Class Presentation               | 20%      |
+| Final Project                    | 30%      |
+| **Total**                        | **100%** |
+
+## Assignments
+
+### Class Participation
+
+-   There are lots of ways to participate, both in and outside class meetings
+-   Classes will be technologically hybrid
+-   The goal of this is for accessibility and to create recordings
+-   If you need to miss 2 classes (i.e. 20% of total class time), maybe consider taking the course in a different year
+-   If you must miss class, please let me know ahead of time if possible
+
+## Assignments
+
+### Response Papers / Visualizations
+
+-   The main homework in the course is your weekly visualization assignment
+-   The goal is to demonstrate how the principles and skills you learn in the class function "in the wild."
+-   These should be fun and not taken too seriously! No one is judging you for a pulling a graphic from Instagram instead of Nature.
+-   Due 12:01 AM each Monday (last class is "free points")
+
+## Assigments
+
+### Final Projects
+
+-   I don't want you to walk out of this course and not know how to apply what you learned
+-   Final project replaces final exam (there are no exams)
+-   Create a visualization for an ongoing project!
+    -   Stage 1: Proposal (due 10/31/22)
+    -   Stage 2: 1-on-1 meetings + feedback
+    -   Stage 3: In-class presentations (11/28)
+    -   Stage 4: Final visualization + brief write-up (??)
+
+## Assignments
+
 ### Extra Credit
-* Lots of job searches this fall
-* 1 pt extra credit for each one you: 
-  + go to, 
-  + take a snap of a data viz, 
-  + and critique it according to what you've learned in class
-* max 5 pts
+
+-   Lots of job searches this fall
+-   1 pt extra credit for each one you:
+    -   go to,
+    -   take a snap of a data viz,
+    -   and critique it according to what you've learned in class
+-   max 5 pts
 
 ## Class Time
-* ~5-10 min: welcome and review (if needed)
-* ~10-20 min: data viz of the week
-* ~30-45 min: discussion of readings 
-* ~5-10 min: break
-* ~60-90 min: workshop
-* ~20-30 min: open lab
+
+-   \~5-10 min: welcome and review (if needed)
+-   \~10-20 min: data viz of the week
+-   \~30-45 min: discussion of readings
+-   \~5-10 min: break
+-   \~60-90 min: workshop
+-   \~20-30 min: open lab
 
 ## Course Topics
-:::: {.columns}
-::: {.column}
-1. Intro and Overview
-2. Cognitive Perspectives
-3. Proportions and Probability
-4. Differences and Associations
-5. Change and Time Series
-6. Uncertainty
-7. Piecing Visualizations Together
+
+::: columns
+::: column
+1.  Intro and Overview
+2.  Cognitive Perspectives
+3.  Proportions and Probability
+4.  Differences and Associations
+5.  Change and Time Series
+6.  Uncertainty
+7.  Piecing Visualizations Together
 :::
 
-::: {.column}
-8. Polishing Visualizations
-9. Interactive Visualizations
-Additional Topics: 
-* Spatial Information
-* Automated Reports
-* Diagrams
-* More?
-:::
-::::
+::: column
+8.  Polishing Visualizations
+9.  Interactive Visualizations Additional Topics:
 
-# Questions on the Syllabus and Course? 
+-   Spatial Information
+-   Automated Reports
+-   Diagrams
+-   More?
+:::
+:::
+
+# Questions on the Syllabus and Course?
 
 # Data Viz of the Week and Discussion
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/leo-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/acre-map-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/vote-map-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/mmr-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/batman-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/BadVizWk1.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/chaos-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/diff-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/monkeypox-viz.png")
 ```
 
-## Good or Bad? 
+## Good or Bad?
+
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/water-use-viz.jpg")
 ```
 
-# Data Visualization 
+# Data Visualization
 
-## Why Should I Care About Data Visualization  
-- Summarizing huge amounts of information
-- Seeing the forest and the trees
-- Errors in probabilistic reasoning
-- It's fun!
+## Why Should I Care About Data Visualization
 
-## Why Visualize Data in R  
-:::: {.columns}
+-   Summarizing huge amounts of information
+-   Seeing the forest and the trees
+-   Errors in probabilistic reasoning
+-   It's fun!
 
+## Why Visualize Data in R
+
+::: columns
 ::: {.column width="60%"}
-
-- Open source and freeeee
-- Flexible
-- Reproducible
-- Flexible formatting / output
-- Lots of model- and package-specific support
-- Did I mention free? 
-
+-   Open source and freeeee
+-   Flexible
+-   Reproducible
+-   Flexible formatting / output
+-   Lots of model- and package-specific support
+-   Did I mention free?
 :::
 
 ::: {.column width="40%"}
@@ -213,21 +242,17 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/R_logo.svg.png")
 ```
 :::
-
-::::
+:::
 
 ## Why Use RStudio (Pivot)
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="60%"}
-
-- Also free
-- Basically a GUI for R
-- Organize files, import data, etc. with ease
-- RMarkdown, Quarto, and more are powerful tools (they were used to create these slides!)
-- Lots of new features and support
-
+-   Also free
+-   Basically a GUI for R
+-   Organize files, import data, etc. with ease
+-   RMarkdown, Quarto, and more are powerful tools (they were used to create these slides!)
+-   Lots of new features and support
 :::
 
 ::: {.column width="40%"}
@@ -235,20 +260,16 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/RStudio-Logo-Flat.png")
 ```
 :::
+:::
 
-::::
+## Why Use the `tidyverse`
 
-## Why Use the `tidyverse`  
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="70%"}
-
-- Maintained by RStudio (Pivot)
-- No one should have to use a for loop to change data from long to wide
-- Tons of integrated tools for data cleaning, manipulation, transformation, and visualization
-- Even increasing support for modeling (e.g., `tidymodels`)
-
+-   Maintained by RStudio (Pivot)
+-   No one should have to use a for loop to change data from long to wide
+-   Tons of integrated tools for data cleaning, manipulation, transformation, and visualization
+-   Even increasing support for modeling (e.g., `tidymodels`)
 :::
 
 ::: {.column width="30%"}
@@ -256,13 +277,11 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/tidyverse.png")
 ```
 :::
-
-::::
+:::
 
 ## Why Use the `tidyverse`
 
 ::: {layout="[[1,1, 1, 1, 1, 1], [1,1, 1, 1, 1,1]]"}
-
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/tidyr.png")
 ```
@@ -310,20 +329,23 @@ knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thum
 ```{r, fig.align='center'}
 knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/purrr.png")
 ```
-
 :::
 
-## Goals for Today  
+## Goals for Today
 
-- **Review** core principles of: 
-  * `dyplr` (data manipulation)
-  * `tidyr` (data transformation and reshaping)  
+-   **Review** core principles of:
+    -   `dyplr` (data manipulation)
+    -   `tidyr` (data transformation and reshaping)
 
-----
+------------------------------------------------------------------------
 
-:::: {.columns .v-center-container}
+::: {.columns .v-center-container}
 ::: {.column width="70%"}
-<p style="font-size:160%;">Data Manipulation in `dplyr`</p>
+<p style="font-size:160%;">
+
+Data Manipulation in `dplyr`
+
+</p>
 :::
 
 ::: {.column width="30%"}
@@ -331,77 +353,77 @@ knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thum
 knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/dplyr.png")
 ```
 :::
-::::
-
+:::
 
 ## Core Functions
 
-1. **`%>%`**: The pipe. Read as "and then."
-2. **`filter()`**: Pick observations (rows) by their values.
-3. **`select()`**: Pick variables (columns) by their names.
-4. **`arrange()`**: Reorder the rows.
-5. **`group_by()`**: Implicitly split the data set by grouping by names (columns).
-6. **`mutate()`**: Create new variables with functions of existing variables.
-7. **`summarize()` / `summarise()`**: Collapse many values down to a single summary.
+1.  **`%>%`**: The pipe. Read as "and then."
+2.  **`filter()`**: Pick observations (rows) by their values.
+3.  **`select()`**: Pick variables (columns) by their names.
+4.  **`arrange()`**: Reorder the rows.
+5.  **`group_by()`**: Implicitly split the data set by grouping by names (columns).
+6.  **`mutate()`**: Create new variables with functions of existing variables.
+7.  **`summarize()` / `summarise()`**: Collapse many values down to a single summary.
 
-## Core Functions  
+## Core Functions
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-::: {.nonincremental}
-1. **`%>%`**
-2. **`filter()`**
-3. **`select()`**
-4. **`arrange()`**
-5. **`group_by()`**
-6. **`mutate()`**
-7. **`summarize()`**
+::: nonincremental
+1.  **`%>%`**
+2.  **`filter()`**
+3.  **`select()`**
+4.  **`arrange()`**
+5.  **`group_by()`**
+6.  **`mutate()`**
+7.  **`summarize()`**
 :::
 :::
 
 ::: {.column width="60%" style="text-align: center; background-color: #FFD966; color: black; border: 5px solid #033266;"}
-Although each of these functions are powerful alone, they are incredibly powerful in conjunction with one another. So below, I'll briefly introduce each function, then link them all together using an example of basic data cleaning and summary.  
+Although each of these functions are powerful alone, they are incredibly powerful in conjunction with one another. So below, I'll briefly introduce each function, then link them all together using an example of basic data cleaning and summary.
+:::
 :::
 
-::::
+## 1. `%>%`
 
-## 1. `%>%`  
+-   The pipe `%>%` is wonderful. It makes coding intuitive. Often in coding, you need to use so-called nested functions. For example, you might want to round a number after taking the square of 43.
 
-- The pipe `%>%` is wonderful. It makes coding intuitive. Often in coding, you need to use so-called nested functions. For example, you might want to round a number after taking the square of 43.  
-
-::: {.fragment}
+::: fragment
 ```{r, echo = T}
 sqrt(43)
 round(sqrt(43), 2)
 ```
 :::
 
-## 1. `%>%`  
-The issue with this comes whenever we need to do a series of operations on a data set or other type of object. In such cases, if we run it in a single call, then we have to start in the middle and read our way out.  
+## 1. `%>%`
+
+The issue with this comes whenever we need to do a series of operations on a data set or other type of object. In such cases, if we run it in a single call, then we have to start in the middle and read our way out.
 
 ```{r, echo = T}
 round(sqrt(43/2), 2)
 ```
 
-## 1. `%>%`  
+## 1. `%>%`
 
-The pipe solves this by allowing you to read from left to right (or top to bottom). The easiest way to think of it is that each call of `%>%` reads and operates as "and then." So with the rounded square root of 43, for example: 
+The pipe solves this by allowing you to read from left to right (or top to bottom). The easiest way to think of it is that each call of `%>%` reads and operates as "and then." So with the rounded square root of 43, for example:
 
-::: {.fragment}
+::: fragment
 ```{r, echo = T}
 sqrt(43) %>%
   round(2)
 ```
 :::
 
-## 2. `filter()`  
-::: {.fragment}
-Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include. 
+## 2. `filter()`
+
+::: fragment
+Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include.
 :::
 
 <!-- Say for example, that you're interested personality change in adolescence, but you just opened a survey up online. So when you actually download and examine your data, you realize that you have an age range of something like 3-86, not 12-18. In this case, you want to get rid of the people over 18 -- that is, `filter()` them out.   -->
-::: {.fragment}
+
+::: fragment
 ```{r, echo=TRUE}
 data(bfi) # grab the bfi data from the psych package
 bfi <- bfi %>% as_tibble()
@@ -409,19 +431,21 @@ head(bfi)
 ```
 :::
 
-## 2. `filter()`  
-Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include. 
+## 2. `filter()`
 
-:::{.fragment}
+Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include.
+
+::: fragment
 ```{r, echo = T}
 summary(bfi$age) # get age descriptives
 ```
 :::
 
-## 2. `filter()`  
-Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include. 
+## 2. `filter()`
 
-:::{.fragment}
+Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include.
+
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|2"
 bfi2 <- bfi %>% # see a pipe!
@@ -431,14 +455,15 @@ summary(bfi2$age) # summary of the new data
 ```
 :::
 
-:::{.fragment}
-But this isn't quite right. We still have folks below 12. But, the beauty of `filter()` is that you can do sequence of `OR` and `AND` statements when there is more than one condition, such as up to 18 `AND` at least 12.  
+::: fragment
+But this isn't quite right. We still have folks below 12. But, the beauty of `filter()` is that you can do sequence of `OR` and `AND` statements when there is more than one condition, such as up to 18 `AND` at least 12.
 :::
 
-## 2. `filter()`  
-Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include. 
+## 2. `filter()`
 
-::: {.fragment}
+Often times, when conducting research (experiments or otherwise), there are observations (people, specific trials, etc.) that you don't want to include.
+
+::: fragment
 ```{r, echo = T}
 bfi2 <- bfi %>%
   filter(age <= 18 & age >= 12) # filter to age up to 18 and at least 12
@@ -447,30 +472,31 @@ summary(bfi2$age) # summary of the new data
 ```
 :::
 
-::: {.fragment} 
-Got it!  
+::: fragment
+Got it!
 :::
 
-## 2. `filter()`  
-* But filter works for more use cases than just conditional
-  + `<`, `>`, `<=`, and `>=`
-* It can also be used for cases where we want a single values to match cases with text. 
-* To do that, let's convert one of the variables in the `bfi` data frame to a string. 
-* So let's change gender (1 = male, 2 = female) to text (we'll get into factors later).  
+## 2. `filter()`
 
-::: {.fragment} 
+-   But filter works for more use cases than just conditional
+    -   `<`, `>`, `<=`, and `>=`
+-   It can also be used for cases where we want a single values to match cases with text.
+-   To do that, let's convert one of the variables in the `bfi` data frame to a string.
+-   So let's change gender (1 = male, 2 = female) to text (we'll get into factors later).
+
+::: fragment
 ```{r, echo = T}
 bfi$education <- plyr::mapvalues(bfi$education, 1:5, c("Below HS", "HS", "Some College", "College", "Higher Degree"))
 ```
 :::
 
-## 2. `filter()`  
+## 2. `filter()`
 
-Now let's try a few things: 
+Now let's try a few things:
 
-<font color = "#033266">**1. Create a data set with only individuals with some college (`==`).**</font>  
+<font color = "#033266">**1. Create a data set with only individuals with some college (`==`).**</font>
 
-::: {.fragment} 
+::: fragment
 ```{r, echo = T}
 bfi2 <- bfi %>% 
   filter(education == "Some College")
@@ -478,13 +504,13 @@ unique(bfi2$education)
 ```
 :::
 
-## 2. `filter()`  
+## 2. `filter()`
 
-Now let's try a few things: 
+Now let's try a few things:
 
-<font color = "#033266">**2. Create a data set with only people age 18 (`==`).**</font>  
+<font color = "#033266">**2. Create a data set with only people age 18 (`==`).**</font>
 
-::: {.fragment} 
+::: fragment
 ```{r, echo = T}
 bfi2 <- bfi %>%
   filter(age == 18)
@@ -492,13 +518,13 @@ summary(bfi2$age)
 ```
 :::
 
-## 2. `filter()`  
+## 2. `filter()`
 
-Now let's try a few things: 
+Now let's try a few things:
 
-<font color = "#033266">**3. Create a data set with individuals with some college or above (`%in%`).**</font>  
+<font color = "#033266">**3. Create a data set with individuals with some college or above (`%in%`).**</font>
 
-::: {.fragment} 
+::: fragment
 ```{r, echo = T}
 bfi2 <- bfi %>%
   filter(education %in% c("Some College", "College", "Higher Degree"))
@@ -506,7 +532,7 @@ unique(bfi2$education)
 ```
 :::
 
-::: {.fragment} 
+::: fragment
 `%in%` is great. It compares a column to a vector rather than just a single value, you can compare it to several
 
 ```{r, echo = T}
@@ -516,21 +542,23 @@ summary(bfi2$age)
 ```
 :::
 
-## 3. `select()`  
-* If `filter()` is for pulling certain observations (rows), then `select()` is for pulling certain variables (columns).
-* it's good practice to remove these columns to stop your environment from becoming cluttered and eating up your RAM.
+## 3. `select()`
 
-## 3. `select()`  
-* In our `bfi` data, most of these have been pre-removed, so instead, we'll imagine we don't want to use any indicators of Agreeableness (A1-A5) and that we aren't interested in gender. 
-* With `select()`, there are few ways choose variables. We can bare quote name the ones we want to keep, bare quote names we want to remove, or use any of a number of `select()` helper functions.  
+-   If `filter()` is for pulling certain observations (rows), then `select()` is for pulling certain variables (columns).
+-   it's good practice to remove these columns to stop your environment from becoming cluttered and eating up your RAM.
 
+## 3. `select()`
 
-## 3. `select()`: 
-### A. Bare quote columns we want to keep:  
+-   In our `bfi` data, most of these have been pre-removed, so instead, we'll imagine we don't want to use any indicators of Agreeableness (A1-A5) and that we aren't interested in gender.
+-   With `select()`, there are few ways choose variables. We can bare quote name the ones we want to keep, bare quote names we want to remove, or use any of a number of `select()` helper functions.
 
-:::: {.columns}
-::: {.column}
-::: {.fragment}
+## 3. `select()`:
+
+### A. Bare quote columns we want to keep:
+
+::: columns
+::: column
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|2"
 bfi %>%
@@ -540,9 +568,8 @@ bfi %>%
 :::
 :::
 
-:::{.column}
-::: {.fragment}
-
+::: column
+::: fragment
 ```{r, echo=T}
 #| code-line-numbers: "|2"
 bfi %>%
@@ -553,12 +580,13 @@ bfi %>%
 <!-- We can also use `:` to grab a *range* of columns.   -->
 :::
 :::
-::::
+:::
 
-## 3. `select()`: 
+## 3. `select()`:
+
 ### B. Bare quote columns we don't want to keep:
 
-::: {.fragment}
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|2"
 bfi %>% 
@@ -567,41 +595,43 @@ bfi %>%
 ```
 :::
 
-## 3. `select()`: 
-### C. Add or remove using `select()` helper functions.  
+## 3. `select()`:
 
-:::: {.columns}
+### C. Add or remove using `select()` helper functions.
+
+::: columns
 ::: {.column width="40%"}
-* `starts_with()`  
-* `ends_with()`
-* `contains()`
-* `matches()`
-* `num_range()`
-* `one_of()`
-* `all_of()`
+-   `starts_with()`\
+-   `ends_with()`
+-   `contains()`
+-   `matches()`
+-   `num_range()`
+-   `one_of()`
+-   `all_of()`
 :::
 
 ::: {.column width="60%"}
-::: {.fragment}
+::: fragment
 ```{r, echo = T}
 bfi %>%
   select(starts_with("C"))
 ```
 :::
 :::
-::::
+:::
 
-## 4. `arrange()` 
-* Sometimes, either in order to get a better sense of our data or in order to well, order our data, we want to sort it
-* Although there is a base `R` `sort()` function, the `arrange()` function is `tidyverse` version that plays nicely with other `tidyverse functions`. 
+## 4. `arrange()`
 
-## 4. `arrange()` 
-:::: {.columns}
+-   Sometimes, either in order to get a better sense of our data or in order to well, order our data, we want to sort it
+-   Although there is a base `R` `sort()` function, the `arrange()` function is `tidyverse` version that plays nicely with other `tidyverse functions`.
 
-So in our previous examples, we could also `arrange()` our data by age or education, rather than simply filtering. (Or as we'll see later, we can do both!)  
+## 4. `arrange()`
+
+::: columns
+So in our previous examples, we could also `arrange()` our data by age or education, rather than simply filtering. (Or as we'll see later, we can do both!)
 
 ::: {.column width="50%"}
-::: {.fragment}
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|4"
 # sort by age
@@ -614,7 +644,7 @@ bfi %>%
 :::
 
 ::: {.column width="50%"}
-::: {.fragment}
+::: fragment
 ```{r, echo=TRUE}
 #| code-line-numbers: "|4"
 # sort by education
@@ -625,12 +655,13 @@ bfi %>%
 ```
 :::
 :::
-::::
+:::
 
-## 4. `arrange()` 
-We can also arrange by multiple columns, like if we wanted to sort by gender then education:  
+## 4. `arrange()`
 
-::: {.fragment}
+We can also arrange by multiple columns, like if we wanted to sort by gender then education:
+
+::: fragment
 ```{r, echo = T}
 bfi %>%
   select(gender:age) %>%
@@ -639,24 +670,28 @@ bfi %>%
 ```
 :::
 
-# Bringing it all together: Split-Apply-Combine  
+# Bringing it all together: Split-Apply-Combine
 
-## Bringing it all together: Split-Apply-Combine  
-* Much of the power of `dplyr` functions lay in the split-apply-combine method
+## Bringing it all together: Split-Apply-Combine
 
-* A given set of of data are: 
-  + *split* into smaller chunks
-  + then a function or series of functions are *applied* to each chunk
-  + and then the chunks are *combined* back together
-  
-## 5. `group_by()`  
-* The `group_by()` function is the "split" of the method 
-* It basically implicitly breaks the data set into chunks by whatever bare quoted column(s)/variable(s) are supplied as arguments.  
+-   Much of the power of `dplyr` functions lay in the split-apply-combine method
 
-## 5. `group_by()`  
-So imagine that we wanted to `group_by()` education levels to get average ages at each level 
+-   A given set of of data are:
 
-::: {.fragment}
+    -   *split* into smaller chunks
+    -   then a function or series of functions are *applied* to each chunk
+    -   and then the chunks are *combined* back together
+
+## 5. `group_by()`
+
+-   The `group_by()` function is the "split" of the method
+-   It basically implicitly breaks the data set into chunks by whatever bare quoted column(s)/variable(s) are supplied as arguments.
+
+## 5. `group_by()`
+
+So imagine that we wanted to `group_by()` education levels to get average ages at each level
+
+::: fragment
 ```{r, echo = T}
 bfi %>%
   select(starts_with("C"), age, gender, education) %>%
@@ -665,11 +700,12 @@ bfi %>%
 ```
 :::
 
-## 5. `group_by()`  
-* Hadley's first law of data cleaning: "What is split, must be combined"
-* This is super easy with the `ungroup()` function:  
+## 5. `group_by()`
 
-::: {.fragment}
+-   Hadley's first law of data cleaning: "What is split, must be combined"
+-   This is super easy with the `ungroup()` function:
+
+::: fragment
 ```{r, echo=TRUE}
 bfi %>%
   select(starts_with("C"), age, gender, education) %>%
@@ -679,10 +715,11 @@ bfi %>%
 ```
 :::
 
-## 5. `group_by()`  
-Multiple `group_by()` calls overwrites previous calls:  
+## 5. `group_by()`
 
-::: {.fragment}
+Multiple `group_by()` calls overwrites previous calls:
+
+::: fragment
 ```{r, echo = T}
 bfi %>%
   select(starts_with("C"), age, gender, education) %>%
@@ -692,15 +729,17 @@ bfi %>%
 ```
 :::
 
-## 6. `mutate()`  
-* `mutate()` is one of your "apply" functions
-* When you use `mutate()`, the resulting data frame will have the same number of rows you started with 
-* You are directly mutating the existing data frame, either modifying existing columns or creating new ones
+## 6. `mutate()`
 
-## 6. `mutate()`  
+-   `mutate()` is one of your "apply" functions
+-   When you use `mutate()`, the resulting data frame will have the same number of rows you started with
+-   You are directly mutating the existing data frame, either modifying existing columns or creating new ones
+
+## 6. `mutate()`
+
 To demonstrate, let's add a column that indicated average age levels within each age group
 
-::: {.fragment}
+::: fragment
 ```{r, echo = T}
 bfi %>%
   select(starts_with("C"), age, gender, education) %>%
@@ -711,11 +750,13 @@ bfi %>%
 ```
 :::
 
-## 6. `mutate()`  
+## 6. `mutate()`
+
 `mutate()` is also super useful even when you aren't grouping
 
-::: {.fragment}
+::: fragment
 We can create a new category
+
 ```{r, echo = T}
 bfi %>%
   select(starts_with("C"), age, gender, education) %>%
@@ -723,12 +764,13 @@ bfi %>%
 ```
 :::
 
-## 6. `mutate()`  
+## 6. `mutate()`
+
 `mutate()` is also super useful even when you aren't grouping
 
 We could also just overwrite it:
 
-::: {.fragment}
+::: fragment
 ```{r, echo = T}
 bfi %>%
   select(starts_with("C"), age, gender, education) %>%
@@ -736,16 +778,17 @@ bfi %>%
 ```
 :::
 
-## 7. `summarize()` / `summarise()`  
-:::: {.columns}
-::: {.column}
-* `summarize()` is one of your "apply" functions
-* The resulting data frame will have the same number of rows as your grouping variable
-* You number of groups is 1 for ungrouped data frames
+## 7. `summarize()` / `summarise()`
+
+::: columns
+::: column
+-   `summarize()` is one of your "apply" functions
+-   The resulting data frame will have the same number of rows as your grouping variable
+-   You number of groups is 1 for ungrouped data frames
 :::
 
-::: {.column}
-::: {.fragment}
+::: column
+::: fragment
 ```{r, echo = T}
 # group_by() education
 bfi %>%
@@ -756,20 +799,21 @@ bfi %>%
 ```
 :::
 :::
-::::
+:::
 
-## 7. `summarize()` / `summarise()`  
-:::: {.columns}
-::: {.column}
-::: {.nonincremental}
-* `summarize()` is one of your "apply" functions
-* The resulting data frame will have the same number of rows as your grouping variable
-* You number of groups is 1 for ungrouped data frames
+## 7. `summarize()` / `summarise()`
+
+::: columns
+::: column
+::: nonincremental
+-   `summarize()` is one of your "apply" functions
+-   The resulting data frame will have the same number of rows as your grouping variable
+-   You number of groups is 1 for ungrouped data frames
 :::
 :::
 
-::: {.column}
-::: {.fragment}
+::: column
+::: fragment
 ```{r, echo = T}
 # no groups  
 bfi %>% 
@@ -779,14 +823,17 @@ bfi %>%
 ```
 :::
 :::
+:::
 
-::::
+------------------------------------------------------------------------
 
-----
-
-:::: {.columns .v-center-container}
+::: {.columns .v-center-container}
 ::: {.column width="70%"}
-<p style="font-size:160%;">Data Wrangling in `tidyr`</p>
+<p style="font-size:160%;">
+
+Data Wrangling in `tidyr`
+
+</p>
 :::
 
 ::: {.column width="30%"}
@@ -794,44 +841,48 @@ bfi %>%
 knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/master/thumbs/tidyr.png")
 ```
 :::
-::::
-## `tidyr`
-* Now, let's build off what we learned from dplyr and focus on *reshaping* and *merging* our data. 
-* First, the reshapers:
-
-1. `pivot_longer()`, which takes a "wide" format data frame and makes it long.  
-2. `pivot_wider()`, which takes a "long" format data frame and makes it wide.  
-
-## `tidyr`
-* Next, the mergers: 
-
-3. `full_join()`, which merges *all* rows in either data frame   
-4. `inner_join()`, which merges rows whose keys are present in *both* data frames   
-5. `left_join()`, which "prioritizes" the first data set   
-6. `right_join()`, which "prioritizes" the second data set  
-
-::: {.fragment}
-(See also:`anti_join()` and `semi_join()`)  
 :::
 
-# Key `tidyr` Functions  
+## `tidyr`
+
+-   Now, let's build off what we learned from dplyr and focus on *reshaping* and *merging* our data.
+-   First, the reshapers:
+
+1.  `pivot_longer()`, which takes a "wide" format data frame and makes it long.\
+2.  `pivot_wider()`, which takes a "long" format data frame and makes it wide.
+
+## `tidyr`
+
+-   Next, the mergers:
+
+3.  `full_join()`, which merges *all* rows in either data frame\
+4.  `inner_join()`, which merges rows whose keys are present in *both* data frames\
+5.  `left_join()`, which "prioritizes" the first data set\
+6.  `right_join()`, which "prioritizes" the second data set
+
+::: fragment
+(See also:`anti_join()` and `semi_join()`)
+:::
+
+# Key `tidyr` Functions
+
 ## 1. `pivot_longer()` {.smaller}
-* (Formerly `gather()`) Makes wide data long, based on a key
-<font size="5">
-* Core arguments:
-  + `data`: the data, blank if piped
-  + `cols`: columns to be made long, selected via `select()` calls
-  + `names_to`: name(s) of key column(s) in new long data frame (string or string vector)
-  + `values_to`: name of values in new long data frame (string)
-  + `names_sep`: separator in column headers, if multiple keys
-  + `values_drop_na`: drop missing cells (similar to `na.rm = T`)
-</font>
 
-## 1. `pivot_longer()`: Basic Application  
-Let's start with an easy one -- one key, one value:  
+-   (Formerly `gather()`) Makes wide data long, based on a key <font size="5">
+-   Core arguments:
+    -   `data`: the data, blank if piped
+    -   `cols`: columns to be made long, selected via `select()` calls
+    -   `names_to`: name(s) of key column(s) in new long data frame (string or string vector)
+    -   `values_to`: name of values in new long data frame (string)
+    -   `names_sep`: separator in column headers, if multiple keys
+    -   `values_drop_na`: drop missing cells (similar to `na.rm = T`) </font>
 
-:::: {.columns}
-::: {.column}
+## 1. `pivot_longer()`: Basic Application
+
+Let's start with an easy one -- one key, one value:
+
+::: columns
+::: column
 ```{r, echo=TRUE, results = 'hide'}
 bfi %>%
   rownames_to_column("SID") %>%
@@ -845,8 +896,7 @@ bfi %>%
 ```
 :::
 
-
-::: {.column}
+::: column
 ```{r, echo=F}
 bfi %>%
   rownames_to_column("SID") %>%
@@ -859,13 +909,14 @@ bfi %>%
   print(n = 8)
 ```
 :::
-::::
+:::
 
-## 1. `pivot_longer()`: More Advanced Application  
-Now a harder one -- two keys, one value:  
+## 1. `pivot_longer()`: More Advanced Application
 
-:::: {.columns}
-::: {.column}
+Now a harder one -- two keys, one value:
+
+::: columns
+::: column
 ```{r, echo=TRUE, results = 'hide'}
 bfi %>%
   rownames_to_column("SID") %>%
@@ -880,8 +931,7 @@ bfi %>%
 ```
 :::
 
-
-::: {.column}
+::: column
 ```{r, echo=F}
 bfi %>%
   rownames_to_column("SID") %>%
@@ -895,21 +945,21 @@ bfi %>%
   print(n = 8)
 ```
 :::
-::::
+:::
 
 ## 2. `pivot_wider()` {.smaller}
-* (Formerly `spread()`) Makes wide data long, based on a key
-<font size="6">
-* Core arguments:
-  + `data`: the data, blank if piped
-  + `names_from`: name(s) of key column(s) in new long data frame (string or string vector)
-  + `names_sep`: separator in column headers, if multiple keys
-  + `names_glue`: specify multiple or custom separators of multiple keys
-  + `values_from`: name of values in new long data frame (string)
-  + `values_fn`: function applied to data with duplicate labels
-</font>
 
-## 2. `pivot_wider()`: Basic Application  
+-   (Formerly `spread()`) Makes wide data long, based on a key <font size="6">
+-   Core arguments:
+    -   `data`: the data, blank if piped
+    -   `names_from`: name(s) of key column(s) in new long data frame (string or string vector)
+    -   `names_sep`: separator in column headers, if multiple keys
+    -   `names_glue`: specify multiple or custom separators of multiple keys
+    -   `values_from`: name of values in new long data frame (string)
+    -   `values_fn`: function applied to data with duplicate labels </font>
+
+## 2. `pivot_wider()`: Basic Application
+
 ```{r, results = 'hide'}
 
 bfi_long <- bfi %>%
@@ -931,7 +981,8 @@ bfi_long %>%
   )
 ```
 
-## 2. `pivot_wider()`: More Advanced   
+## 2. `pivot_wider()`: More Advanced
+
 ```{r, results = 'hide'}
 bfi_long <- bfi %>%
   rownames_to_column("SID") %>%
@@ -953,7 +1004,7 @@ bfi_long %>%
   )
 ```
 
-## 2. `pivot_wider()`: A Little More Advanced   
+## 2. `pivot_wider()`: A Little More Advanced
 
 ```{r, echo = T}
 bfi_long %>%
@@ -967,32 +1018,32 @@ bfi_long %>%
 ```
 
 # More `dplyr` Functions
-## The `_join()` Functions  
 
-:::: {.columns}
+## The `_join()` Functions
 
+::: columns
 ::: {.column width="60%"}
-* Often we may need to pull different data from different sources
-* There are lots of reasons to need to do this
-* We don't have time to get into all the use cases here, so we'll talk about them in high level terms
+-   Often we may need to pull different data from different sources
+-   There are lots of reasons to need to do this
+-   We don't have time to get into all the use cases here, so we'll talk about them in high level terms
 :::
 
 ::: {.column width="40%"}
-* We'll focus on: 
-  + `full_join()`
-  + `inner_join()`
-  + `left_join()`
-  + `right_join()`
+-   We'll focus on:
+    -   `full_join()`
+    -   `inner_join()`
+    -   `left_join()`
+    -   `right_join()`
+:::
 :::
 
-::::
+## The `_join()` Functions
 
-## The `_join()` Functions  
-* Let's separate demographic and BFI data
+-   Let's separate demographic and BFI data
 
-:::: {.columns}
-::: {.column}
-::: {.fragment}
+::: columns
+::: column
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|3"
 bfi_only <- bfi %>% 
@@ -1003,8 +1054,8 @@ bfi_only %>% print(n = 6)
 :::
 :::
 
-::: {.column}
-::: {.fragment}
+::: column
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|3"
 bfi_dem <- bfi %>%
@@ -1014,15 +1065,15 @@ bfi_dem %>% print(n = 6)
 ```
 :::
 :::
+:::
 
-::::
+## 3. `full_join()`
 
-## 3. `full_join()`  
-Most simply, we can put those back together keeping all observations.  
+Most simply, we can put those back together keeping all observations.
 
-:::: {.columns}
-::: {.column}
-::: {.fragment}
+::: columns
+::: column
+::: fragment
 ```{r, echo = T}
 bfi_only %>%
   full_join(bfi_dem) %>%
@@ -1031,24 +1082,24 @@ bfi_only %>%
 :::
 :::
 
-::: {.column}
-::: {.fragment}
+::: column
+::: fragment
 ```{r, echo = T}
 bfi %>%
   rownames_to_column("SID") %>%
   print(n = 6)
 ```
-
 :::
 :::
-::::
+:::
 
-## 4. `inner_join()`  
-We can also keep all rows present in *both* data frames  
+## 4. `inner_join()`
 
-:::: {.columns}
-::: {.column}
-::: {.fragment}
+We can also keep all rows present in *both* data frames
+
+::: columns
+::: column
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|1-2|4-5|3"
 bfi_dem %>%
@@ -1062,24 +1113,24 @@ bfi_dem %>%
 :::
 :::
 
-::: {.column}
-::: {.fragment}
+::: column
+::: fragment
 ```{r, echo = T}
 bfi %>%
   rownames_to_column("SID") %>%
   print(n = 6)
 ```
-
 :::
 :::
-::::
+:::
 
-## 5. `left_join()`  
-Or all rows present in the left (first) data frame, perhaps if it's a subset of people with complete data  
+## 5. `left_join()`
 
-:::: {.columns}
-::: {.column}
-::: {.fragment}
+Or all rows present in the left (first) data frame, perhaps if it's a subset of people with complete data
+
+::: columns
+::: column
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|2|3"
 bfi_dem %>%
@@ -1090,25 +1141,24 @@ bfi_dem %>%
 :::
 :::
 
-::: {.column}
-::: {.fragment}
+::: column
+::: fragment
 ```{r, echo = T}
 bfi %>%
   rownames_to_column("SID") %>%
   print(n = 6)
 ```
-
 :::
 :::
-::::
+:::
 
-## 6. `right_join()`  
+## 6. `right_join()`
 
 Or all rows present in the right (second) data frame, such as I do when I join a codebook with raw data
 
-:::: {.columns}
-::: {.column}
-::: {.fragment}
+::: columns
+::: column
+::: fragment
 ```{r, echo = T}
 #| code-line-numbers: "|3"
 bfi_dem %>%
@@ -1119,14 +1169,13 @@ bfi_dem %>%
 :::
 :::
 
-::: {.column}
-::: {.fragment}
+::: column
+::: fragment
 ```{r, echo = T}
 bfi %>%
   rownames_to_column("SID") %>%
   print(n = 6)
 ```
-
 :::
 :::
-::::
+:::
