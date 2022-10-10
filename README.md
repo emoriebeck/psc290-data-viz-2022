@@ -3,7 +3,7 @@ GitHub Repository for PSC290 - Data Visualization, UC Davis, Fall 2022
 
 Welcome to the GitHub page for the psychology graduate-level course Data Visualization, taught by me (Emorie Beck) at UC Davis in Fall 2022. 
 
-# Course Description**
+# Course Description
 
 In scholarly writing, a figure can be worth 1000 words. Data visualization is a key part of the scientific enterprise, yet most students are taught only a small range of visualizations that are most frequently used in their fields and for the types of methods they use. Such standard procedure can limit the reach and scope of scientific work in an era of rapid digital technological innovation. This course will be designed around themes rather than types of visualization. The beginning of the course will cover best practices in data visualization from the perspective of a growing literature on cognitive perceptions of data visualization and will orient students to visualizing data in R using ggplot2. Next, we will cover several broad topic areas, including visualizing probability, differences, and uncertainty. We will conclude with interactive and animated graphics in R and Shiny. Students are highly encouraged to bring their own data from ongoing or completed projects, but this is not required. 
 
