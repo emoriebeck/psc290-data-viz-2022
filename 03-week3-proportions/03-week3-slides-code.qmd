@@ -31,6 +31,8 @@ format:
   #   highlight-style: atom-one-dark
   #   footer: "PSC 290 - Data Visualization"
   #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r, echo = F}
@@ -120,13 +122,64 @@ cbsafe_pal
 :::
 ::::
 
-# Part 1: Proportions  
+# Good \& Bad Figures of the Week
+
+## Activity
+* Use either these slides of the Discussion on Canvas
+* In groups of 2-3, choose one or two visualizations and critique them. 
+  + What do they do really well? What could they do better? 
+  + Do they violate any of the cognitive principles from last week? 
+  + Do you think you could reproduce this figure given the data? Would you use the same kind of visualization or a different one? 
+* In your groups, also share one thing from the reading that you liked, hadn't thought about before, found interesting, etc. 
+* We'll take about 7-10 minutes (message or verbally tell me when you're done) and then come back and one person from each group will share with the class your thoughts (more are welcome to jump in if they'd like)
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/bad-parallel-sets.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/good-pie-to-bar.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/bad-pie-mosaic.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/good-prop-plot.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/bad-pizza-pie.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/good-stacked-bar.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/goodbad-stacked-mix.png")
+```
+
+## Good or Bad?
+```{r, fig.align='center', echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/02-images/bad-stacked-bar.png")
+```
+
+# Proportions  
 ## Visualizating Proportions
 * Proportions are often important in our research
 * From describing sample-level differences to describing the frequency of behaviors / events / experiences, etc., we often reach toward describing amounts relative to the whole
 * But the goals we are trying to achieve are varied, which necesssitates the use of different graphics
 
-## Part 1: Agenda
+## Agenda
 * We will cover X kinds of ways of visualizations, all of which were covered in your readings
 * We will cover both when to use them and how to create them
   + Pie Charts 
@@ -134,7 +187,7 @@ cbsafe_pal
   + Bar Charts (Side-by-Side)
   + Bar Charts and Density Across Continuous Variables
   + Mosaic Plots
-  + Parallel Sets
+  + ~~Parallel Sets~~
 
 ## But First, Our Data  
 
@@ -146,8 +199,6 @@ cbsafe_pal
 * Samples households in Germany
 * Has additional sub-projects (e.g., innovation studies, migrant panel, etc.)
 * The data are publicly available via application
-
-:::
 
 ```{r gsoep clean fun, eval = F, echo = F}
 gsoep_read_fun <- function(Year, WL){
@@ -252,8 +303,9 @@ gsoep_st <- gsoep_st %>%
 save(gsoep, gsoep_st, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/03-week3-proportions/04-data/gsoep.RData")
 ```
 
-::: {.fragment}
+:::
 ::: {.column}
+::: {.fragment}
 
 ```{r}
 load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/03-week3-proportions/04-data/gsoep.RData"))
@@ -273,9 +325,8 @@ gsoep
   + You have a small data set
   
 ## Pie Charts  
-* In our data, we have a few variables that follow this, but we'll focus on two:
+* In our data, we have a few variables that follow this, but we'll focus on one for pie charts:
   + marital status (4 groups)
-  + gender (2 groups)
 * `ggplot2` doesn't specifically support pie charts
 * Why? Because it's a layered grammar of graphics and an explicit function for it would be redundant with some of the built in coordinates
   + specifically, `coord_polar()`
@@ -2217,5 +2268,3 @@ gsoep_tm %>%
 
 :::
 ::::
-
-  + Parallel Sets
