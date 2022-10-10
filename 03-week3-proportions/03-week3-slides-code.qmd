@@ -2268,3 +2268,9 @@ gsoep_tm %>%
 
 :::
 ::::
+
+# Activity / Lab Time  
+## # Activity / Lab Time  
+* For the rest of class, I want you to take some of your own data or the data provided in the workbook version of these slides to create some visualization of proportions. 
+* Don't overthink this, this is just your chance to apply what you've learned as we move into the "content area" portion of the course. * This is not a graded exercise but a chance to try to use your skills while also having the opportunity to ask questions of the instructors or your peers
+* You can work individually or in small groups, but I suggest at least trying to create the visualization independently, even if you work in small groups to come up with the idea and debug

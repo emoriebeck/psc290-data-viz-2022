@@ -1098,3 +1098,16 @@ gsoep_tm %>%
         , plot.title = element_text(face = "bold", hjust = .5))
 ```
 
+
+# Alternative Exercise  
+If you don't have your own data, you can use some open data from (infoisbeautiful.net)[https://informationisbeautiful.net/visualizations/worlds-biggest-data-breaches-hacks/]. Here's the commands you'll need to load the data (note you will have to authenticate via Google): 
+
+```{r}
+if(!"googlesheets4" %in% installed.packages()) install.packages("googlesheets4")
+library(googlesheets4)
+
+breach_data <- read_sheet("https://docs.google.com/spreadsheets/d/1i0oIJJMRG-7t1GT-mr4smaTTU7988yXVz8nPlwaJ8Xk/edit#gid=2")
+breach_data
+```
+
+Choose one of the visualizations from this week and use these data to create it, also keeping in mind principles and skills from previous weeks. This is not a graded exercise but rather a challenge to create a really compelling visualization using what you've learned.
