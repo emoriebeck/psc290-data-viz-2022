@@ -1,0 +1,94 @@
+---
+title: "Week 3: Visualizing Associations and Models"
+author: "Emorie D Beck"
+format: 
+  revealjs:
+    incremental: true
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    preview-links: true
+    slide-number: true
+    self-contained: true
+    css: custom.css
+    theme: psc290
+    highlight-style: atom-one-dark
+    margin-left: "0"
+    margin-right: "0"
+    width: 1400
+    # height: 900
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+  # pptx: 
+  #   incremental: true  
+  #   # code-tools: true
+  #   # code-copy: true
+  #   # code-line-numbers: true
+  #   # code-link: true
+  #   css: custom.css
+  #   theme: psc290
+  #   highlight-style: atom-one-dark
+  #   footer: "PSC 290 - Data Visualization"
+  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F)
+options(knitr.kable.NA = '')
+```
+
+```{r, echo = F}
+library(RColorBrewer)
+library(plyr)
+library(tidyverse)
+```
+
+```{r, eval = F, echo = F}
+wd <- "/Volumes/Emorie/other projects/selection"
+loadRData <- function(fileName, obj){
+#loads an RData file, and returns it
+    path <- sprintf("%s/data/sca/%s.RData", wd, fileName)
+    load(path)
+    get(ls()[grepl(obj, ls())])
+}
+
+sample_fun <- function(x){
+  x2 <- x %>%
+    group_by(study, o_value) %>%
+    nest() %>%
+    ungroup() %>%
+    mutate(data = map(data, 
+        ~(.) %>% filter(row_number() %in% sample(1:nrow(.), if(nrow(.) > 500) 500 else nrow(.))))) %>%
+    unnest(data) %>%
+    select(-Trait, -Outcome)
+  x2 <- x2 %>% mutate(study = mapvalues(study, unique(study), paste0("Study", 1:length(unique(study)))))
+}
+
+pred_data <- crossing(
+  Trait = c("E", "A", "C", "N", "O")
+  , Outcome = "mortality"
+  , Moderator = c("none", "gender")
+) %>%
+  mutate(file = paste("sca", Trait, Outcome, sep = "_")
+         , data = map2(file, "df1", loadRData)
+         , data = map(data, sample_fun)) %>%
+  select(-file) 
+
+save(pred_data, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/04-week4-associations/04-data/week4-data.RData")
+```
+
+## The Data  
+
+```{r}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/blob/main/04-week4-associations/04-data/week4-data.RData?raw=true"))
+pred_data
+```
+
+# Part 1 Visualizing Associations Among Quantitative Variables
+
+# Part 2 Visualizing Associations, Parameters, and Predictions from Models
+
+
