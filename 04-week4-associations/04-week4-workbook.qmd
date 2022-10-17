@@ -1,0 +1,1145 @@
+---
+title: "Week 4: Visualizing Associations and Models"
+author: "Emorie D Beck"
+format: 
+  revealjs:
+    incremental: true
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    preview-links: true
+    slide-number: true
+    self-contained: true
+    css: custom.css
+    theme: psc290
+    highlight-style: atom-one-dark
+    margin-left: "0"
+    margin-right: "0"
+    width: 1400
+    # height: 900
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+  # pptx: 
+  #   incremental: true  
+  #   # code-tools: true
+  #   # code-copy: true
+  #   # code-line-numbers: true
+  #   # code-link: true
+  #   css: custom.css
+  #   theme: psc290
+  #   highlight-style: atom-one-dark
+  #   footer: "PSC 290 - Data Visualization"
+  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F)
+options(knitr.kable.NA = '')
+```
+
+```{r, echo = F}
+library(RColorBrewer)
+library(plyr)
+library(broom)
+library(tidyverse)
+```
+
+```{r, eval = F, echo = F}
+wd <- "/Volumes/Emorie/other projects/selection"
+loadRData <- function(fileName, obj){
+#loads an RData file, and returns it
+    path <- sprintf("%s/data/sca/%s.RData", wd, fileName)
+    load(path)
+    get(ls()[grepl(obj, ls())])
+}
+
+sample_fun <- function(x){
+  x2 <- x %>%
+    group_by(study, o_value) %>%
+    nest() %>%
+    ungroup() %>%
+    mutate(data = map(data, 
+        ~(.) %>% filter(row_number() %in% sample(1:nrow(.), if(nrow(.) > 500) 500 else nrow(.))))) %>%
+    unnest(data) %>%
+    select(-Trait, -Outcome)
+  x2 <- x2 %>% mutate(study = mapvalues(study, unique(study), paste0("Study", 1:length(unique(study)))))
+}
+
+pred_data <- crossing(
+  Trait = c("E", "A", "C", "N", "O")
+  , Outcome = "mortality"
+  , Moderator = c("none", "gender")
+) %>%
+  mutate(file = paste("sca", Trait, Outcome, sep = "_")
+         , data = map2(file, "df1", loadRData)
+         , data = map(data, sample_fun)) %>%
+  select(-file) 
+
+save(pred_data, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/04-week4-associations/04-data/week4-data.RData")
+```
+
+## The Data  
+
+```{r}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/blob/main/04-week4-associations/04-data/week4-data.RData?raw=true"))
+pred_data
+```
+
+# Part 1 Visualizing Associations Among Quantitative Variables
+
+## Scatterplots  
+* Scatterplots are pretty ubiquitous 
+* From a data visualization standpoint, this makes sense
+* Scatterplots
+  * show raw data  
+  * are common enough that little visualization literacy is needed
+  * allow for lots of summaries to be placed atop them
+  * this is why they are our entry point for today
+  
+## Scatterplots - Basics  
+
+```{r}
+pred_data$data[[4]]
+```
+
+## Scatterplots - Basics  
+
+```{r}
+pred_data$data[[4]] %>% 
+  select(study, SID, p_value, SRhealth)
+```
+
+## Scatterplots - Basics  
+
+```{r}
+pred_data$data[[4]] %>% 
+  select(study, SID, p_value, SRhealth) %>%
+  ggplot(aes(x = p_value, y = SRhealth)) + 
+    geom_point(shape = 21, fill = "grey80", color = "black", size = 2) + 
+    labs(
+      x = "Agreeableness (POMP; 0-10)"
+      , y = "Self-Rated Health (POMP; 0-10)"
+    ) + 
+    theme_classic()
+```
+
+## Scatterplots - Visualizing Association Point Estimates  
+
+```{r}
+pred_data$data[[4]] %>% 
+  select(study, SID, p_value, SRhealth) %>%
+  ggplot(aes(x = p_value, y = SRhealth)) + 
+    geom_point(shape = 21, fill = "grey80", color = "black", size = 2) + 
+    geom_smooth(method = "lm", size = 3, se = F) + 
+    labs(
+      x = "Conscientiousness (POMP; 0-10)"
+      , y = "Self-Rated Health (POMP; 0-10)"
+    ) + 
+    theme_classic()
+```
+
+## Scatterplots - Basics  
+
+```{r}
+pred_data$data[[4]] %>% 
+  select(study, SID, p_value, SRhealth) %>%
+  filter(!is.na(SRhealth)) %>%
+  ggplot(aes(x = p_value, y = SRhealth)) + 
+    geom_point(shape = 21, fill = "grey80", color = "black", size = 2) + 
+    scale_fill_manual(values = c("grey80", "seagreen4")) + 
+    facet_wrap(~study) +
+    labs(
+      x = "Conscientiousness (POMP; 0-10)"
+      , y = "Self-Rated Health (POMP; 0-10)"
+    ) + 
+    theme_classic()
+```
+
+## Scatterplots - Basics  
+
+```{r}
+pred_data$data[[4]] %>% 
+  select(study, SID, p_value, SRhealth) %>%
+  filter(!is.na(SRhealth)) %>%
+  ggplot(aes(x = p_value, y = SRhealth)) + 
+    geom_point(shape = 21, fill = "grey80", color = "black", size = 2, alpha = .25) + 
+    geom_smooth(method = "lm", size = 3, se = F) + 
+    scale_fill_manual(values = c("grey80", "seagreen4")) + 
+    facet_wrap(~study) +
+    labs(
+      x = "Conscientiousness (POMP; 0-10)"
+      , y = "Self-Rated Health (POMP; 0-10)"
+    ) + 
+    theme_classic()
+```
+
+## Scatterplots - Basics  
+
+```{r}
+pred_data$data[[4]] %>% 
+  select(study, SID, p_value, SRhealth) %>%
+  filter(!is.na(SRhealth)) %>%
+  ggplot(aes(x = p_value, y = SRhealth)) + 
+    geom_point(shape = 21, fill = "grey80", color = "black", size = 2, alpha = .25) + 
+    geom_smooth(method = "lm", size = 1.5, se = T, color = "black") + 
+    scale_fill_manual(values = c("grey80", "seagreen4")) + 
+    facet_wrap(~study) +
+    labs(
+      x = "Conscientiousness (POMP; 0-10)"
+      , y = "Self-Rated Health (POMP; 0-10)"
+      , title = "Conscientiousness -- Self-Rated Health Associations Across Samples"
+    ) + 
+    theme_classic()
+```
+
+## Correlations and Correlelograms  
+
+* Understanding associations is always important, but perhaps never more so than when we do descriptives
+* My hot take is that zero-order correlation maatrices should always be included in papers
+  + Someone's meta-analysis will thank you
+* If you're dumping correlations in supplementary materials, then tables are fine
+* But you (and your brain) will thank yourself if you use heat maps or correlelograms to visualize the correlations
+  + (Remember how quickly and preattentively we perceive color and size?)
+* There are `R` packages for this, but where's the fun in that?
+
+## Correlations and Correlelograms  
+* All right, let's estimate some correlation matrices for each sample.
+
+```{r}
+r_data <- pred_data$data[[4]] %>%
+  select(study, p_value, age, gender, SRhealth, smokes, exercise, BMI, education, parEdu, mortality = o_value) %>%
+  mutate_if(is.factor, ~as.numeric(as.character(.))) %>%
+  group_by(study) %>%
+  nest() %>%
+  ungroup() %>%
+  mutate(r = map(data, ~cor(., use = "pairwise")))
+r_data
+```
+
+## Correlations and Correlelograms  
+* The thing is that we know ggplot doesn't like wide form data, which is what `cor()` produces
+```{r}
+r_data$r[[1]]
+```
+
+
+## Correlations and Correlelograms  
+* So we need to reshape it in long form
+* We're going to use a function so we only have to write the code once and can apply it to all the samples
+* Here's what we'll do: 
+  + remove the lower triangle and the diagonal of the correlation matrix
+  + make matrix a data frame 
+  + make the row names of the matrix a column
+  + make the columns long
+  + factor them to retain order
+
+```{r}
+r_reshape_fun <- function(r){
+  coln <- colnames(r)
+  # remove lower tri and diagonal
+  r[lower.tri(r, diag = T)] <- NA
+  r %>% data.frame() %>%
+    rownames_to_column("V1") %>%
+    pivot_longer(
+      cols = -V1
+      , values_to = "r"
+      , names_to = "V2"
+    ) %>%
+    mutate_at(vars(V1, V2), ~factor(., coln))
+}
+
+r_data <- r_data %>%
+  mutate(r = map(r, r_reshape_fun))
+r_data$r[[1]]
+```
+
+## Correlations and Correlelograms
+### Heat Map Time!
+This is, technically, a heat map, but I think we can do better!
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(
+    x = V1
+    , y = V2
+    , fill = r
+  )) + 
+  geom_raster() + 
+  theme_minimal()
+```
+
+## Correlations and Correlelograms
+### Heat Map Time! Colors
+
+Let's add some intuitive colors using `scale_fill_gradient2()`
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(x = V1, y = V2, fill = r)) + 
+  geom_raster() + 
+  scale_fill_gradient2(
+    limits = c(-1,1)
+    , breaks = c(-1, -.5, 0, .5, 1)
+    , low = "blue"
+    , high = "red"
+    , mid = "white"
+    , na.value = "white"
+    ) + 
+  theme_minimal()
+```
+
+## Correlations and Correlelograms
+### Heat Map Time! Labels
+
+Do we need axis labels? 
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(x = V1, y = V2, fill = r)) + 
+  geom_raster() + 
+  scale_fill_gradient2(limits = c(-1,1)
+    , breaks = c(-1, -.5, 0, .5, 1)
+    , low = "blue", high = "red"
+    , mid = "white", na.value = "white") + 
+  labs(
+    x = NULL
+    , y = NULL
+    , fill = "Zero-Order Correlation"
+    , title = "Zero-Order Correlations Among Variables in Sample 1"
+    ) + 
+  theme_minimal()
+```
+
+## Correlations and Correlelograms
+### Heat Map Time! Theme Elements
+
+Let's fix the theme elements. So close!
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(x = V1, y = V2, fill = r)) + 
+  geom_raster() + 
+  scale_fill_gradient2(limits = c(-1,1)
+    , breaks = c(-1, -.5, 0, .5, 1)
+    , low = "blue", high = "red"
+    , mid = "white", na.value = "white") + 
+  labs(
+    x = NULL
+    , y = NULL
+    , fill = "Zero-Order Correlation"
+    , title = "Zero-Order Correlations Among Variables"
+    , subtitle = "Sample 1"
+    ) + 
+  theme_classic() + 
+  theme(
+    legend.position = "bottom"
+    , axis.text = element_text(face = "bold")
+    , axis.text.x = element_text(angle = 45, hjust = 1)
+    , plot.title = element_text(face = "bold", hjust = .5)
+    , plot.subtitle = element_text(face = "italic", hjust = .5)
+    , panel.background = element_rect(color = "black", size = 1)
+  )
+```
+
+## Correlations and Correlelograms
+### Heat Map Time! Finishing Touches!
+
+Let's fix the theme elements. So close!
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(x = V1, y = V2, fill = r)) + 
+  geom_raster() + 
+  geom_text(aes(label = round(r, 2))) + 
+  scale_fill_gradient2(limits = c(-1,1)
+    , breaks = c(-1, -.5, 0, .5, 1)
+    , low = "blue", high = "red"
+    , mid = "white", na.value = "white") + 
+  labs(
+    x = NULL
+    , y = NULL
+    , fill = "Zero-Order Correlation"
+    , title = "Zero-Order Correlations Among Variables"
+    , subtitle = "Sample 1"
+    ) + 
+  theme_classic() + 
+  theme(
+    legend.position = "bottom"
+    , axis.text = element_text(face = "bold")
+    , axis.text.x = element_text(angle = 45, hjust = 1)
+    , plot.title = element_text(face = "bold", hjust = .5)
+    , plot.subtitle = element_text(face = "italic", hjust = .5)
+    , panel.background = element_rect(color = "black", size = 1)
+  )
+```
+
+## Correlations and Correlelograms
+### Correlelogram
+A correlelogram is basically a heat map that uses size in addition to color.
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(x = V1, y = V2, color = r, size = abs(r))) + 
+  geom_point() + 
+  theme_classic()
+```
+
+## Correlations and Correlelograms
+### Correlelogram
+We're going to skip the steps we took with a heat map.
+So close! Just need to get rid of that size legend.
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(x = V1, y = V2, fill = r, size = abs(r))) + 
+  geom_point(shape = 21) + 
+  scale_fill_gradient2(limits = c(-1,1)
+    , breaks = c(-1, -.5, 0, .5, 1)
+    , low = "blue", high = "red"
+    , mid = "white", na.value = "white") + 
+  scale_size_continuous(range = c(3,14)) + 
+  labs(
+    x = NULL
+    , y = NULL
+    , fill = "Zero-Order Correlation"
+    , title = "Zero-Order Correlations Among Variables"
+    , subtitle = "Sample 1"
+    ) + 
+  theme_classic() + 
+  theme(
+    legend.position = "bottom"
+    , axis.text = element_text(face = "bold")
+    , axis.text.x = element_text(angle = 45, hjust = 1)
+    , plot.title = element_text(face = "bold", hjust = .5)
+    , plot.subtitle = element_text(face = "italic", hjust = .5)
+    , panel.background = element_rect(color = "black", size = 1)
+  )
+```
+
+## Correlations and Correlelograms
+### Correlelogram
+We're going to skip the steps we took with a heat map.
+* So close! Just need to get rid of that size legend.
+* To do this, we'll use the `guides()` function!
+
+```{r}
+r_data$r[[1]] %>%
+  ggplot(aes(x = V1, y = V2, fill = r, size = abs(r))) + 
+  geom_point(shape = 21) + 
+  scale_fill_gradient2(limits = c(-1,1)
+    , breaks = c(-1, -.5, 0, .5, 1)
+    , low = "blue", high = "red"
+    , mid = "white", na.value = "white") + 
+  scale_size_continuous(range = c(3,14)) + 
+  labs(
+    x = NULL
+    , y = NULL
+    , fill = "Zero-Order Correlation"
+    , title = "Zero-Order Correlations Among Variables"
+    , subtitle = "Sample 1"
+    ) + 
+  guides(size = "none") + 
+  theme_classic() + 
+  theme(
+    legend.position = "bottom"
+    , axis.text = element_text(face = "bold")
+    , axis.text.x = element_text(angle = 45, hjust = 1)
+    , plot.title = element_text(face = "bold", hjust = .5)
+    , plot.subtitle = element_text(face = "italic", hjust = .5)
+    , panel.background = element_rect(color = "black", size = 1)
+  )
+```
+
+# Part 2 Visualizing Associations, Parameters, and Predictions from Models
+
+## Part 2 Visualizing Associations, Parameters, and Predictions from Models
+
+* The goal of data visualization is to tell a story that tables, words, etc. either can't or can't do simply
+* Data visualizations aims to clarify complex patterns in data
+* Thus far, we've mostly focused on building models from raw data or descriptives of raw data
+* But in most research, we lean on inferential statistics and hypothesis testing (frequent or Bayesian) to tell our story
+* So next, we'll talk about how to use data visualization to tell stories *with* models
+  + The reality is that there is no generalizable way to do this
+  + So we will focus on models for which we are interested in specific parameters and/or parameterized our questions
+  + Why? These have some shared functions across *lots* of packages in R
+  + For models that don't, that's a data cleaning problem, not a visualization problem
+  
+## Part 2 Visualizing Associations, Parameters, and Predictions from Models
+
+* Let's start with a basic model and predict later all-cause mortality from Conscientiousness in Sample 1.  
+* The basic form of the model is: 
+
+$$
+logit(\frac{\pi}{1-\pi}) = b_0 + b_1*C_{ij} + \epsilon_{ij}
+$$
+
+```{r}
+ds1 <- pred_data$data[[4]] %>% filter(study == "Study1")
+m1 <- glm(o_value ~ p_value, data = ds1, family = binomial(link = "logit"))
+summary(m1)
+```  
+
+## Part 2 Visualizing Associations, Parameters, and Predictions from Models
+* Models and other objects in `R` are stored in lists or list-like objects
+* We can explore these lots of ways, but one good one is with `str()`
+
+```{r}
+str(m1)
+```
+
+## Models + `broom`
+* The `broom` package is great for working with models (and the `broom.mixed` add-on makes it even better)
+* We're going to talk about how three its functions can be used for / improve data visualization: 
+  + `tidy()`
+  + `glance()`
+  + `augment()`
+
+## Models + `broom`: `tidy()`
+* Outside of `dplyr`/`tidyr`, `tidy()` is a close contender with `purrr::map()` functions as my most used function
+* Why? 
+  + When you run a model, base `R` provides the `summary()`, `coef()`, etc. to extract various components of the model
+  + But these aren't `data.frames`, which are core input to a lot of other `R` functions across packages
+  + `tidy()` provides a data frame with core model coefficients, inferential tests, etc. that be easily matched and merged across models, etc. 
+
+## Models + `broom`: `tidy()`
+* But with logistic regression with a logit link, we are left with coefficents that have to be interpreted in log odds, which realistically, almost no one can do
+* So we have to "undo" the log, which you may remember can done by exponentiating the natural log (ln)
+* But we can directly exponentiate from the summary function because it's the wrong class of object
+* We could just exponentiate the coefficients from the `coef()` function, but this still leaves us with the need to extract estimates of precision, like standard errors, confidence intervals, and more. 
+
+```{r}
+coef(m1)
+```
+
+## Models + `broom`: `tidy()`
+* Enter `broom::tidy()`!
+
+```{r}
+tidy(m1)
+```
+
+## Models + `broom`: `tidy()`
+* Enter `broom::tidy()`!
+* Even better, we can easily get confidence intervals
+```{r}
+tidy(m1, conf.int = T)
+```
+
+## Models + `broom`: `tidy()`
+* But when would you ever want to create a plot of just two parameters? Maybe never, but what if we wanted to do it for all 6 samples? 
+* Watch! Let's make a nested data frame that will hold
+  + All the data for each sample
+  + A model for each sample
+  + The `tidy()` data frame of the parmeter estimates for each sample
+
+```{r}
+tidy_ci <- function(m) tidy(m, conf.int = T)
+
+nested_m <- pred_data$data[[4]] %>%
+  group_by(study) %>%
+  nest() %>%
+  ungroup() %>%
+  mutate(
+    m = map(data, ~glm(o_value ~p_value, data = ., family = binomial(link = "logit")))
+    , tidy = map(m, tidy_ci)
+  )
+nested_m
+```
+
+## Models + `broom`: `tidy()`
+Now, we'll drop the `data` and `m` columns that we don't need and `unnest()` our `tidy()` data frames
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy)
+```
+
+## Models + `broom`: `tidy()`
+Now these parameters from multiple models, we may want to plot!
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  ggplot(
+    aes(y = study, x = estimate)
+  ) + 
+    geom_errorbar(
+      aes(xmin = conf.low, xmax = conf.high)
+      , position = position_dodge(width = .9)
+      , width = .1
+      ) + 
+    geom_point() + 
+    theme_classic()
+```
+
+## Models + `broom`: `tidy()`
+Almost, but we have two parameters for each model (Intercept and p_value), so let's split those in a facet:
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  ggplot(
+    aes(y = study, x = estimate)
+  ) + 
+    geom_errorbar(
+      aes(xmin = conf.low, xmax = conf.high)
+      , position = position_dodge(width = .9)
+      , width = .1
+      ) + 
+    geom_point() + 
+    facet_grid(~term) + 
+    theme_classic()
+```
+
+## Models + `broom`: `tidy()`
+We've got some work to do to make this an intuitive figure. Let's: 
+  + Add a dashed line at 1 (odd ratio of 1 is a null effect)
+  + Make the points bigger
+  + Fix the titles on the plot and axis titles
+  + Add some color
+  + Fiddle with themes to make it prettier
+
+## Models + `broom`: `tidy()`
+Add a dashed line at 1 (odd ratio of 1 is a null effect)
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  ggplot(
+    aes(y = study, x = estimate)
+  ) + 
+    geom_vline(aes(xintercept = 1), linetype = "dashed") + 
+    geom_errorbar(
+      aes(xmin = conf.low, xmax = conf.high)
+      , position = position_dodge(width = .9)
+      , width = .1
+      ) + 
+    geom_point() + 
+    facet_grid(~term, scales = "free") + 
+    theme_classic()
+```
+
+## Models + `broom`: `tidy()`
++ Make the points bigger
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  ggplot(
+    aes(y = study, x = estimate)
+  ) + 
+    geom_vline(aes(xintercept = 1), linetype = "dashed") + 
+    geom_errorbar(
+      aes(xmin = conf.low, xmax = conf.high)
+      , position = position_dodge(width = .9)
+      , width = .1
+      ) + 
+    geom_point(size = 3, shape = 15) + 
+    facet_grid(~term, scales = "free") + 
+    theme_classic()
+```
+
+
+## Models + `broom`: `tidy()`
++ Fix the titles on the plot and axis titles
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  ggplot(
+    aes(y = study, x = estimate)
+  ) + 
+    geom_vline(aes(xintercept = 1), linetype = "dashed") + 
+    geom_errorbar(
+      aes(xmin = conf.low, xmax = conf.high)
+      , position = position_dodge(width = .9)
+      , width = .1
+      ) + 
+    geom_point(size = 3, shape = 15) + 
+    labs(
+      x = "Estimate (CI) in OR"
+      , y = NULL
+      , title = "Conscientiousness was associated with mortality 50% of samples"
+      , subtitle = "Samples with lower mortality risk overall had fewer significant associations"
+      ) + 
+    facet_grid(~term, scales = "free") + 
+    theme_classic()
+```
+
+## Models + `broom`: `tidy()`
+Add some color
+Fiddle with themes to make it prettier
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  ggplot(
+    aes(y = study, x = estimate, fill = study)
+  ) + 
+    geom_vline(aes(xintercept = 1), linetype = "dashed") + 
+    geom_errorbar(
+      aes(xmin = conf.low, xmax = conf.high)
+      , position = position_dodge(width = .9)
+      , width = .1
+      ) + 
+    geom_point(size = 3, shape = 22) + 
+    labs(
+      x = "Estimate (CI) in OR"
+      , y = NULL
+      , title = "Conscientiousness was associated with mortality 50% of samples"
+      , subtitle = "Samples with lower mortality risk overall had fewer significant associations"
+      ) + 
+    facet_grid(~term, scales = "free") + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.2))
+      , axis.line = element_blank()
+      , strip.text = element_text(face = "bold", size = rel(1.1), color = "white")
+      , strip.background = element_rect(fill = "black")
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      , plot.subtitle = element_text(face = "italic", size = rel(1.1))
+      , panel.border = element_rect(color = "black", fill = NA, size = 1)
+    )
+```
+
+## Models + `broom`: `tidy()`
+* This isn't perfect. But we're going to come back to this kind of plot when we talk about "piecing plots together." 
+* Personally, I would: 
+  + Add text with Est. (CI) and N for each sample in the figure
+  + Build both of these separately in order to order by effect size
+  + Then put them back together and re-add the title
+
+```{r}
+nested_m %>%
+  select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  ggplot(
+    aes(y = study, x = estimate, fill = study)
+  ) + 
+    geom_vline(aes(xintercept = 1), linetype = "dashed") + 
+    geom_errorbar(
+      aes(xmin = conf.low, xmax = conf.high)
+      , position = position_dodge(width = .9)
+      , width = .1
+      ) + 
+    geom_point(size = 3, shape = 22) + 
+    labs(
+      x = "Estimate (CI) in OR"
+      , y = NULL
+      , title = "Conscientiousness was associated with mortality 50% of samples"
+      , subtitle = "Samples with lower mortality risk overall had fewer significant associations"
+      ) + 
+    facet_grid(~term, scales = "free") + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.2))
+      , axis.line = element_blank()
+      , strip.text = element_text(face = "bold", size = rel(1.1), color = "white")
+      , strip.background = element_rect(fill = "black")
+      , plot.title = element_text(face = "bold", size = rel(1.1), hjust = .5)
+      , plot.subtitle = element_text(face = "italic", size = rel(1.1))
+      , panel.border = element_rect(color = "black", fill = NA, size = 1)
+    )
+```
+
+## Models + `broom`: `glance()`
+* When we run models, we need to care about more that just point and interval estimates
+* Often we are interested in comparing models, checking diagnostics, etc. 
+* Again, all of these are embedded (mostly), in the model objects 
+* The `glance()` function brings some of these important ones into a single object
+* Here's what it gives us for our logistic regression model
+
+```{r}
+glance(m1)
+```
+
+## Models + `broom`: `glance()`
+* Let's also look for al linear model, which may be more familiar for many of you: 
+
+```{r}
+m2 <- lm(SRhealth ~ age, data = ds1)
+glance(m2)
+```
+
+## Models + `broom`: `glance()`
+As before, we can do this with lots of models to compare across samples: 
+
+```{r}
+nested_m <- nested_m %>%
+  mutate(glance = map(m, glance))
+nested_m
+```
+
+## Models + `broom`: `glance()`
+As before, we can do this with lots of models to compare across samples: 
+
+```{r}
+nested_m %>%
+  select(study, glance) %>%
+  unnest(glance)
+```
+
+## Models + `broom`: `glance()`
+Realistically, this is the kind of info we table, but we can also merge it with info from tidy: 
+
+```{r}
+nested_m %>%
+  select(-data, -m) %>%
+  unnest(tidy) %>% 
+  unnest(glance) %>%
+  mutate_if(is.numeric, ~round(., 2))
+```
+
+## Models + `broom`: `augment()`
+
+* Diagnostics are not just summary statistics! 
+* We care a lot about prediction, too
+  + Residuals both tell us unexplained variance (i.e. how observed data deviate from model predictions)
+  + Model predictions and prediction intervals tell us about how our model is doing across levels our variables
+
+Let's keep working with our nested data frame. Remember, it looks like this: 
+  
+```{r}
+nested_m
+```
+
+## Models + `broom`: `augment()`
+
+* `augment()` let's us add (augment) the raw data we feed the model based on the fitted model
+* Notice we now have more columns  
+
+```{r}
+nested_m <- nested_m %>%
+  mutate(data = map2(m, data, augment, se_fit = T))
+nested_m
+```
+
+## Models + `broom`: `augment()`
+* Here's the columns we used along with the additional columns with a `glm`: 
+  + `.fitted`: fitted / predicted value
+  + `.se.fit`: standard error 
+  + `.resid`: observed - fitted
+  + `.std.resd`: standardized residuals
+  + `.sigma`: estimated residual SD when this obs is dropped from model
+  + `cooksd`: Cooks distance (is this an outlier?)
+
+```{r}
+nested_m$data[[1]] %>%
+  select(o_value, SID, p_value, .fitted:.cooksd)
+```
+
+## Models + `broom`: `augment()`
+For the most part, many of the checks with `glm`'s and `lm`'s are the same. But it's a bit easier to wrap your head around `lm()`, so let's switch to that: 
+
+```{r}
+nested_lm <- pred_data$data[[4]] %>%
+  select(study, SID, p_value, age, SRhealth) %>%
+  drop_na() %>%
+  group_by(study) %>%
+  nest() %>%
+  ungroup() %>%
+  mutate(m = map(data, ~lm(SRhealth ~ p_value + age, data = .))
+         , tidy = map(m, tidy_ci)
+         , glance = map(m, glance)
+         , data = map2(m, data, augment, se_fit = T, interval = "confidence"))
+nested_lm
+```
+
+## Models + `broom`: `augment()`
+* Here's the columns we used along with the additional columns with an `lm`: 
+  + `.fitted`: fitted / predicted value
+  + `.se.fit`: standard error
+  + `.lower`: lower bound of the confidence/prediction interval
+  + `.upper`: upper bound of the confidence/prediction interval
+  + `.resid`: observed - fitted
+  + `.std.resd`: standardized residuals
+  + `.sigma`: estimated residual SD when this obs is dropped from model
+  + `cooksd`: Cooks distance (is this an outlier?)
+
+
+## Models + `broom`: `augment()`
+* One standard diagnostic plot is to plot fitted values v residuals
+* Looks a little wonky (remember, these are results from multiple harmonized studies)
+
+```{r}
+nested_lm %>%
+  select(study, data) %>%
+  unnest(data) %>%
+  ggplot(aes(
+    x = .fitted
+    , y = .resid
+  )) + 
+  geom_point() + 
+  theme_classic()
+```
+
+## Models + `broom`: `augment()`
+* One standard diagnostic plot is to plot fitted values v residuals
+* Looks a little wonky (remember, these are results from multiple harmonized studies)
+
+```{r}
+nested_lm %>%
+  select(study, data) %>%
+  unnest(data) %>%
+  ggplot(aes(
+    x = .fitted
+    , y = .resid
+  )) + 
+  geom_point() +
+  labs(
+    x = "Model Fitted Values"
+    , y = "Residual") +
+  facet_wrap(~study) + 
+  theme_classic()
+```
+
+## Models + `broom`: `augment()`
+
+Another is raw v. fitted
+
+```{r}
+nested_lm %>%
+  select(study, data) %>%
+  unnest(data) %>%
+  ggplot(aes(
+    x = p_value
+    , y = .resid
+  )) + 
+  geom_point() +
+  facet_wrap(~study) + 
+  theme_classic()
+```
+
+## Model Predictions
+* Although we can get the standard error of the prediction for each person, we often want to look at theoretical predictions, adjusting for covariates. We can typically use built-in `predict()` or `fitted()` functions
+* To do this, we need to see theoretical ranges of key variables and grab averages of covariates
+* I use functions for this. We'll do one and build
+
+```{r}
+m1 <- nested_lm$m[[1]]
+d1 <- m1$model
+
+crossing(
+  p_value = seq(0, 10, length.out = 100)
+  , age = mean(d1$age)
+) %>%
+  bind_cols(
+    .
+    , predict(m1, newdata = ., interval = "prediction")
+  )
+```
+
+## Model Predictions
+
+```{r}
+crossing(
+  p_value = seq(0, 10, .1)
+  , age = mean(d1$age)
+) %>%
+  bind_cols(
+    .
+    , predict(m1, newdata = ., interval = "prediction")
+  ) %>%
+  ggplot(aes(x = p_value, y = fit)) + 
+    geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "seagreen4", alpha = .2) + 
+    geom_line(color = "seagreen4", size = 2) + 
+    theme_classic()
+```
+
+## Model Predictions
+* This is fine, but it could use some improvements: 
+  + better scales
+  + raw data 
+  + the usual aesthetics
+  
+## Model Predictions
+Better scales
+
+```{r}
+crossing(
+  p_value = seq(0, 10, .1)
+  , age = mean(d1$age)
+) %>%
+  bind_cols(
+    .
+    , predict(m1, newdata = ., interval = "prediction")
+  ) %>%
+  ggplot(aes(x = p_value, y = fit)) + 
+    geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "seagreen4", alpha = .2) + 
+    geom_line(color = "seagreen4", size = 2) + 
+    scale_x_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    scale_y_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    theme_classic()
+```
+
+## Model Predictions
+Raw Data 
+
+```{r}
+crossing(
+  p_value = seq(0, 10, .1)
+  , age = mean(d1$age)
+) %>%
+  bind_cols(., predict(m1, newdata = ., interval = "prediction")) %>%
+  ggplot(aes(x = p_value, y = fit)) + 
+    geom_point(
+      data = d1
+      , aes(x = p_value, y = SRhealth)
+      , alpha = .4
+      , color = "seagreen4"
+      ) + 
+    geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "seagreen4", alpha = .2) + 
+    geom_line(color = "seagreen4", size = 2) + 
+    scale_x_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    scale_y_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    theme_classic()
+```
+
+## Model Predictions
+The usual aesthetics
+
+```{r}
+crossing(
+  p_value = seq(0, 10, .1)
+  , age = mean(d1$age)
+) %>%
+  bind_cols(., predict(m1, newdata = ., interval = "prediction")) %>%
+  ggplot(aes(x = p_value, y = fit)) + 
+    geom_point(data = d1, aes(x = p_value, y = SRhealth)
+      , alpha = .4, color = "seagreen4") + 
+    geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "seagreen4", alpha = .2) + 
+    geom_line(color = "seagreen4", size = 2) + 
+    scale_x_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    scale_y_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    labs(
+      x = "Conscientiousness (POMP; 0-10)"
+      , y = "Predicted Self-Rated Health (POMP; 0-10)"
+      , title = "Conscientiousness and Self-Rated Health\nWere Weakly Associated"
+      ) + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+      )
+```
+
+## Model Predictions
+Now let's do it for all of the samples
+
+```{r}
+pred_fun <- function(m){
+  d <- m$model
+
+  crossing(
+    p_value = seq(0, 10, length.out = 100)
+    , age = mean(d$age)
+  ) %>%
+    bind_cols(
+      .
+      , predict(m, newdata = ., interval = "prediction")
+    )
+}
+
+nested_lm <- nested_lm %>%
+  mutate(pred = map(m, pred_fun))
+nested_lm
+```
+
+## Model Predictions
+Now let's do it for all of the samples
+
+```{r}
+nested_lm %>%
+  select(study, pred) %>%
+  unnest(pred)
+```
+
+## Model Predictions
+* Now let's do it for all of the samples
+* Very close, but our intervals are cutoff
+
+```{r}
+nested_lm %>%
+  select(study, pred) %>%
+  unnest(pred) %>%
+  ggplot(aes(x = p_value, y = fit)) + 
+    geom_point(data = d1, aes(x = p_value, y = SRhealth)
+      , alpha = .2, color = "seagreen4") + 
+    geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "seagreen4", alpha = .2) + 
+    geom_line(color = "seagreen4", size = 2) + 
+    scale_x_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    scale_y_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    labs(
+      x = "Conscientiousness (POMP; 0-10)"
+      , y = "Predicted Self-Rated Health (POMP; 0-10)"
+      , title = "Conscientiousness and Self-Rated Health\nWere Weakly Associated In Most Samples"
+      ) + 
+    facet_wrap(~study, ncol = 2) + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+      )
+```
+
+## Model Predictions
+* Now let's do it for all of the samples
+* Very close, but our intervals are cutoff
+
+```{r}
+nested_lm %>%
+  select(study, pred) %>%
+  unnest(pred) %>%
+  mutate(upr = ifelse(upr > 10, 10, upr)
+         , lwr = ifelse(lwr < 0, 0, lwr)) %>%
+  ggplot(aes(x = p_value, y = fit)) + 
+    geom_point(data = d1, aes(x = p_value, y = SRhealth)
+      , alpha = .2, color = "seagreen4") + 
+    geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "seagreen4", alpha = .2) + 
+    geom_line(color = "seagreen4", size = 2) + 
+    scale_x_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    scale_y_continuous(limits = c(0,10.2), breaks = seq(0,10,2)) + 
+    labs(
+      x = "Conscientiousness (POMP; 0-10)"
+      , y = "Predicted Self-Rated Health (POMP; 0-10)"
+      , title = "Conscientiousness and Self-Rated Health\nWere Weakly Associated In Most Samples"
+      ) + 
+    facet_wrap(~study, ncol = 2) + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+      , strip.background = element_rect(fill = "darkseagreen4")
+      , strip.text = element_text(face = "bold", color = "white")
+      )
+```
+
+## Wrapping Up
+* This is a quick introduction to visualizing associations and working with models
+* Here, we focused on doing things very manually to promote understanding
+* But there are lots of packages to automate much of this
+
