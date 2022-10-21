@@ -53,8 +53,52 @@ library(tidyverse)
 ```
 
 # Time Series  
-## What is a time series? 
+## What is a time series? {background-image="https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/02-images/time-series.png" background-size="1200px" background-position="100% 50%" background-opacity=".2"}
 
-> a series of values of a quantity obtained at successive times, often with equal intervals between them
+> "a series of values of a quantity obtained at successive times, often with equal intervals between them"
 
+## What is a time series?  
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r, echo=F}
+set.seed(7)
+tibble(
+  t = 1:100
+       , value = ceiling(arima.sim(n = 100, list(ar = c(0.8897, -0.4858), ma = c(-0.2279, 0.2488)),
+          sd = sqrt(.5)) + 3)
+  ) %>% 
+  print(n = 15)
+```
+
+::: 
+::: {.column width="70%}
+:::: {.fragment}
+
+```{r, echo=F, fig.show='show', fig.align='right', fig.dim= c(8,4), out.width="120%"}
+set.seed(7)
+tibble(
+  t = 1:100
+       , value = ceiling(arima.sim(n = 100, list(ar = c(0.8897, -0.4858), ma = c(-0.2279, 0.2488)),
+          sd = sqrt(.5)) + 3)
+  ) %>% 
+  ggplot(aes(x = t, y = value)) + 
+    geom_line(color = "seagreen4", size = .75) + 
+    scale_y_continuous(limits = c(1,5), breaks = seq(1,5,1)) + 
+    labs(x = "Time Point (1-100)"
+        , y = "Value"
+        , title = "Sample Time Series Plot") + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+    )
+```
+
+
+::::
+:::
+::::
 
