@@ -102,3 +102,104 @@ tibble(
 :::
 ::::
 
+## Who should care about time series? 
+
+People who: 
+
+* study longitudinal change (e.g., development)
+* study variability (e.g., experience sampling, passive sensing)
+* run experiments with multiple trials 
+* study cohort or age differences
+* simulations (e.g., trace plots in bayesian models)
+
+
+* Time is everywhere, and ignoring it can be problematic
+
+## What will we cover with time series: 
+
+* Univariate time series  
+* Multivariate time series  
+* Connected scatter plots
+* Smoothing
+* Detrended time series
+
+:::: {.fragment}
+
+### This isn't the first time we've seen time series, but today we'll focus on *telling stories with time series*
+
+::::
+
+## Quick clarification: Time Series v Trends  
+* Trends can mean many things, from autocorrelation to mean-level change
+* However, in psychology, we often think of trends as patterns of normative longitudinal change
+* This is fine usage, but trends don't have be linear / curvilinear increases / decreases
+  + seasonal trends
+  + cohort effects
+  + etc. are all trends, too
+
+## Univariate and Multivariate Time Series  
+
+:::: {.columns}
+::: {.column}
+
+Why visualize a time series if you don't care about the trend? 
+
+* This is another way to **describe** your data that can make sure that you see if something went wrong
+
+:::
+::: {.column}
+
+:::: {.fragment}
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/02-images/eiko-tweet.png")
+```
+
+::::
+
+:::
+::::
+
+## Univariate and Multivariate Time Series  
+* How you visualize the trends you are trying to uncover in a time series will depend on the research question you are asking
+  + e.g., very basic time series visualizations are great for descriptives
+  + But to include it in a presentation / papers, we usually want to add more affordances that clarify nothing went wrong
+  + Affordances include, text, shading, and more, in aligment with Gestalt principles and how we process different aspects of visualizations 
+
+## But First, Our Data  
+:::: {.columns}
+::: {.column}
+* These are some Experience Sampling Method data I collected during my time in graduate school
+* Specifically, these include data from Beck \& Jackson (2022) 
+* In that paper I built personalized machine learning models of behaviors and experiences from sets of: 
+  + psychological
+  + situational 
+  + and time variables
+* We also saw these in Week 2
+:::
+
+::: {.column}
+::: {.fragment}
+
+```{r, echo = T}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/01-data/ipcs_data.RData"))
+ipcs_data %>% 
+  print(n = 6)
+```
+
+```{r, echo=F}
+ipcs_data <- ipcs_data %>%
+  group_by(SID) %>%
+  mutate(beep = 1:n()) %>%
+  ungroup()
+```
+
+:::
+:::
+::::
+<!-- * Univariate time series   -->
+<!-- * Multivariate time series   -->
+<!-- * Connected scatter plots -->
+<!-- * Smoothing -->
+<!-- * Detrended time series -->
+

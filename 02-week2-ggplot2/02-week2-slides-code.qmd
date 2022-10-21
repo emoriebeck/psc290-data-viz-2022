@@ -192,6 +192,7 @@ ipcs_data <- ipcs_data %>%
 :::
 :::
 ::::
+
 ## Mappings 
 :::: {.columns}
 ::: {.column}
