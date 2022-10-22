@@ -1,4 +1,4 @@
-﻿study,dataset,name,itemname,wave,year,waveletter,orig_itemname,description,scale,reverse_code,recode,mini,maxi,,comp_rule,,,,,,,,,,,,,,,,,,,
+﻿study,dataset,name,itemname,wave,year,waveletter,orig_itemname,description,scale,reverse_code,recode,mini,maxi,comp_rule,,,,,,,,,,,,,,,,,,,,
 gsoep,P,SID,SID,,0,,IDPERS,,person ID,,,,,,,,,,,,,,,,,,,,,,,,,
 gsoep,,yearBrth,yrofbirth,,0,,gebjahr,,Date of birth: Year,"Numeric with -8	other error
 -7	filter error
@@ -67,7 +67,7 @@ gsoep,ppequiv,marital,marStat,16,1999,p,d1110499,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,qpequiv,marital,marStat,17,2000,q,d1110400,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -80,7 +80,7 @@ gsoep,qpequiv,marital,marStat,17,2000,q,d1110400,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,rpequiv,marital,marStat,18,2001,r,d1110401,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -93,7 +93,7 @@ gsoep,rpequiv,marital,marStat,18,2001,r,d1110401,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,spequiv,marital,marStat,19,2002,s,d1110402,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -106,7 +106,7 @@ gsoep,spequiv,marital,marStat,19,2002,s,d1110402,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,tpequiv,marital,marStat,20,2003,t,d1110403,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -119,7 +119,7 @@ gsoep,tpequiv,marital,marStat,20,2003,t,d1110403,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,upequiv,marital,marStat,21,2004,u,d1110404,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -132,7 +132,7 @@ gsoep,upequiv,marital,marStat,21,2004,u,d1110404,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,vpequiv,marital,marStat,22,2005,v,d1110405,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -145,7 +145,7 @@ gsoep,vpequiv,marital,marStat,22,2005,v,d1110405,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,wpequiv,marital,marStat,23,2006,w,d1110406,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -158,7 +158,7 @@ gsoep,wpequiv,marital,marStat,23,2006,w,d1110406,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,xpequiv,marital,marStat,24,2007,x,d1110407,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -171,7 +171,7 @@ gsoep,xpequiv,marital,marStat,24,2007,x,d1110407,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,ypequiv,marital,marStat,25,2008,y,d1110408,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -184,7 +184,7 @@ gsoep,ypequiv,marital,marStat,25,2008,y,d1110408,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,zpequiv,marital,marStat,26,2009,z,d1110409,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -197,7 +197,7 @@ gsoep,zpequiv,marital,marStat,26,2009,z,d1110409,Marital Status of individual ,"
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bapequiv,marital,marStat,27,2010,ba,d1110410,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -210,7 +210,7 @@ gsoep,bapequiv,marital,marStat,27,2010,ba,d1110410,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bbpequiv,marital,marStat,28,2011,bb,d1110411,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -223,7 +223,7 @@ gsoep,bbpequiv,marital,marStat,28,2011,bb,d1110411,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bcpequiv,marital,marStat,29,2012,bc,d1110412,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -236,7 +236,7 @@ gsoep,bcpequiv,marital,marStat,29,2012,bc,d1110412,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bdpequiv,marital,marStat,30,2013,bd,d1110413,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -249,7 +249,7 @@ gsoep,bdpequiv,marital,marStat,30,2013,bd,d1110413,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bepequiv,marital,marStat,31,2014,be,d1110414,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -262,7 +262,7 @@ gsoep,bepequiv,marital,marStat,31,2014,be,d1110414,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfpequiv,marital,marStat,32,2015,bf,d1110415,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -275,7 +275,7 @@ gsoep,bfpequiv,marital,marStat,32,2015,bf,d1110415,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfpequiv,marital,marStat,33,2016,bg,d1110416,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -288,7 +288,7 @@ gsoep,bfpequiv,marital,marStat,33,2016,bg,d1110416,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfpequiv,marital,marStat,34,2017,bh,d1110417,Marital Status of individual ,"[-6] Version of questionnaire with modified filtering
 [-5] Not included in this version of the questionnaire
 [-4] Inadmissible multiple response
@@ -301,154 +301,154 @@ gsoep,bfpequiv,marital,marStat,34,2017,bh,d1110417,Marital Status of individual 
 [4] Divorced 4
 [5] Separated 5
 [6] Over 18 and NotW,Partnr6
-[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,,max,,,,,,,,,,,,,,,,,,,
+[7] Under 18 And NotW,Partnr7",,"ifelse(x < 1 | x > 7, NA, ifelse(x == 1, 1, ifelse(x == 3, 3, ifelse(x %in% c(4, 5), 2, ifelse(x %in% c(2,6,7), 4, NA)))))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,pp,chldbrth,chldBrth,16,1999,p,pp13319,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,qp,chldbrth,chldBrth,17,2000,q,qp14219,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,rp,chldbrth,chldBrth,18,2001,r,rp13319,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,sp,chldbrth,chldBrth,19,2002,s,sp13319,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,tp,chldbrth,chldBrth,20,2003,t,tp14107,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,up,chldbrth,chldBrth,21,2004,u,up14407,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,vp,chldbrth,chldBrth,22,2005,v,VP15307,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,wp,chldbrth,chldBrth,23,2006,w,WP14107,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,xp,chldbrth,chldBrth,24,2007,x,XP14807,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,yp,chldbrth,chldBrth,25,2008,y,YP15407,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,zp,chldbrth,chldBrth,26,2009,z,ZP15607,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bap,chldbrth,chldBrth,27,2010,ba,BAP15907,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bbp,chldbrth,chldBrth,28,2011,bb,BBP15110,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bcp,chldbrth,chldBrth,29,2012,bc,BCP15010,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bdp,chldbrth,chldBrth,30,2013,bd,BDP15710,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bep,chldbrth,chldBrth,31,2014,be,BEP15010,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfp,chldbrth,chldBrth,32,2015,bf,BFP17310,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfp,chldbrth,chldBrth,33,2016,bg,bgp17010,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfp,chldbrth,chldBrth,34,2017,bh,bhp_204_10,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfp,chldbrth,chldBrth,35,2018,bi,bip_201_10,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,bfp,chldbrth,chldBrth,36,2019,bj,bjp_209_10,Child Born,"-6	[-6] Version of questionnaire with modified filtering
 -5	[-5] Not included in this version of the questionnaire
 -4	[-4] Inadmissible multiple response
 -3	[-3] Answer improbable
 -2	[-2] Does not apply
 -1	[-1] No Answer
-1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,,max,,,,,,,,,,,,,,,,,,,
+1	[1] Yes",,"ifelse(is.na(x) | x < -2, NA, ifelse(x < 1 & !is.na(x), 0, 1))",,,max,,,,,,,,,,,,,,,,,,,,
 gsoep,apequiv,SRhealth,SRhealth,1,1984,a,m1112684,Current Self-Rated Health Status,"[-6] Version of questionnaire with modified filtering 
 [-5] Not included in this version of the questionnaire 
 [-4] Inadmissible multiple response 
@@ -823,3 +823,34 @@ gsoep,bhpequiv,SRhealth,SRhealth,34,2017,bh,m1112617 ,Current Self-Rated Health 
 [3] Satisfactory 3 
 [4] Poor 4 
 [5] Bad 5 ",yes,"ifelse(is.na(x) | x < 0, NA, x)",1,5,,,,,,,,,,,,,,,,,,,,,
+gsoep,bpequiv,satHealth,satHealth,2,1985,b,m1112585,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,cpequiv,satHealth,satHealth,3,1986,c,m1112586,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,dpequiv,satHealth,satHealth,4,1987,d,m1112587,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,epequiv,satHealth,satHealth,5,1988,e,m1112588,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,fpequiv,satHealth,satHealth,6,1989,f,m1112589,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,gpequiv,satHealth,satHealth,7,1990,g,m1112590,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,hpequiv,satHealth,satHealth,8,1991,h,m1112591,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,ipequiv,satHealth,satHealth,9,1992,i,m1112592,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,jpequiv,satHealth,satHealth,10,1993,j,m1112593,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,kpequiv,satHealth,satHealth,11,1994,k,m1112594,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,lpequiv,satHealth,satHealth,12,1995,l,m1112595,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,mpequiv,satHealth,satHealth,13,1996,m,m1112596,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,npequiv,satHealth,satHealth,14,1997,n,m1112597,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,opequiv,satHealth,satHealth,15,1998,o,m1112598,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,ppequiv,satHealth,satHealth,16,1999,p,m1112599,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,qpequiv,satHealth,satHealth,17,2000,q,m1112500,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,rpequiv,satHealth,satHealth,18,2001,r,m1112501,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,spequiv,satHealth,satHealth,19,2002,s,m1112502,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,tpequiv,satHealth,satHealth,20,2003,t,m1112503,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,upequiv,satHealth,satHealth,21,2004,u,m1112504,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,vpequiv,satHealth,satHealth,22,2005,v,m1112505,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,wpequiv,satHealth,satHealth,23,2006,w,m1112506,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,xpequiv,satHealth,satHealth,24,2007,x,m1112507,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,ypequiv,satHealth,satHealth,25,2008,y,m1112508,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,zpequiv,satHealth,satHealth,26,2009,z,m1112509,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,bapequiv,satHealth,satHealth,27,2010,ba,m1112510,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,bbpequiv,satHealth,satHealth,28,2011,bb,m1112511,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,bcpequiv,satHealth,satHealth,29,2012,bc,m1112512,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,bdpequiv,satHealth,satHealth,30,2013,bd,m1112513,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,bepequiv,satHealth,satHealth,31,2014,be,m1112514,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,
+gsoep,bfpequiv,satHealth,satHealth,32,2015,bf,m1112515,Satisfaction with Health,"0-10, 0 being ""completely dissatisfied"" and 10 being ""completely satisfied""",no,"ifelse(is.na(x) | x < 0, NA, x)",,,average,,,,,,,,,,,,,,,,,,,,

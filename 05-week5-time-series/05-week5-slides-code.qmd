@@ -707,7 +707,12 @@ ipcs_data %>%
 ::::
 
 ## Connected Scatter Plots  
-* Remember our week 3 data, where we had self-rated health 
+* Remember our week 3 data, where we had self-rated health and other variables over years? 
+
+```{r}
+
+```
+
 
 <!-- * Univariate time series   -->
 <!-- * Multivariate time series   -->
