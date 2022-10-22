@@ -52,6 +52,7 @@ library(broom)
 library(tidyverse)
 ```
 
+
 # Time Series  
 ## What is a time series? {background-image="https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/02-images/time-series.png" background-size="1200px" background-position="100% 50%" background-opacity=".2"}
 
@@ -61,6 +62,7 @@ library(tidyverse)
 
 :::: {.columns}
 ::: {.column width="30%"}
+
 
 ```{r, echo=F}
 set.seed(7)
@@ -72,9 +74,11 @@ tibble(
   print(n = 15)
 ```
 
+
 ::: 
 ::: {.column width="70%}
 :::: {.fragment}
+
 
 ```{r, echo=F, fig.show='show', fig.align='right', fig.dim= c(8,4), out.width="120%"}
 set.seed(7)
@@ -96,6 +100,7 @@ tibble(
       , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
     )
 ```
+
 
 
 ::::
@@ -151,9 +156,11 @@ Why visualize a time series if you don't care about the trend?
 
 :::: {.fragment}
 
+
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/02-images/eiko-tweet.png")
 ```
+
 
 ::::
 
@@ -180,6 +187,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 ::: {.column}
 ::: {.fragment}
 
+
 ```{r, echo = T}
 load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/01-data/ipcs_data.RData"))
 ipcs_data %>% 
@@ -193,6 +201,7 @@ ipcs_data <- ipcs_data %>%
   ungroup()
 ```
 
+
 :::
 :::
 ::::
@@ -204,6 +213,7 @@ Let's simplify a bit and say we care about 4 different states for two people:
 :::: {.columns}
 ::: {.column}
 
+
 ```{r}
 ipcs_data %>%
   filter(SID == c("216")) %>%
@@ -212,8 +222,10 @@ ipcs_data %>%
   print(n = 10)
 ```
 
+
 :::
 ::: {.column}
+
 
 ```{r}
 ipcs_data %>%
@@ -223,6 +235,7 @@ ipcs_data %>%
   print(n = 10)
 ```
 
+
 :::
 ::::
 ::::
@@ -230,6 +243,7 @@ ipcs_data %>%
 ## Univariate Time Series  
 It's hard to make much sense of this because we end up trying to draw the line connecting the points with our eyes: 
 
+
 ```{r}
 ipcs_data %>%
   filter(SID == c("02")) %>%
@@ -239,10 +253,12 @@ ipcs_data %>%
     geom_point() + 
     theme_classic()
 ```
+
 
 ## Univariate Time Series  
 It's easier to make much sense of this because we can just follow the line: 
 
+
 ```{r}
 ipcs_data %>%
   filter(SID == c("02")) %>%
@@ -254,8 +270,10 @@ ipcs_data %>%
     theme_classic()
 ```
 
+
 ## Univariate Time Series  
 But often in time series, we won't want / need to plot the points: 
+
 
 ```{r}
 ipcs_data %>%
@@ -266,12 +284,14 @@ ipcs_data %>%
     geom_line() + 
     theme_classic()
 ```
+
 
 ### Take a moment and clean up this figure.  
 
 ## Univariate Time Series  
 ### Take a moment and clean up this figure.  
 One way to highlight increases is using trend lines: 
+
 
 ```{r}
 ipcs_data %>%
@@ -298,9 +318,11 @@ ipcs_data %>%
     )
 ```
 
+
 ## Univariate Time Series  
 
 Another way to highlight changes is to use area:
+
 
 ```{r}
 ipcs_data %>%
@@ -327,9 +349,11 @@ ipcs_data %>%
     )
 ```
 
+
 ## Univariate Time Series  
 
 Another way to highlight changes is to use area:
+
 
 ```{r}
 ipcs_data %>%
@@ -359,12 +383,14 @@ ipcs_data %>%
     )
 ```
 
+
 ## Multivariate Time Series  
 * We can also apply the same principles to either: 
   + the same variable across participants
   + different variables within the same participant
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -376,10 +402,12 @@ ipcs_data %>%
     theme_classic()
 ```
 
+
 ### The same variable across participants
 Oof, this looks a little rough  
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -406,9 +434,11 @@ ipcs_data %>%
       )
 ```
 
+
 ### The same variable across participants
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -437,10 +467,12 @@ ipcs_data %>%
       )
 ```
 
+
 ### The same variable across participants
 But what's the story here? 
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -474,9 +506,11 @@ ipcs_data %>%
       )
 ```
 
+
 ### The same variable across participants
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -492,9 +526,11 @@ ipcs_data %>%
     theme_classic()
 ```
 
+
 ### Different variables within the same participant
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -516,9 +552,11 @@ ipcs_data %>%
     theme(legend.position = "none")
 ```
 
+
 ### Different variables within the same participant
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -547,9 +585,11 @@ ipcs_data %>%
     theme(legend.position = "none")
 ```
 
+
 ### Different variables within the same participant
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -586,9 +626,11 @@ ipcs_data %>%
       )
 ```
 
+
 ### Different variables within the same participant
 
 ## Multivariate Time Series  
+
 
 ```{r}
 ipcs_data %>%
@@ -627,6 +669,7 @@ ipcs_data %>%
       )
 ```
 
+
 ### Different variables within the same participant
 
 ## Connected Scatter Plots  
@@ -634,6 +677,7 @@ ipcs_data %>%
 
 ## Connected Scatter Plots  
 Let's look at them negative and positive emotion composites using `geom_path()`
+
 
 ```{r}
 ipcs_data %>%
@@ -661,6 +705,7 @@ ipcs_data %>%
     theme(legend.position = "bottom")
 ```
 
+
 :::: {.fragment}
 
 ### This isn't convincing me. Maybe let's try a different geom
@@ -669,6 +714,7 @@ ipcs_data %>%
 
 ## Connected Scatter Plots  
 Let's look at them negative and positive emotion composites using `geom_segment()`
+
 
 ```{r}
 ipcs_data %>%
@@ -700,6 +746,7 @@ ipcs_data %>%
   theme_classic()
 ```
 
+
 :::: {.fragment}
 
 ### This isn't convincing me either, but what if we have a stronger correlation and fewer points?
@@ -708,6 +755,7 @@ ipcs_data %>%
 
 ## Connected Scatter Plots  
 * Remember our week 3 data, where we had self-rated health and other variables over years? 
+
 
 ```{r gsoep clean fun, eval = F, echo = F}
 gsoep_read_fun <- function(Year, WL){
@@ -817,9 +865,11 @@ load(url("https://github.com/emoriebeck/psc290-data-viz-2022/blob/main/05-week5-
 ```
 
 
+
 <!-- * Univariate time series   -->
 <!-- * Multivariate time series   -->
 <!-- * Connected scatter plots -->
 <!-- * Smoothing -->
 <!-- * Detrended time series -->
+
 
