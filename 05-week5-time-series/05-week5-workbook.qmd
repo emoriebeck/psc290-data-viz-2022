@@ -1,0 +1,1168 @@
+---
+title: "Week 5: Visualizing Time Series and Trends"
+author: "Emorie D Beck"
+format: 
+  html:
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    theme: united
+    highlight-style: tango
+    df-print: paged
+    code-fold: show
+    toc: true
+    toc-float: true
+    self-contained: true
+    # height: 900
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F, out.width = "90%")
+options(knitr.kable.NA = '')
+```
+
+```{r, echo = F}
+library(RColorBrewer)
+library(knitr)
+library(kableExtra)
+library(plyr)
+library(broom)
+library(tidyverse)
+```
+
+# Time Series  
+
+## What is a time series?  
+
+> "a series of values of a quantity obtained at successive times, often with equal intervals between them"
+
+```{r, echo=F}
+set.seed(7)
+tibble(
+  t = 1:100
+       , value = ceiling(arima.sim(n = 100, list(ar = c(0.8897, -0.4858), ma = c(-0.2279, 0.2488)),
+          sd = sqrt(.5)) + 3)
+  ) %>% 
+  print(n = 15)
+```
+
+```{r, echo=F, fig.show='show', fig.align='right', fig.dim= c(8,4), out.width="120%"}
+set.seed(7)
+tibble(
+  t = 1:100
+       , value = ceiling(arima.sim(n = 100, list(ar = c(0.8897, -0.4858), ma = c(-0.2279, 0.2488)),
+          sd = sqrt(.5)) + 3)
+  ) %>% 
+  ggplot(aes(x = t, y = value)) + 
+    geom_line(color = "seagreen4", size = .75) + 
+    scale_y_continuous(limits = c(1,5), breaks = seq(1,5,1)) + 
+    labs(x = "Time Point (1-100)"
+        , y = "Value"
+        , title = "Sample Time Series Plot") + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+    )
+```
+
+## Who should care about time series? 
+
+People who: 
+
+* study longitudinal change (e.g., development)
+* study variability (e.g., experience sampling, passive sensing)
+* run experiments with multiple trials 
+* study cohort or age differences
+* simulations (e.g., trace plots in bayesian models)
+
+
+* Time is everywhere, and ignoring it can be problematic
+
+## What will we cover with time series: 
+
+* Univariate time series  
+* Multivariate time series  
+* Connected scatter plots
+* Smoothing
+* Detrended time series
+
+**This isn't the first time we've seen time series, but today we'll focus on** ***telling stories with time series***
+
+## Quick clarification: Time Series v Trends  
+* Trends can mean many things, from autocorrelation to mean-level change
+* However, in psychology, we often think of trends as patterns of normative longitudinal change
+* This is fine usage, but trends don't have be linear / curvilinear increases / decreases
+  + seasonal trends
+  + cohort effects
+  + etc. are all trends, too
+
+## Univariate and Multivariate Time Series  
+
+:::: {.columns}
+::: {.column}
+
+Why visualize a time series if you don't care about the trend? 
+
+* This is another way to **describe** your data that can make sure that you see if something went wrong
+
+:::
+::: {.column}
+
+:::: {.fragment}
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/02-images/eiko-tweet.png")
+```
+
+::::
+
+:::
+::::
+
+## Univariate and Multivariate Time Series  
+* How you visualize the trends you are trying to uncover in a time series will depend on the research question you are asking
+  + e.g., very basic time series visualizations are great for descriptives
+  + But to include it in a presentation / papers, we usually want to add more affordances that clarify nothing went wrong
+  + Affordances include, text, shading, and more, in aligment with Gestalt principles and how we process different aspects of visualizations 
+
+# But First, Our Data  
+* These are some Experience Sampling Method data I collected during my time in graduate school [Beck \& Jackson (2022)](https://psyarxiv.com/syhw5) 
+* In that paper I built personalized machine learning models of behaviors and experiences from sets of: 
+  + psychological
+  + situational 
+  + and time variables
+* We also saw these in Week 2
+
+```{r, echo = T}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/01-data/ipcs_data.RData"))
+ipcs_data %>% 
+  print(n = 6)
+```
+
+```{r, echo=F}
+ipcs_data <- ipcs_data %>%
+  group_by(SID) %>%
+  mutate(beep = 1:n()) %>%
+  ungroup()
+```
+
+Let's simplify a bit and say we care about 4 different states for two people: 
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("216")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  print(n = 10)
+```
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  print(n = 10)
+```
+
+# Univariate Time Series  
+It's hard to make much sense of this because we end up trying to draw the line connecting the points with our eyes: 
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = excited)) + 
+    geom_point() + 
+    theme_classic()
+```
+
+It's easier to make much sense of this because we can just follow the line: 
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = excited)) + 
+    geom_line() + 
+    geom_point() + 
+    theme_classic()
+```
+
+But often in time series, we won't want / need to plot the points: 
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = excited)) + 
+    geom_line() + 
+    theme_classic()
+```
+
+### Take a moment and clean up this figure.  
+One way to highlight increases is using trend lines: 
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = content)) + 
+    geom_line(color = "grey", size = .9) + 
+    geom_smooth(method = "lm", formula = y ~ poly(x,2)) + 
+    scale_x_continuous(limits = c(1,50), breaks = c(1,seq(5,50,5))) + 
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Reported Momentary Contentedness (1-5)"
+      , title = "Ccontentedness increased in the second week"
+      , subtitle = "Participant 2"
+      , caption = "y ~ x2"
+    ) + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", hjust = .5, size = rel(1.1))
+      , plot.subtitle = element_text(face = "italic", hjust = .5, size = rel(1.1))
+    )
+```
+
+Another way to highlight changes is to use area:
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = content-1)) + 
+    geom_area(fill = "purple4", alpha = .2) + 
+    geom_line(color = "purple4", size = .9) + 
+    scale_x_continuous(limits = c(1,50), breaks = c(1,seq(5,50,5))) + 
+    scale_y_continuous(limits = c(0,4), breaks = seq(0,4,1), labels = 1:5) + 
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Reported Momentary Contentedness (1-5)"
+      , title = "Ccontentedness increased in the second week"
+      , subtitle = "Participant 2"
+    ) + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", hjust = .5, size = rel(1.1))
+      , plot.subtitle = element_text(face = "italic", hjust = .5, size = rel(1.1))
+    )
+```
+
+Another way to highlight changes is to use area:
+
+```{r}
+ipcs_data %>%
+  filter(SID == c("02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = content-1)) + 
+    geom_area(fill = "purple4", alpha = .2) + 
+    geom_line(color = "purple4", size = .9) + 
+    geom_vline(aes(xintercept = 28), linetype = "dashed", size = 1) + 
+    annotate("text", label = "Week 1", x = 15, y = 0.1, hjust = .5) + 
+    annotate("text", label = "Week 2", x = 40, y = 0.1, hjust = .5) + 
+    scale_x_continuous(limits = c(1,50), breaks = c(1,seq(5,50,5))) + 
+    scale_y_continuous(limits = c(0,4), breaks = seq(0,4,1), labels = 1:5) +
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Reported Momentary Contentedness (1-5)"
+      , title = "Ccontentedness increased in the second week"
+      , subtitle = "Participant 2"
+    ) + 
+    theme_classic() + 
+    theme(
+      axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", hjust = .5, size = rel(1.1))
+      , plot.subtitle = element_text(face = "italic", hjust = .5, size = rel(1.1))
+    )
+```
+
+# Multivariate Time Series  
+* We can also apply the same principles to either: 
+  + the same variable across participants
+  + different variables within the same participant
+
+## The same variable across participants
+
+```{r}
+ipcs_data %>%
+  filter(SID %in% c("05", "02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = content)) + 
+    geom_line(aes(color = SID)) + 
+    theme_classic()
+```
+
+Oof, this looks a little rough  
+
+```{r}
+ipcs_data %>%
+  filter(SID %in% c("05", "02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = content)) + 
+    geom_line(aes(color = SID)) + 
+    scale_color_manual(values = c("darkblue", "orange3")) + 
+    scale_x_continuous(limits = c(1,50), breaks = c(1,seq(5,50,5))) + 
+    scale_y_continuous(limits = c(1,5), breaks = seq(1,5,1), labels = 1:5) +
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Reported Momentary Contentedness (1-5)"
+      , color = "Participant ID"
+    ) + 
+    theme_classic() +
+    theme(
+      legend.position = "bottom"
+      , legend.text = element_text(face = "bold", size = rel(1.1))
+      , legend.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      )
+```
+
+
+```{r}
+ipcs_data %>%
+  filter(SID %in% c("05", "02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = content)) + 
+    geom_line(aes(color = SID), size = .8) + 
+    annotate("label", label = "Participant 02", color = "white", fill = "darkblue", x = 33, y = 2.5, hjust = 0) + 
+    annotate("label", label = "Participant 5", color = "white", fill = "orange3", x = 18, y = 1.75, hjust = 0) + 
+    scale_color_manual(values = c("darkblue", "orange3")) + 
+    scale_x_continuous(limits = c(1,50), breaks = c(1,seq(5,50,5))) + 
+    scale_y_continuous(limits = c(1,5), breaks = seq(1,5,1), labels = 1:5) +
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Reported Momentary Contentedness (1-5)"
+      , color = "Participant ID"
+    ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "bottom"
+      , legend.text = element_text(face = "bold", size = rel(1.1))
+      , legend.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      )
+```
+
+But what's the story here? 
+
+```{r}
+ipcs_data %>%
+  filter(SID %in% c("05", "02")) %>%
+  select(SID, Full_Date, beep, excited
+         , goaldir, content, guilty) %>%
+  ggplot(aes(x = beep, y = content)) + 
+    geom_line(aes(color = SID), size = .8) +
+    geom_smooth(aes(color = SID), method = "lm",se = F) +
+    annotate("label", label = "Participant 02", color = "white", fill = "darkblue", x = 33, y = 2.5, hjust = 0) + 
+    annotate("label", label = "Participant 5", color = "white", fill = "grey60", x = 18, y = 1.75, hjust = 0) + 
+    scale_color_manual(values = c("darkblue", "grey60")) + 
+    scale_x_continuous(limits = c(1,50), breaks = c(1,seq(5,50,5))) + 
+    scale_y_continuous(limits = c(1,5), breaks = seq(1,5,1), labels = 1:5) +
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Reported Momentary Contentedness (1-5)"
+      , color = "Participant ID"
+      , title = "Both Participants' Contentedness Increased"
+      , subtitle = "But Participant 5 remained more content on average"
+    ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "bottom"
+      , legend.text = element_text(face = "bold", size = rel(1.1))
+      , legend.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", hjust = .5, size = rel(1.1))
+      , plot.subtitle = element_text(face = "italic", hjust = .5, size = rel(1.1))
+      )
+```
+
+### Different variables within the same participant
+
+Basic syntax:
+
+```{r}
+ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID, Full_Date, beep, goaldir, guilty) %>%
+  pivot_longer(
+    cols = c(goaldir, guilty)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value)) + 
+    geom_line(aes(color = item)) + 
+    theme_classic()
+```
+
+Add some annotation, better colors, and scales:
+
+```{r}
+ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID, Full_Date, beep, goaldir, guilty) %>%
+  pivot_longer(
+    cols = c(goaldir, guilty)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value)) + 
+    geom_line(aes(color = item), size = .9) + 
+    geom_point(size = .9) + 
+    annotate("text", label = "Goal\nDirected", x = 50, y = 4, hjust = 0) + 
+    annotate("text", label = "Guilty", x = 50, y = 2, hjust = 0) + 
+    scale_color_manual(values = c("orchid4", "orchid2")) +
+    scale_x_continuous(limits = c(1,57), breaks = seq(0,50,5)) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+Let's highlight the part we want to make a point about using `annotate()` and add a title to highlight the *story*:
+
+```{r}
+ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID, Full_Date, beep, goaldir, guilty) %>%
+  pivot_longer(
+    cols = c(goaldir, guilty)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value)) + 
+    annotate("rect", xmin = 13, xmax = 22, ymin = 1.8, ymax = 3.2, fill = "orchid", alpha = .3) + 
+    geom_line(aes(color = item), size = .9) + 
+    geom_point(size = .9) + 
+    annotate("text", label = "Goal\nDirected", x = 50, y = 4, hjust = 0) + 
+    annotate("text", label = "Guilty", x = 50, y = 2, hjust = 0) + 
+    scale_color_manual(values = c("orchid4", "orchid2")) +
+    scale_x_continuous(limits = c(1,57), breaks = seq(0,50,5)) +
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Rated Momentary Value (1-5)"
+      , title = "When goal-directedness was high, guilt was low"
+      , subtitle = "Guilt was rarely equal to or higher than goal-directedness"
+    ) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+And clean up the theme elements:
+
+```{r}
+ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID, Full_Date, beep, goaldir, guilty) %>%
+  pivot_longer(
+    cols = c(goaldir, guilty)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value)) + 
+    annotate("rect", xmin = 13, xmax = 22, ymin = 1.8, ymax = 3.2, fill = "orchid", alpha = .3) + 
+    geom_line(aes(color = item), size = .9) + 
+    geom_point(size = .9) + 
+    annotate("text", label = "Goal\nDirected", x = 50, y = 4, hjust = 0) + 
+    annotate("text", label = "Guilty", x = 50, y = 2, hjust = 0) + 
+    scale_color_manual(values = c("orchid4", "orchid2")) +
+    scale_x_continuous(limits = c(1,57), breaks = seq(0,50,5)) +
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Rated Momentary Value (1-5)"
+      , title = "When goal-directedness was high, guilt was low"
+      , subtitle = "Guilt was rarely equal to or higher than goal-directedness"
+    ) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , legend.text = element_text(face = "bold", size = rel(1.1))
+      , legend.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", hjust = .5, size = rel(1.2))
+      , plot.subtitle = element_text(face = "italic", hjust = .5, size = rel(1.1))
+      )
+```
+
+#### Using Area Plot
+
+We can also use are to highlight relative differences or changes in level: 
+
+```{r}
+ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID, Full_Date, beep, goaldir, guilty) %>%
+  pivot_longer(
+    cols = c(goaldir, guilty)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = beep, y = value-1)) + 
+    geom_area(aes(fill = item), alpha = .4) + 
+    geom_line(color = "orchid4", size = .9) + 
+    geom_point(size = .9) + 
+    scale_fill_manual(values = c("orchid4", "orchid2")) +
+    scale_x_continuous(limits = c(1,50), breaks = seq(0,50,5)) +
+    scale_y_continuous(limits = c(0,4), breaks = seq(0,4,1), labels = 1:5) + 
+    labs(
+      x = "Beep (1-50)"
+      , y = "Self-Rated Momentary Value (1-5)"
+      , title = "When goal-directedness was high, guilt was low"
+      , subtitle = "Guilt was rarely equal to or higher than goal-directedness"
+    ) + 
+    facet_wrap(~item, nrow = 2) + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , legend.text = element_text(face = "bold", size = rel(1.1))
+      , legend.title = element_text(face = "bold", size = rel(1.1))
+      , axis.text = element_text(face = "bold", color ="black", size = rel(1.1))
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", hjust = .5, size = rel(1.2))
+      , plot.subtitle = element_text(face = "italic", hjust = .5, size = rel(1.1))
+      , strip.background = element_rect(fill = "orchid4")
+      , strip.text = element_text(face = "bold", size = rel(1.2), color = "white")
+      )
+```
+
+# Connected Scatter Plots  
+* Connected scatter plots have popped up in our visualizations because they require a lot of visual literacy and can be confusing if not executed incredibly carefully
+
+Let's look at them negative and positive emotion composites using `geom_path()`
+
+```{r}
+ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID, Full_Date, beep, afraid:purposeful) %>%
+  pivot_longer(
+    cols = afraid:purposeful
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  mutate(valence = ifelse(item %in% c("afraid", "angry", "guilty"), "Negative", "Positive")) %>%
+  group_by(SID, Full_Date, beep, valence) %>%
+  summarize(value = mean(value, na.rm = T)) %>%
+  ungroup() %>%
+  pivot_wider(
+    names_from = "valence"
+    , values_from = "value"
+  ) %>%
+  arrange(beep) %>%
+  ggplot(aes(x = Negative, y = Positive)) + 
+    geom_path(aes(color = beep)) + 
+    geom_point() + 
+    scale_color_viridis_c() + 
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+***This isn't convincing me. Maybe let's try a different geom***
+
+Let's look at them negative and positive emotion composites using `geom_segment()`
+
+```{r}
+ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID, Full_Date, beep, afraid:purposeful) %>%
+  pivot_longer(
+    cols = afraid:purposeful
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  mutate(valence = ifelse(item %in% c("afraid", "angry", "guilty"), "Negative", "Positive")) %>%
+  group_by(SID, Full_Date, beep, valence) %>%
+  summarize(value = mean(value, na.rm = T)) %>%
+  ungroup() %>%
+  pivot_wider(
+    names_from = "valence"
+    , values_from = "value"
+  ) %>%
+  ggplot(aes(x = Negative, y = Positive, label = beep)) + 
+    geom_segment(aes(
+                    xend=c(tail(Negative, n=-1), NA)
+                    , yend=c(tail(Positive, n=-1), NA)
+                    , color = beep
+                  )
+                 , arrow = arrow(length = unit(0.4, "cm"))
+      ) + 
+    geom_point() + 
+  scale_color_viridis_c() + 
+  theme_classic()
+```
+
+***This isn't convincing me either, but what if we have a stronger correlation and fewer points?***
+
+Remember our week 3 data, where we had self-rated health and other variables over years? 
+
+```{r gsoep clean fun, eval = F, echo = F}
+gsoep_read_fun <- function(Year, WL){
+  print(Year)
+  old.names <- (gsoep_codebook %>% filter(year == Year))$orig_itemname 
+  p <- sprintf("%s/gsoep/%sp.sav", data_path, WL) %>% haven::read_sav(.) %>%
+    full_join(sprintf("%s/gsoep/%spequiv.sav", data_path, WL) %>% haven::read_sav(.)) %>%
+    full_join(ref) %>%
+    filter(rgroup20 > 10) %>%
+    select(SID = persnr, HID = hhnr, one_of(old.names)) %>%
+    pivot_longer(
+      cols = c(-SID, -HID)
+      , values_to = "value"
+      , names_to = "orig_itemname"
+      , values_drop_na = T
+    )
+}
+
+gsoep_codebook <- read_csv("https://raw.githubusercontent.com/emoriebeck/psc290-data-viz-2022/main/05-week5-time-series/01-codebook.csv") %>%
+  mutate(orig_itemname = str_to_lower(orig_itemname))
+gsoep_codebook
+
+data_path <- "/Volumes/Emorie/data"
+ref <- sprintf("%s/gsoep/cirdef.sav", data_path) %>% haven::read_sav(.) %>% select(cid, rgroup20)
+gsoep_st <- sprintf("%s/gsoep/ppath.sav", data_path) %>% haven::read_sav(.) %>% 
+  full_join(ref) %>% 
+  filter(rgroup20 > 10) %>%
+  left_join(
+    sprintf("%s/gsoep/biojob.sav", data_path) %>% haven::read_sav(.) %>%
+      select(pid = persnr, job = nacelj)) %>%
+  select(SID = pid, gender = sex, yearBrth = gebjahr, mortality = todjahr, job) %>%
+  distinct() 
+
+gsoep <- gsoep_codebook %>% 
+  select(wave, waveletter, year) %>%
+  filter(complete.cases(.)) %>%
+  distinct() %>%
+  arrange(year) %>%
+  mutate(data = map2(year, waveletter, gsoep_read_fun)) 
+
+gsoep_long <- gsoep %>%
+  unnest(data)
+
+Mode <- function(x) {
+  ux <- unique(x)
+  ux <- ux[!is.na(ux)]
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+gsoep_recode <- gsoep_long %>%
+  left_join(gsoep_codebook %>%
+    select(name, itemname, wave, year, orig_itemname, reverse_code:comp_rule)) %>%
+  group_by(name) %>% 
+  nest() %>%
+  ungroup()
+
+# recode 
+recode_fun <- function(rule, y, year){
+  x <- y$value
+  if(!is.na(rule)){y$value <- eval(parse(text = rule))}
+  return(y)
+}
+
+fun_call <- function(x, rule){
+    switch(rule,
+           average = mean(x, na.rm = T),
+           mode = Mode(x)[1],
+           sum = sum(x, na.rm = T),
+           skip = unique(x)[1],
+           max = max(x, na.rm = T),
+           min = min(x, na.rm = T))
+  }
+
+gsoep_recode <- gsoep_recode %>% 
+  mutate(data = map(data, ~(.) %>% 
+    group_by(recode, year) %>%
+    nest() %>%
+    ungroup() %>%
+    mutate(data = pmap(list(recode, data, year), recode_fun)) %>%
+    unnest(data) %>%
+    mutate(value = ifelse(value < 0 | is.nan(value) | is.infinite(value), NA, value))))
+
+gsoep <- gsoep_recode %>%
+  unnest(data) %>%
+  select(name, year, SID, value) %>%
+  pivot_wider(
+    names_from = "name"
+    , values_from = "value"
+  ) %>%
+  full_join(gsoep_st) %>%
+  mutate(
+    age = year - yearBrth
+    , mortality = ifelse(mortality < 0, 0, ifelse(year >= mortality, 1, 0))
+    , job = ifelse(job < 0, NA, job)
+    , SRhealth = mapvalues(SRhealth, seq(1,5), seq(5,1))
+  )
+gsoep_st <- gsoep_st %>%
+  mutate(
+    mortality = ifelse(mortality < 0, 0, 1)
+    , job = ifelse(job < 0, NA, job)
+    )
+save(gsoep, gsoep_st, file = "/Volumes/Emorie/GitHub/psc290-data-viz-2022/05-week5-time-series/01-data/gsoep.RData")
+```
+
+```{r}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/blob/main/05-week5-time-series/01-data/gsoep.RData?raw=true"))
+gsoep
+```
+
+Let's summarize those data by decade of age and look at changes of self-rated health and satisfaction with health:
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth) %>%
+  filter(age < 100 & age > 19) %>%
+  mutate(age_gr = as.numeric(mapvalues(age, seq(20,99,1), rep(seq(20,99,2), each = 2)))) %>%
+  drop_na() %>%
+  group_by(age, age_gr) %>%
+  summarize_at(vars(SRhealth, satHealth), mean) %>%
+  group_by(age_gr) %>%
+  summarize_at(vars(SRhealth, satHealth), mean) %>%
+  ungroup() %>%
+  ggplot(aes(x = SRhealth, y = satHealth, label = age_gr)) + 
+    geom_segment(aes(
+                    xend=c(tail(SRhealth, n=-1), NA)
+                    , yend=c(tail(satHealth, n=-1), NA)
+                    , color = age_gr
+                  )
+                 , arrow = arrow(length = unit(0.4, "cm"))
+      ) + 
+    geom_point() + 
+    # scale_x_continuous(limits = c(0,10), breaks = seq(0,10,2)) + 
+    scale_y_continuous(limits = c(0,10), breaks = seq(0,10,2)) + 
+    scale_color_viridis_c() + 
+    theme_classic()
+```
+
+***Meh, the relationship between these is too linear, so this isn't the right graph for it***
+
+# Multivariate Time Series: Spaghetti Plots  
+Rather than a connected scatterplot showing general patterns of change, we may want to look at person-level trajectories coupled with an overall trajectory. 
+
+## Smoothed Trajectories using `geom_smooth()`
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth) %>%
+  filter(age < 100 & age > 19) %>% 
+  drop_na() %>%
+  filter(SID %in% sample(unique(.$SID), 1000)) %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = age, y = value, color = item)) + 
+    geom_point(alpha = .2, size = .5, color = "grey") + 
+    geom_smooth(
+      aes(group = interaction(SID, item))
+      , method = "lm", se = F
+      , alpha = .3, size = .5
+      ) + 
+    scale_color_manual(values = c("darkblue", "darkred")) + 
+    facet_wrap(~item) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+## Longitudinal Models  
+
+* But this is a longitudinal change, so we can't just do that. We have to estimate the growth models first
+* The model we'll use is:
+
+* $Y_{ij} = \beta_{0j} + \beta_{1j}*age_{ij} + \epsilon_{ij}$
+  + $\beta_{0j} = \gamma_{00} + u_{0j}$
+  + $\beta_{1j} = \gamma_{10} + u_{1j}$
+
+$$\epsilon \sim \mathcal{N}(0, \sigma^2)$$
+
+$$ 
+\begin{align*}
+\Biggr[ \begin{array}{c}
+u_{0j}\\
+u_{1j}\end{array} \Biggr]
+\sim \mathcal{N} 
+\left( 
+\Biggr[ \begin{array}{c}
+0\\
+0\end{array} \Biggr],
+\begin{array}{cc}
+\tau_{00}^2 & \tau_{10} \\
+\tau_{10} & \tau_{11}^2 \end{array} \right)
+\end{align*}
+$$
+
+
+* $\beta_{0j}$ is the intercept for person $j$ at time $i$
+* $\beta_{1j}$ is the linear change for person $j$ 
+
+Let's run the MLM for both self-rated health and satisfaction with health using the `lme4` package and the `lmer()` function. We'll also use `tidy()` from the `broom.mixed` package that we discussed last week:
+
+```{r}
+library(lme4)
+lmer_fun <- function(d) lmer(value ~ 1 + age + (1 + age | SID), data = d)
+
+m_nested <- gsoep %>%
+  select(SID, age, SRhealth, satHealth) %>%
+  filter(age < 100 & age > 19) %>% 
+  drop_na() %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  mutate(age = age/10) %>%
+  group_by(item) %>%
+  nest() %>%
+  ungroup() %>%
+  mutate(
+    m = map(data, lmer_fun)
+    , tidy = map(m, broom.mixed::tidy))
+```
+
+Let's unnest and look at the coefficients:  
+
+```{r}
+m_nested %>% 
+  select(-data, -m) %>%
+  unnest(tidy) %>%
+  print(n = 12)
+```
+
+To get the smoothed trajectories, we need to get the model predictions. We want two kinds of predictions:
+
+1. Fixed effect predictions, or average change across the sample (i.e. mean-level change)
+2. Person-level predictions, or unique (shrunken) change for each participant (i.e. intraindividual change)
+
+```{r}
+fx_pred_fun <- function(m){
+  tibble(age = seq(2,9.9, .1)) %>%
+    mutate(
+      pred = predict(m, newdata = ., re.form = NA)
+    )
+}
+
+rx_pred_fun <- function(m, d){
+  d %>%
+    select(SID, age) %>%
+    distinct() %>%
+    mutate(pred = predict(m, newdata = .))
+}
+
+m_nested <- m_nested %>%
+  mutate(fx_pred = map(m, fx_pred_fun)
+         , rx_pred = map2(m, data, rx_pred_fun))
+```
+
+Let's unnest those person level predictions and plot them using `geom_line()`. We don't need to smooth because the model has already done this. 
+
+We'll also call the nested data frame a second time with `geom_line()` in order to get the fixed effect trajectory. We call it second because we want to layer it.
+
+```{r}
+sids <- sample(unique(m_nested$data[[1]]$SID), 1000)
+m_nested %>%
+  select(item, rx_pred) %>%
+  unnest(rx_pred) %>%
+  filter(SID %in% sids) %>%
+  ggplot(aes(x = age*10, y = pred, color = item)) + 
+    geom_line(
+      aes(group = factor(SID))
+      , alpha = .25
+      , size = .75) + 
+    geom_line(
+      data = m_nested %>% 
+        select(item, fx_pred) %>%
+        unnest(fx_pred)
+      , size = 1
+      ) + 
+    scale_color_manual(values = c("darkblue", "darkred")) + 
+    facet_wrap(~item) + 
+    theme_classic() + 
+    theme(legend.position = "none")
+```
+
+# Quick Note on Smoothing  
+Often, we want to smooth our trajectories
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth, marital, gender) %>%
+  drop_na() %>%
+  filter(age >= 20 & age <= 100) %>%
+  group_by(age, marital, gender) %>%
+  summarize_at(vars(satHealth, SRhealth), mean)
+```
+
+Often, we want to smooth our trajectories, like if we wanted to look at the trajectory of self-rated health and satisfaction with health across age groups.
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth, marital, gender) %>%
+  drop_na() %>%
+  filter(age >= 20 & age <= 100) %>%
+  group_by(age, marital, gender) %>%
+  summarize_at(vars(satHealth, SRhealth), mean) %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = age, y = value)) + 
+    geom_line(aes(color = interaction(gender, marital))) + 
+    geom_smooth(method = "loess") + 
+    facet_wrap(~item, nrow = 2) + 
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+* But we have to choose how and when to smooth carefully
+* E.g., when do we choose a linear model v. a loess line?
+* E.g., Do we do an overall trajectory or stratify by group? 
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth, marital, gender) %>%
+  drop_na() %>%
+  filter(age >= 20 & age <= 100) %>%
+  group_by(age, marital, gender) %>%
+  summarize_at(vars(satHealth, SRhealth), mean) %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = age, y = value)) + 
+    geom_line(aes(color = interaction(gender, marital))) + 
+    geom_smooth(method = "lm") + 
+    facet_wrap(~item, nrow = 2) + 
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+Let's clean up those labels and change the colors to highlight the overall trajectory: 
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth, marital, gender) %>%
+  drop_na() %>%
+  filter(age >= 20 & age <= 100) %>%
+  group_by(age, marital, gender) %>%
+  summarize_at(vars(satHealth, SRhealth), mean) %>%
+  ungroup() %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    ), gender = factor(gender, c(1,2), c("Male", "Female"))
+    ) %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = age, y = value)) + 
+    geom_line(aes(color = interaction(gender, marital))) + 
+    geom_smooth(method = "lm", color = "darkred", fill = "darkred") + 
+    scale_color_grey(start = .01, end = .99) + 
+    facet_wrap(~item, nrow = 2) + 
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+And smooth the trajectories:  
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth, marital, gender) %>%
+  drop_na() %>%
+  filter(age >= 20 & age <= 100) %>%
+  group_by(age, marital, gender) %>%
+  summarize_at(vars(satHealth, SRhealth), mean) %>%
+  ungroup() %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    ), gender = factor(gender, c(1,2), c("Male", "Female"))
+    ) %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = age, y = value)) + 
+    geom_smooth(
+      aes(color = interaction(gender, marital))
+      , method = "loess"
+      , se = F
+      ) + 
+    geom_smooth(method = "lm", color = "darkred", fill = "darkred") + 
+    scale_color_grey(start = .01, end = .99) + 
+    facet_wrap(~item, nrow = 2) + 
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+Maybe smooth them a little less: 
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth, marital, gender) %>%
+  drop_na() %>%
+  filter(age >= 20 & age <= 100) %>%
+  group_by(age, marital, gender) %>%
+  summarize_at(vars(satHealth, SRhealth), mean) %>%
+  ungroup() %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    ), gender = factor(gender, c(1,2), c("Male", "Female"))
+    ) %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = age, y = value)) + 
+    geom_smooth(
+      aes(color = interaction(gender, marital))
+      , method = "loess"
+      , se = F
+      , span = .25
+      , size = .5
+      ) + 
+    geom_smooth(method = "lm", color = "darkred", fill = "darkred") + 
+    scale_color_grey(start = .01, end = .99) + 
+    facet_wrap(~item, nrow = 2) + 
+    theme_classic() + 
+    theme(legend.position = "bottom")
+```
+
+And clean up the labels and theme elements: 
+
+```{r}
+gsoep %>%
+  select(SID, age, SRhealth, satHealth, marital, gender) %>%
+  drop_na() %>%
+  filter(age >= 20 & age <= 100) %>%
+  group_by(age, marital, gender) %>%
+  summarize_at(vars(satHealth, SRhealth), mean) %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    ), gender = factor(gender, c(1,2), c("Male", "Female"))
+    ) %>%
+  pivot_longer(
+    cols = c(SRhealth, satHealth)
+    , names_to = "item"
+    , values_to = "value"
+  ) %>%
+  ggplot(aes(x = age, y = value)) + 
+    geom_smooth(
+      aes(color = interaction(gender, marital))
+      , method = "loess"
+      , se = F
+      , span = .25
+      , size = .5
+      ) + 
+    geom_smooth(method = "lm", color = "orchid3", fill = "orchid3") + 
+    scale_color_grey(start = .01, end = .99) + 
+    facet_wrap(~item, nrow = 2) + 
+    labs(x = "Age", y = "Smoothed Value", color = NULL) + 
+    guides(color = guide_legend(nrow = 4)) + 
+    theme_classic() + 
+    theme(legend.position = "bottom"
+          , axis.text = element_text(face = "bold", size = rel(1.1))
+          , axis.title = element_text(face = "bold", size = rel(1.2))
+          , strip.background = element_rect(fill = "orchid4")
+          , strip.text = element_text(face = "bold", size = rel(1.2), color = "white"))
+```
+
+
+# Slopegraphs
+* We didn't have a chance to review slopegraphs when discussing visualizing associations
+* But they also apply to visualizing change, especially when we have two wave measures of change (e.g., pre-post designs)
+* When considered over time, these figures also give us a sense of rank-order consistency
+
+Firs, the data: 
+
+```{r}
+pomp <- function(x) (x - min(x, na.rm = T))/(max(x, na.rm = T) - min(x, na.rm = T))*10
+gsoep_sg <- gsoep %>%
+  select(SID, age, satHealth, SRhealth, marital, gender) %>%
+  filter(age %in% c(60,70)) %>%
+  drop_na() %>% 
+  group_by(SID) %>%
+  filter(n() == 2) %>%
+  group_by(age) %>%
+  mutate(SRhealth = pomp(SRhealth)) %>%
+  group_by(age, SID, marital, gender) %>%
+  mutate(health = mean(SRhealth, satHealth)) %>%
+  group_by(age, marital, gender) %>%
+  summarize(health = mean(health)) %>%
+  ungroup() %>%
+  mutate(marital = factor(
+    marital
+    , 1:4
+    , c("Married", "Separated", "Widowed", "Never Married")
+    ), gender = factor(gender, c(1,2), c("Male", "Female"))
+    ); gsoep_sg
+```
+
+Now, let's plot them: 
+
+```{r}
+gsoep_sg %>%
+  ggplot(aes(x = age, y = health, group = interaction(marital, gender))) + 
+    geom_line(aes(color = interaction(marital, gender))) + 
+    geom_point(size = 2) + 
+    geom_text(data = . %>% filter(age == 60)
+              , aes(label = paste(marital, gender, sep = ", "))
+              , hjust = 1
+              , nudge_x = -1
+              ) + 
+    scale_x_continuous(
+      limits = c(52, 72), breaks = c(60,70)
+      , labels = c("Age 60", "Age 70"), position = "top"
+      ) + 
+    scale_y_continuous(position = "right") + 
+    scale_color_viridis_d() + 
+    labs(x = NULL
+         , y = "Health"
+         , title = "Only widowed men perceived worsening health\nfrom 60-70") + 
+    theme_classic() + 
+    theme(
+      legend.position = "none"
+      , axis.line = element_blank()
+      , axis.text = element_text(face = "bold", size = rel(1.1), color = "black")
+      , axis.title = element_text(face = "bold", size = rel(1.1))
+      , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5)
+      , panel.border = element_rect(fill = NA, size = 1.5)
+      )
+```
+
+<!-- * Univariate time series   -->
+<!-- * Multivariate time series   -->
+<!-- * Connected scatter plots -->
+<!-- * Smoothing -->
+<!-- * Detrended time series -->
