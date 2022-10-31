@@ -43,7 +43,12 @@ knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F, out.widt
 options(knitr.kable.NA = '')
 ```
 
-```{r, echo = F}
+# Visualizing Uncertainty  
+
+## Packages  
+
+```{r, echo = T}
+#| code-line-numbers: "6,10,11,12,13,14"
 library(RColorBrewer)
 library(knitr)
 library(kableExtra)
@@ -59,8 +64,6 @@ library(tidybayes)
 library(distributional)
 library(gganimate)
 ```
-
-# Visualizing Uncertainty  
 
 ## Visualizing Uncertainty  
 * Why is visualizing uncertainty important?  
@@ -133,6 +136,7 @@ gsoep
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|3-4|1,5|6-8|9-10|11-18"
 pomp <- function(x) (x - min(x, na.rm = T))/(max(x, na.rm = T) - min(x, na.rm = T))*10
 gsoep_desc <- gsoep %>%
   filter(year == 2005 & age < 30) %>%
@@ -195,6 +199,7 @@ gsoep_desc
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|2|3-7|8-9|10-11"
 gsoep_desc <- gsoep_desc %>% 
   select(mean:ci80, health, SID) %>%
   pivot_longer(
@@ -233,7 +238,7 @@ gsoep_desc
 
 ## Error Bars  {.smaller}
 
-```{r, fig.dim=c(10,3), fig.align='center'}
+```{r, fig.dim=c(10,3), fig.align='center', echo = F}
 gsoep_desc %>%
   ggplot(aes(y = measure, x = mean)) +
     geom_point(size = 3, color = "darkorange3") + 
@@ -279,6 +284,7 @@ gsoep_desc %>%
 ::::{.fragment}
 
 ```{r}
+#| code-line-numbers: "|2|3|4-7"
 gsoep %>%
   filter(year == 2012 & !is.na(marital)) %>%
   mutate(marital = ifelse(marital == 4, "Never Married", "Married")) %>%
@@ -301,6 +307,7 @@ gsoep %>%
 ::::{.fragment}
 
 ```{r}
+#| code-line-numbers: "|2|3-4"
 tibble(
   value = c(rep(1, 76), rep(2,24))
   , x = rep(1:10, each = 10)
@@ -321,6 +328,7 @@ tibble(
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "6-9"
 tibble(
   value = c(rep(1, 76), rep(2,24))
   , y = rep(1:10, each = 10)
@@ -361,6 +369,7 @@ tibble(
 :::{.column}
 
 ```{r, eval = F, fig.dim=c(4,4.2), out.width="80%"}
+#| code-line-numbers: "7-9,12"
 tibble(
   value = c(rep(1, 76), rep(2,24))
   , y = rep(1:10, each = 10)
@@ -417,6 +426,7 @@ tibble(
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "2|3|4-8|9-14|15"
 gsoep_ex <- gsoep %>%
   filter(year == "2000") %>%
   select(SID, age, marital, gender) %>%
@@ -681,6 +691,7 @@ cowplot::plot_grid(p1, p2, p3, p6, p5, p4, nrow = 2)
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|1-2|4-10|5|6|7-9"
 m1 <- lm(SRhealth ~ marital + age, data = gsoep_ex)
 tidy1 <- tidy(m1)
 
@@ -725,6 +736,7 @@ We can pull the predictions from model terms or marginal means
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "4-6"
 tidy1 %>%
   filter(term != "(Intercept)") %>%
   ggplot(aes(y = term)) + 
@@ -742,6 +754,7 @@ tidy1 %>%
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "|1-2|3|4|5-8|7"
 gsoep_ex %>%
   data_grid(marital) %>%
   mutate(age = mean(gsoep_ex$age)) %>%
@@ -810,6 +823,7 @@ We can pull the predictions from model terms or marginal means
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "2"
 p1 +
   stat_halfeye(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -825,6 +839,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "2"
 p2 + 
   stat_halfeye(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)), 
@@ -844,6 +859,7 @@ p2 +
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "2"
 p1 +
   stat_eye(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -857,6 +873,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "2"
 p2 + 
   stat_eye(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)), 
@@ -875,6 +892,7 @@ p2 +
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "2"
 p1 +
   stat_gradientinterval(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -888,6 +906,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "2"
 p2 + 
   stat_gradientinterval(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)), 
@@ -906,6 +925,7 @@ p2 +
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "2"
 p1 +
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -919,6 +939,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "2"
 p2 + 
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)), 
@@ -938,6 +959,7 @@ You can also change the number of dots:
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "2,4"
 p1 +
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -952,6 +974,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "2,4"
 p2 + 
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)) 
@@ -972,6 +995,7 @@ There are also three different layouts
 `layout = "bin"`:
 
 ```{r}
+#| code-line-numbers: "2,4-5"
 p2 + 
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)) 
@@ -987,6 +1011,7 @@ p2 +
 `layout = "weave"`:
 
 ```{r}
+#| code-line-numbers: "2,4-5"
 p2 + 
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)) 
@@ -1002,6 +1027,7 @@ p2 +
 `layout = "swarm"`:
 
 ```{r}
+#| code-line-numbers: "2,4-5"
 p2 + 
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)) 
@@ -1022,6 +1048,7 @@ p2 +
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "2,4"
 p1 +
   stat_dotsinterval(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -1036,6 +1063,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "2,4"
 p2 + 
   stat_dotsinterval(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)) 
@@ -1057,6 +1085,7 @@ You can apply many of the same arguments as "regular" `stat_dots()`
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "2,4[5"
 p1 +
   stat_dotsinterval(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -1072,6 +1101,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "2,4-5"
 p2 + 
   stat_dotsinterval(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)) 
@@ -1092,6 +1122,7 @@ p2 +
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "|2,4-6|8"
 p1 +
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = estimate, sigma = std.error))
@@ -1111,6 +1142,7 @@ p1 +
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "|2,4-6|8"
 p2 + 
   stat_dots(
       aes(xdist = dist_student_t(df = df.residual(m1), mu = .fitted, sigma = .se.fit)) 
@@ -1160,6 +1192,7 @@ We can plot this using an extension of `geom_ribbon()`, `stat_lineribbon()`
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|1-4|5|6-14|6|7-9|10-12"
 gsoep_ex2 %>%
   group_by(marital) %>%
   data_grid(age= seq_range(age, n = 101)) %>%
@@ -1215,6 +1248,7 @@ But first, let's get some longitudinal data that let's us look at the interactio
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|2-4|5-7|8-10|11|12|13|1,16"
 set.seed(5)
 gsoep_ex3 <- gsoep %>%
   select(SID, age, marital, gender, SRhealth) %>%
@@ -1284,7 +1318,8 @@ Changes in health differ across marital groups
 ::::{.columns}
 :::{.column}
 
-```{r, cache = T}
+```{r}
+#| code-line-numbers: "|1-13|3|4|5-9|10-12|15-25|16-20|22-26"
 predIntlme4 <- function(m, mod_frame, ref){
   ## get bootstrapped estimates
   b <- bootMer(
@@ -1319,6 +1354,7 @@ predIntlme4 <- function(m, mod_frame, ref){
 :::{.column}
 
 ```{r}
+#| code-line-numbers: "|1-7|2-5|6|9-11"
 pred_fx_fun <- function(m){
   mod_frame <- crossing(
     age = seq(min(m@frame$age), max(m@frame$age), .1)
@@ -1335,12 +1371,20 @@ b3 <- boot3$boot
 :::
 ::::
 
+## Simple Slopes  {.smaller}
+
+```{r}
+b_df3
+```
+
+
 ## `geom_line()` {.smaller}
 
 ::::{.columns}
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|1|2|3-6"
 b_df3 %>%
   ggplot(aes(x = age, y = pred)) + 
     geom_line(
@@ -1370,10 +1414,20 @@ b_df3 %>%
 
 ## `geom_lineribbon()`: summarized  {.smaller}
 
+```{r}
+b_df3 %>% 
+  group_by(marital, age) %>%
+  median_qi(pred)
+```
+
+
+## `geom_lineribbon()`: summarized  {.smaller}
+
 ::::{.columns}
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|4-9|10-14|15"
 b_df3 %>%
   group_by(marital, age) %>%
   median_qi(pred) %>%
@@ -1414,6 +1468,7 @@ b_df3 %>%
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "3,12"
 b_df3 %>%
   group_by(marital, age) %>%
   median_qi(pred, .width = c(.50, .80, .95)) %>%
@@ -1446,12 +1501,13 @@ b_df3 %>%
 :::
 ::::
 
-## `stat_lineribbon()` bands: samples{.smaller}
+## `stat_lineribbon()` bands: samples {.smaller}
 
 ::::{.columns}
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|1|2-5|6"
 b_df3 %>%
   ggplot(aes(
     x = age
@@ -1481,6 +1537,7 @@ b_df3 %>%
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "7-9"
 b_df3 %>%
   ggplot(aes(
     x = age
@@ -1513,6 +1570,7 @@ b_df3 %>%
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "7-11"
 b_df3 %>%
   ggplot(aes(
     x = age
@@ -1547,6 +1605,7 @@ b_df3 %>%
 :::{.column}
 
 ```{r, eval = F, fig.dim=c(6,6)}
+#| code-line-numbers: "|4|5-8|9-10|1,11-18"
 ms <- b_df3 %>% filter(age == max(age)) %>% group_by(marital) %>% summarize(m = mean(pred))
 
 b_df3 %>%
@@ -1673,6 +1732,7 @@ First, we'll plot just the ribbons across the full sample based on the bootstrap
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "5-8,10"
 b_df3 %>%
   group_by(marital, age) %>%
   median_qi(pred) %>%
@@ -1718,6 +1778,7 @@ Next we'll add a line for each bootstrapped sample. This doesn't look great here
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "10-14"
 b_df3 %>%
   group_by(marital, age) %>%
   median_qi(pred) %>%
@@ -1772,6 +1833,7 @@ But when we use the `transition_states()` function across the bootstraped sample
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "18"
 b_df3 %>%
   group_by(marital, age) %>%
   median_qi(pred) %>%
@@ -1844,6 +1906,7 @@ gsoep_ex3 %>%
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "4-8"
 gsoep_ex3 %>%
   ggplot(aes(y = marital, x = SRhealth)) + 
     geom_jitter(aes(color = marital), alpha = .25) + 
@@ -1884,6 +1947,7 @@ And finally, we can animate those samples the `transition_states()` function fro
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "11"
 gsoep_ex3 %>%
   ggplot(aes(y = marital, x = SRhealth)) + 
     geom_jitter(aes(color = marital), alpha = .5) + 

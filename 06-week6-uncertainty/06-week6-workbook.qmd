@@ -2,38 +2,21 @@
 title: "Week 6: Visualizing Uncertainty"
 author: "Emorie D Beck"
 format: 
-  revealjs:
-    incremental: true
+  html:
     code-tools: true
     code-copy: true
     code-line-numbers: true
     code-link: true
-    preview-links: true
-    slide-number: true
+    theme: united
+    highlight-style: tango
+    df-print: paged
+    code-fold: show
+    toc: true
+    toc-float: true
     self-contained: true
-    fig-height: 4
-    fig-width: 6
-    fig-align: center
-    css: custom.css
-    theme: psc290
-    # highlight-style: tango
-    margin-left: "0"
-    margin-right: "0"
-    width: 1400
     # height: 900
     footer: "PSC 290 - Data Visualization"
     logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
-  # pptx: 
-  #   incremental: true  
-  #   # code-tools: true
-  #   # code-copy: true
-  #   # code-line-numbers: true
-  #   # code-link: true
-  #   css: custom.css
-  #   theme: psc290
-  #   highlight-style: atom-one-dark
-  #   footer: "PSC 290 - Data Visualization"
-  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
 editor_options: 
   chunk_output_type: console
 ---
@@ -43,7 +26,8 @@ knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F, out.widt
 options(knitr.kable.NA = '')
 ```
 
-```{r, echo = F}
+```{r, echo = T}
+#| code-line-numbers: "6,10,11,12,13,14"
 library(RColorBrewer)
 library(knitr)
 library(kableExtra)
@@ -53,9 +37,11 @@ library(modelr)
 library(lme4)
 library(broom.mixed)
 library(tidyverse)
+library(ungeviz)
 library(ggdist)
 library(tidybayes)
 library(distributional)
+library(gganimate)
 ```
 
 # Visualizing Uncertainty  
@@ -125,9 +111,6 @@ gsoep %>%
   drop_na()
 ```
 
-## Error Bars  
-
-* First, let's examine the usual ways that we show uncertainty around point estimates (e.g., means, model parameter estimates, etc.) using interval estimates (+/- 1 SE/D, confidence interval)  
 
 ```{r}
 gsoep_desc <- gsoep %>%
@@ -150,10 +133,6 @@ gsoep_desc <- gsoep %>%
 gsoep_desc
 ```
 
-## Error Bars  
-
-* First, let's examine the usual ways that we show uncertainty around point estimates (e.g., means, model parameter estimates, etc.) using interval estimates (+/- 1 SE/D, confidence interval)  
-
 ```{r}
 gsoep_desc <- gsoep_desc %>% 
   select(mean:ci80, health, SID) %>%
@@ -168,7 +147,6 @@ gsoep_desc <- gsoep_desc %>%
 gsoep_desc
 ```
 
-## Error Bars  {.smaller}
 
 ```{r, fig.dim=c(10,3)}
 gsoep_desc %>%
@@ -210,8 +188,7 @@ gsoep_desc %>%
   + ensemble display
   
 # Proportions / Probability  
-
-## Proportions / Probability  
+ 
 * We already covered proportions and probability, but this one deserves being highlighted itself
 * How much of our sample was unmarried? 
 
@@ -225,9 +202,6 @@ gsoep %>%
   mutate(prop = round(n/sum(n)*100))
 ```
 
-## Proportions / Probability  
-* We already covered proportions and probability, but this one deserves being highlighted itself
-* How much of our sample was unmarried? 
 * We have to trick `ggplot2` into making this figure with a grid
 
 ```{r}
@@ -238,11 +212,8 @@ tibble(
   ) 
 ```
 
-## Proportions / Probability  
-* We already covered proportions and probability, but this one deserves being highlighted itself
-* How much of our sample was unmarried? 
-
 ```{r}
+#| code-line-numbers: "6-9"
 tibble(
   value = c(rep(1, 76), rep(2,24))
   , y = rep(1:10, each = 10)
@@ -254,18 +225,17 @@ tibble(
     theme(legend.position = "none")
 ```
 
-## Proportions / Probability  {.smaller}
-* We already covered proportions and probability, but this one deserves being highlighted itself
-* How much of our sample was unmarried? 
+Let's clean it up: 
 
-```{r fig.dim=c(6,6.3)}
+```{r fig.dim=c(4,4.2)}
+#| code-line-numbers: "7-9,12"
 tibble(
   value = c(rep(1, 76), rep(2,24))
   , y = rep(1:10, each = 10)
   , x = rep(1:10, times = 10)
   ) %>%
   ggplot(aes(x = x, y = y, color = factor(value))) +
-    geom_point(shape = "square", size = 6) + 
+    geom_point(shape = "square", size = 8) + 
     scale_color_manual(values = c("lightgrey", "darkblue")) + 
     labs(title = "24% Remained Unmarried in 2012") + 
     theme_void() + 
@@ -273,9 +243,8 @@ tibble(
           , plot.title = element_text(hjust = .5, face = "bold"))
 ```
 
-# Point Estimates  
 
-## Point Estimates  
+# Point Estimates  
 
 * Most often, we want to visualize either point esimates or other visualizations of models
 * We touched on this a couple of weeks ago when we talked about `broom` and `broom.mixed`
@@ -287,8 +256,6 @@ tibble(
   + (Bayesian) Credible Intervals
   + (Bayesian) Posterior Distributions
 * I'll stay out of Bayes for now :(
-
-## Point Estimates  
 
 ```{r}
 gsoep_ex <- gsoep %>%
@@ -308,8 +275,6 @@ gsoep_ex <- gsoep %>%
   drop_na()
 gsoep_ex
 ```
-
-
 
 ## Point Estimates From Model Predictions  
 
@@ -522,12 +487,10 @@ cowplot::plot_grid(p1, p2, p3, p6, p5, p4, nrow = 2)
 * `stat_dotsinterval()`: Frequency Framing
 * `stat_halfeye()`+ `stat_dots()`: Visual Boundaries + Frequency Framing
 
-## Point Estimates and Marginal Means  {.smaller}
 ### Core syntax  
 * The benefit of ggdist is that it allows you to use essentially identical syntax to produce lots of different kinds of plots  
 * All we have to do is swap out the `geom`
 
-:::: {.fragment}
 
 ```{r}
 m1 <- lm(SRhealth ~ marital + age, data = gsoep_ex)
@@ -542,14 +505,14 @@ tidy1 %>%
   my_theme()
 ```
 
-::::
 
-## `stat_halfeye()`
+### `stat_halfeye()`
 We can pull the predictions from model terms or marginal means  
 
 Model Terms:
 
 ```{r}
+#| code-line-numbers: "4"
 tidy1 %>%
   filter(term != "(Intercept)") %>%
   ggplot(aes(y = term)) + 
@@ -562,6 +525,7 @@ tidy1 %>%
 Marginal Means: 
 
 ```{r}
+#| code-line-numbers: "6-8"
 gsoep_ex %>%
   data_grid(marital) %>%
   mutate(age = mean(gsoep_ex$age)) %>%
@@ -572,9 +536,6 @@ gsoep_ex %>%
     ) +
   my_theme()
 ```
-
-## Point Estimates and Marginal Means  {.smaller}
-### Core syntax  
 
 Let's do a little hack and create our whole plots **except** the `geom`, so that we can build them with less syntax: 
 
@@ -605,7 +566,6 @@ p2 <- gsoep_ex %>%
   my_theme()
 ```
 
-## `stat_halfeye()`
 We can pull the predictions from model terms or marginal means  
 
 Model Terms:
@@ -628,7 +588,7 @@ p2 +
   labs(subtitle = "stat_halfeye()")
 ```
 
-## `stat_eye()`
+### `stat_eye()`
 
 Model Terms:
 
@@ -650,7 +610,7 @@ p2 +
   labs(subtitle = "stat_eye()")
 ```
 
-## `stat_gradientinterval()`
+### `stat_gradientinterval()`
 
 Model Terms:
 
@@ -672,7 +632,7 @@ p2 +
   labs(subtitle = "stat_gradientinterval()")
 ```
 
-## `stat_dots()`
+### `stat_dots()`
 
 Model Terms:
 
@@ -694,7 +654,6 @@ p2 +
   labs(subtitle = "stat_dots()")
 ```
 
-## `stat_dots()`
 You can also change the number of dots: 
 
 Model Terms:
@@ -719,7 +678,6 @@ p2 +
   labs(subtitle = "stat_dots()")
 ```
 
-## `stat_dots()`
 There are also three different layouts
 
 `layout = "bin"`:
@@ -734,7 +692,7 @@ p2 +
   labs(subtitle = "stat_dots()")
 ```
 
-`layout = "bin"`:
+`layout = "weave"`:
 
 ```{r}
 p2 + 
@@ -758,7 +716,7 @@ p2 +
   labs(subtitle = "stat_dots()")
 ```
 
-## `stat_dotsinterval()`
+### `stat_dotsinterval()`
 
 Model Terms:
 
@@ -781,8 +739,6 @@ p2 +
   ) + 
   labs(subtitle = "stat_dotsinterval()")
 ```
-
-## `stat_dotsinterval()`
 
 You can apply many of the same arguments as "regular" `stat_dots()`
 
@@ -810,7 +766,7 @@ p2 +
   labs(subtitle = "stat_dotsinterval()")
 ```
 
-## `stat_halfeye()`+ `stat_dots()`
+### `stat_halfeye()`+ `stat_dots()`
 
 Model Terms:
 
@@ -844,7 +800,7 @@ p2 +
   labs(subtitle = "`stat_halfeye()`+ `stat_dots()")
 ```
 
-## Simple Slopes  
+# Simple Slopes  
 
 Let's say we want to know if married and unmarried people differ in their self-rated health as a function of their age:
 
@@ -857,8 +813,6 @@ m2 <- lm(SRhealth ~ age + marital + age:marital, data = gsoep_ex2)
 tidy(m2)
 ```
 
-## Simple Slopes  
-
 We can plot this using an extension of `geom_ribbon()`, `stat_lineribbon()`
 
 ```{r}
@@ -866,10 +820,10 @@ gsoep_ex2 %>%
   group_by(marital) %>%
   data_grid(age= seq_range(age, n = 101)) %>%
   ungroup() %>%
-  augment(m3, newdata = ., se_fit = T) %>%
+  augment(m2, newdata = ., se_fit = T) %>%
   ggplot(aes(x = age*10, fill = ordered(marital), color = ordered(marital))) +
     stat_lineribbon(
-      aes(ydist = dist_student_t(df = df.residual(m3), mu = .fitted, sigma = .se.fit)),
+      aes(ydist = dist_student_t(df = df.residual(m2), mu = .fitted, sigma = .se.fit)),
       alpha = 1/4) + 
     scale_fill_brewer(palette = "Set2") +
     scale_color_brewer(palette = "Dark2") +
@@ -878,15 +832,11 @@ gsoep_ex2 %>%
     my_theme()
 ```
 
-## Simple Slopes  
-
 * I promised I wouldn't go Bayes, but I never promised I wouldn't bootstrap!  
 * Knowing how to get bootstrapped confidence and/or prediction intervals is important, especially if you work with any sort of multilevel / hierarchical models  
 * Getting bootstrapped interval estimates is easy to get point estimates, but it's a little harder if we want to get it around prediction lines
   + (i.e. there's no great built in funcitons in `R` that get it for you, in my opinion)
   
-## Simple Slopes  
-
 But first, let's get some longitudinal data that let's us look at the interaction between marital status and changes in self-rated health within a person as they age:
 
 ```{r}
@@ -909,18 +859,14 @@ gsoep_ex3 <- gsoep_ex3 %>%
   filter(SID %in% sample(unique(gsoep_ex3$SID), 2000))
 ```
 
-## Simple Slopes  
-
 The critical term is the interaction between the two: 
 
 ```{r}
-m4 <- lmer(SRhealth ~ age + marital + age:marital + (age | SID), data = gsoep_ex3)
-tidy(m4)
+m3 <- lmer(SRhealth ~ age + marital + age:marital + (age | SID), data = gsoep_ex3)
+tidy(m3)
 ```
 
 Changes in health differ across marital groups
-
-## Simple Slopes  
 
 * But how? 
   + Interactions can often be tricky to unpack by point estimates alone
@@ -963,7 +909,7 @@ pred_fx_fun <- function(m){
   boot <- predIntlme4(m = m, mod_frame = mod_frame, ref = NA)
 }
 
-boot4 <- pred_fx_fun(m4)
+boot3 <- pred_fx_fun(m3)
 b_df3 <- boot3$b_df
 b3 <- boot3$boot
 ```
@@ -1014,7 +960,8 @@ b_df3 %>%
   my_theme()
 ```
 
-## `stat_lineribbon()` bands: samples
+We can also use a new `aesthetic`: `fill_ramp`:
+
 
 ```{r}
 b_df3 %>%
@@ -1034,7 +981,7 @@ b_df3 %>%
   my_theme()
 ```
 
-## `geom_lineribbon()` gradient: samples  
+Let's clean it up:
 
 ```{r}
 ms <- b_df3 %>% filter(age == max(age)) %>% group_by(marital) %>% summarize(m = mean(pred))
@@ -1073,12 +1020,9 @@ b_df3 %>%
     my_theme()
 ```
 
-## Ensemble Displays  
 * But the challenge with visualizing uncertainty is between inference and understanding 
 * We need to leverage a knowledge of perception and cognitive processes to help us leverage strengths and overcome weaknesses
 * Animating visualizations can help us nudge people to process was they see and update their uncertainty estimates over time  
-
-## Ensemble Displays  
 
 Here's a quick example:  
 
@@ -1103,7 +1047,6 @@ b_df3 %>%
     transition_states(boot, 1, 1)
 ```
 
-## Ensemble Displays  
 Let's break this down: 
 
 ```{r}
@@ -1112,8 +1055,7 @@ b_df3 %>%
   median_qi(pred) 
 ```
 
-## Ensemble Displays  
-Let's break this down: 
+Now, let's plot the ribbon:
 
 ```{r}
 b_df3 %>%
@@ -1130,10 +1072,7 @@ b_df3 %>%
     theme(legend.position = "none")
 ```
 
-
-## Ensemble Displays  
-
-Let's break this down: 
+And add the lines (all of them, it will be ugly):  
 
 ```{r}
 b_df3 %>%
@@ -1155,9 +1094,7 @@ b_df3 %>%
     theme(legend.position = "none")
 ```
 
-## Ensemble Displays  
-
-Let's break this down: 
+And finally, use `transition_states()` to animate it
 
 ```{r, eval = F}
 b_df3 %>%
@@ -1182,6 +1119,9 @@ b_df3 %>%
 
 ## Hypothetical Outcome Plots (HOPs)  
 
+* Similarly, hypothetical outcome plots let us see plausible mean estimates among raw data
+* Here's self-rated health (1-5) across married and unmarried individuals: 
+
 ```{r}
 gsoep_ex3 %>%
   ggplot(aes(y = marital, x = SRhealth)) + 
@@ -1189,7 +1129,7 @@ gsoep_ex3 %>%
     my_theme()
 ```
 
-## Hypothetical Outcome Plots (HOPs)  
+* Using the `ungeviz` package, we can then use the `geom_vpline()` function to sample from the data across groups and plot the mean from different samples:  
 
 ```{r}
 gsoep_ex3 %>%
@@ -1204,7 +1144,7 @@ gsoep_ex3 %>%
     my_theme()
 ```
 
-## Hypothetical Outcome Plots (HOPs)  
+And finally, we can animate those samples the `transition_states()` function from the `gganimate` package again:
 
 ```{r}
 gsoep_ex3 %>%
