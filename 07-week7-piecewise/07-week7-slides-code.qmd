@@ -1,5 +1,5 @@
 ---
-title: "Week 6: Visualizing Uncertainty"
+title: "Week 7: Piecing Plots Together"
 author: "Emorie D Beck"
 format: 
   revealjs:
@@ -48,7 +48,7 @@ options(knitr.kable.NA = '')
 ## Packages  
 
 ```{r, echo = T}
-# | code-line-numbers: "11-12"
+# | code-line-numbers: "11-13"
 library(RColorBrewer)
 library(knitr)
 library(kableExtra)
@@ -59,6 +59,7 @@ library(lme4)
 library(broom.mixed)
 library(tidyverse)
 library(ggdist)
+library(patchwork)
 library(cowplot)
 library(ggExtra)
 library(distributional)
@@ -66,6 +67,7 @@ library(gganimate)
 ```
 
 ## Custom Theme: 
+
 ```{r}
 my_theme <- function(){
   theme_classic() + 
@@ -115,27 +117,560 @@ my_theme <- function(){
 
 * Here is a short list of some core `ggplot2` extensions: [https://exts.ggplot2.tidyverse.org/gallery/](https://exts.ggplot2.tidyverse.org/gallery/)
 * We'll cover: 
-  + `ggextra`
+  + `ggExtra`
   + `cowplot` (and lots of assortments)
+  + [`patchwork`](https://patchwork.data-imaginist.com/index.html)
 
-## `ggextra`
+## `ggExtra` {.smaller}  
 
-* We'll start with `ggextra` because it will help us create plots with distributions in the margins. 
+* We'll start with `ggExtra` because it will help us create plots with distributions in the margins. 
 * After, we'll move to cowplot, where there will be lots of little odds and ends to step through
+* Remember these data?  
 
-## `cowplot`
+::::{.fragment}
 
-* Why `cowplot`? 
+```{r}
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/blob/main/04-week4-associations/04-data/week4-data.RData?raw=true"))
+pred_data
+```
+
+::::
+
+
+## `ggExtra` {.smaller}  
+
+Let's plot the association between conscientiousness and self-rated health across genders in Study 1: 
+
+::::{.fragment}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+p <- pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(x = p_value, y = SRhealth, color = gender, fill = gender)) + 
+    geom_point(
+      color = "grey20"
+      , shape = 21, size = 3
+      ) + 
+    scale_fill_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    labs(
+      x = "Conscientiousness (POMP, 0-10)"
+      , y = "Self-Rated Health (POMP, 0-10)"
+      , fill = "Gender"
+    ) + 
+    my_theme()
+p
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p <- pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(x = p_value, y = SRhealth, color = gender, fill = gender)) + 
+    geom_point(
+      color = "grey20"
+      , shape = 21, size = 3
+      ) + 
+    scale_fill_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    labs(
+      x = "Conscientiousness (POMP, 0-10)"
+      , y = "Self-Rated Health (POMP, 0-10)"
+      , fill = "Gender"
+    ) + 
+    my_theme()
+p
+```
+
+:::
+::::
+::::
+
+## `ggExtra` {.smaller}  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+p <- p + 
+  geom_smooth(
+    , method = "lm"
+    ) + 
+  scale_color_manual(
+    values = c("cornflowerblue", "coral")
+    , labels = c("Male", "Female")
+    ) + 
+  labs(color = "Gender")
+p
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, fig.dim = c(6,5)}
+p <- p + 
+  geom_smooth(
+    method = "lm"
+    ) + 
+  scale_color_manual(
+    values = c("cornflowerblue", "coral")
+    , labels = c("Male", "Female")
+    ) + 
+  labs(color = "Gender")
+p
+```
+
+:::
+::::
+
+## `ggExtra`  
+
+To get marginal distributions, we can just use `ggExtra::ggMarginal()`
+
+```{r}
+ggMarginal(p)
+```
+
+### This is fine, but we can do better!  
+
+## `ggExtra`
+
+```{r}
+ggMarginal(p, color = "seagreen")
+```
+
+### Let's try `color`
+
+## `ggExtra`  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+ggMarginal(
+  p
+  , color = "seagreen"
+  , fill = "seagreen"
+  , alpha = .5
+  )
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, fig.dim=c(6,5)}
+ggMarginal(
+  p
+  , color = "seagreen"
+  , fill = "seagreen"
+  , alpha = .5
+  )
+```
+
+:::
+::::
+
+### Let's try `fill`
+
+## `ggExtra`
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+ggMarginal(
+  p
+  , color = "seagreen"
+  , fill = "seagreen"
+  , alpha = .5
+  , type = "histogram"
+  )
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, fig.dim=c(6,5)}
+ggMarginal(
+  p
+  , color = "seagreen"
+  , fill = "seagreen"
+  , alpha = .5
+  , type = "histogram"
+  )
+```
+
+:::
+::::
+
+### Let's try a histogram
+
+## `ggExtra` 
+
+::::{.columns}
+:::{.column}
+
+```{r, echo = F, fig.dim=c(6,5)}
+ggMarginal(
+  p
+  , groupColour = T
+  , groupFill = T
+  )
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+ggMarginal(
+  p
+  , groupColour = T
+  , groupFill = T
+  )
+```
+
+:::
+::::
+
+### This is not expected behavior  
+So let's move on to `patchwork` and `cowplot` where we can make these much more flexibly with just a few extra lines of code  
+
+## `cowplot` + `pathwork`
+
+* Why `cowplot` or `patchwork`? 
   + figure alignment
   + easier to choose relative values and layouts
   + can mix base `R` plots and `ggplot2` plots
   + allows you to annotate plots (including stacking, as opposed to layering)
   + shared legends!
   + includes the themes from his book  
+  
+## Piecing the Plots Together {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r}
+#| code-line-numbers: "|1-2|3|4|5-12|13|3"
+px <- pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(x = p_value, fill = gender, color = gender)) + 
+    geom_density(alpha = .5) + 
+    scale_color_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    scale_fill_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    labs(fill = "Gender", color = "Gender") + 
+    theme_void()
+px
+```
+
+:::
+:::{.column}
+
+```{r}
+#| code-line-numbers: "|1-2|3|4|5-12|13|3"
+py <- pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(x = SRhealth, fill = gender, color = gender)) + 
+    geom_density(alpha = .5) + 
+    scale_color_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    scale_fill_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    labs(fill = "Gender", color = "Gender") + 
+    coord_flip() + 
+    theme_void()
+py
+```
+
+:::
+::::
+
+## Piecing the Plots Together {.smaller}  
+
+We can use the `+` and `/` operators to arrange them: 
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+px / (p + py)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+px / (p + py)
+```
+
+:::
+::::
+
+### That arrangement isn't quite right
+
+## Piecing the Plots Together {.smaller}  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-8,11"
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+px + p + py +
+  plot_layout(design = layout)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+px + p + py +
+  plot_layout(design = layout)
+```
+
+:::
+::::
+
+### Those legends are messing us up!
+
+## Piecing the Plots Together {.smaller}  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|13-15"
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+px + p + py +
+  plot_layout(
+    design = layout
+    , guides = "collect"
+    ) & 
+  theme(legend.position = "bottom")
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+px + p + py +
+  plot_layout(
+    design = layout
+    , guides = "collect"
+    ) & 
+  theme(legend.position = "bottom")
+```
+
+:::
+::::
+
+### Honestly, we don't need the marginal legend
+
+## Piecing the Plots Together {.smaller}  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|11|12|13"
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+(px + theme(legend.position = "none")) + 
+  p + 
+  (py + theme(legend.position = "none")) +
+  plot_layout(design = layout) 
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+(px + theme(legend.position = "none")) + 
+  p + 
+  (py + theme(legend.position = "none")) +
+  plot_layout(
+    design = layout
+    ) 
+```
+
+:::
+::::
+
+## Piecing the Plots Together {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r}
+#| code-line-numbers: "3-5"
+px <- pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(x = p_value, y = gender, fill = gender, color = gender)) + 
+    geom_boxplot(alpha = .5) + 
+    geom_jitter(aes(y = gender), alpha = .5) + 
+    scale_color_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    scale_fill_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    labs(fill = "Gender", color = "Gender") + 
+    theme_void() + 
+    theme(legend.position = "none")
+px
+```
+
+:::
+:::{.column}
+
+```{r}
+#| code-line-numbers: "3-5"
+py <- pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(x = SRhealth, y = gender, fill = gender, color = gender)) + 
+    geom_boxplot(alpha = .5) + 
+    geom_jitter(aes(y = gender), alpha = .5) + 
+    scale_color_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    scale_fill_manual(
+      values = c("cornflowerblue", "coral")
+      , labels = c("Male", "Female")
+      ) + 
+    labs(fill = "Gender", color = "Gender") + 
+    coord_flip() + 
+    theme_void() + 
+    theme(legend.position = "none")
+py
+```
+
+:::
+::::
+
+## Piecing the Plots Together {.smaller}
+
+::::{.columns}
+:::{.column width="30%"}
+
+```{r, eval = F}
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+(px + theme(legend.position = "none")) + 
+  p + 
+  (py + theme(legend.position = "none")) +
+  plot_layout(design = layout) 
+```
+
+:::
+:::{.column width="70%"}
+
+```{r, echo = F}
+layout <- "
+AAAAAA##
+BBBBBBCC
+BBBBBBCC
+BBBBBBCC
+"
+
+(px + theme(legend.position = "none")) + 
+  p + 
+  (py + theme(legend.position = "none")) +
+  plot_layout(
+    design = layout
+    ) 
+```
+
+:::
+::::
+
+# Advanced Piecing Plots Together 
+
+## Advanced Piecing Plots Together 
+
+* Marginal plots are great for lots of reasons
+* But when it comes to piecing plots together, we are often interested for bringing together different kinds of figures together because you can't bring them together with facets or other ways
 
 ## `cowplot` {.smaller}
 
-Let me show you a couple of examples from my work that has used cowplot  
+Let me show you a couple of examples from my work that has used `cowplot`  
 
 ## 
 
@@ -156,62 +691,17 @@ include_graphics("https://github.com/emoriebeck/personality-dementia-neuropath/r
 include_graphics("https://github.com/emoriebeck/behavior-prediction/raw/main/05-results/05-figures/fig-4-combined_top5.png")
 ```
 
-## `plot_grid()` {.smaller}
-
-* The core function of `cowplot` is `plot_grid()`, which allows us to place differnt figures within the same figure in a grid, and it has a lot of useful arguments
-
-::::{.columns}
-:::{.column width="34%"}
-
-* `plotlist = NULL`
-* `align = c("none", "h", "v", "hv")`
-* `axis = c("none", "l", "r", "t", "b", "lr", "tb", "tblr")`
-* `nrow = NULL`
-* `ncol = NULL`
-* `rel_widths = 1`
-* `rel_heights = 1`
-
-:::
-:::{.column width="33%"}
-
-* `labels = NULL`
-* `label_size = 14`
-* `label_fontfamily = NULL`
-* `label_fontface = "bold"`
-* `label_colour = NULL`
-* `label_x = 0`
-* `label_y = 1`
-
-:::
-:::{.column width="33%"}
-
-* `hjust = -0.5`
-* `vjust = 1.5`
-* `scale = 1`
-* `greedy = TRUE`
-* `byrow = TRUE`
-* `cols = NULL`
-* `rows = NULL`
-
-:::
-::::
-
-## `plot_grid()` {.smaller}
+## Piecing the Plots Together {.smaller}
 
 * Let's build up our use cases incrementally! 
 * But first, we need some plots to plot!  
-* Remember these data?  
 
-```{r}
-load(url("https://github.com/emoriebeck/psc290-data-viz-2022/blob/main/04-week4-associations/04-data/week4-data.RData?raw=true"))
-pred_data
-```
-
-## Example Setup
+## Example Setup {.smaller}
 
 And remember these models?  
 
 ```{r}
+#| code-line-numbers: "3-14"
 tidy_ci <- function(m) tidy(m, conf.int = T)
 
 nested_m <- pred_data %>%
@@ -231,12 +721,13 @@ nested_m <- pred_data %>%
 nested_m
 ```
 
-## Example Setup
+## Example Setup {.smaller}
 
 And remember these models?  
-Let's do one small change
+Let's make two small changes
 
 ```{r}
+#| code-line-numbers: "|1-4|5"
 m_fun <- function(d) {
   glm(o_value ~ p_value + married + married:p_value
       , data = d
@@ -270,6 +761,7 @@ nested_m %>% select(study, tidy) %>%
 But maybe we are particularly interested in the interaction between marital status and personality in predicting mortality, which we want to plot as a forest plot  
 
 ```{r}
+#| code-line-numbers: "4"
 nested_m %>% select(study, tidy) %>%
   unnest(tidy) %>%
   mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
@@ -282,9 +774,13 @@ nested_m %>% select(study, tidy) %>%
   + the forest plot itself  
   + the table of values  
 
-## Example Setup: Forest Plot  
+## Example Setup: Forest Plot  {.smaller} 
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "5-10"
 p1 <- nested_m %>% select(study, tidy) %>%
   unnest(tidy) %>%
   mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
@@ -298,12 +794,36 @@ p1 <- nested_m %>% select(study, tidy) %>%
 p1
 ```
 
-## Example Setup: Forest Plot  
+:::
+:::{.column}
+
+```{r, echo = F}
+p1 <- nested_m %>% select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  filter(term == "p_value:married1") %>%
+  ggplot(aes(x = estimate, y = fct_rev(study))) + 
+    labs(
+      x = "Model Estimated OR (CI)"
+      , y = NULL
+      ) + 
+    my_theme()
+p1
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot  {.smaller} 
 
 Let's add our point estimates and uncertainty intervals
 
-```{r}
-p1 + 
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-6|3"
+p1 <- p1 + 
   stat_gradientinterval(
     aes(xdist = dist_student_t(df = df.resid, mu = estimate, sigma = std.error))
     , .width = c(.95, .99)
@@ -312,9 +832,31 @@ p1 +
 p1
 ```
 
-## Example Setup: Forest Plot  
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p1 <- p1 + 
+  stat_gradientinterval(
+    aes(xdist = dist_student_t(df = df.resid, mu = estimate, sigma = std.error))
+    , .width = c(.95, .99)
+    , shape = "square"
+  ) 
+p1
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot  {.smaller}
+
+But we want to order the points by the effect sizes: 
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "7"
 p1 <- nested_m %>% select(study, tidy) %>%
   unnest(tidy) %>%
   mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
@@ -331,11 +873,37 @@ p1 <- p1 %>%
 p1
 ```
 
-## Example Setup: Forest Plot  
+:::
+:::{.column}
 
-Let's add our point estimates and uncertainty intervals
+```{r, echo = F}
+p1 <- nested_m %>% select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  filter(term == "p_value:married1")
 
-```{r}
+p1 <- p1 %>% 
+  mutate(study = factor(study, (p1 %>% arrange(desc(estimate)))$study)) %>%
+  ggplot(aes(x = estimate, y = study)) + 
+    labs(
+      x = "Model Estimated OR (CI)"
+      , y = NULL
+      ) + 
+    my_theme()
+p1
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot  {.smaller}
+
+Let's add our point estimates and uncertainty intervals back in
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
 p1 <- p1 + 
   stat_gradientinterval(
     aes(xdist = dist_student_t(df = df.resid, mu = estimate, sigma = std.error))
@@ -345,18 +913,62 @@ p1 <- p1 +
 p1
 ```
 
-## Example Setup: Forest Plot  
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p1 <- p1 + 
+  stat_gradientinterval(
+    aes(xdist = dist_student_t(df = df.resid, mu = estimate, sigma = std.error))
+    , .width = c(.95, .99)
+    , shape = "square"
+  ) 
+p1
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot  {.smaller} 
+
+And add in a vertical line at OR = 1:  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2"
 p1 <- p1 + 
   geom_vline(aes(xintercept = 1), linetype = "dashed") 
 p1 
 ```
 
-## Example Setup: Forest Plot Table 
-* In a forest plot, we don't just show estimates, we print them with the sample size  
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p1 <- p1 + 
+  geom_vline(aes(xintercept = 1), linetype = "dashed") 
+p1 
+```
+
+:::
+::::
+
+
+## Example Setup: Forest Plot Table  
+ 
+* In a forest plot, we don't just show estimates, we print them with the sample size  
+* Let's build a table with those! 
+* There are packages to do this, but I like to build them myself because it helps them play nicer with `cowplot` or `patchwork`
+
+## Example Setup: Forest Plot Table {.smaller}  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-4|6|8-11|12-14|15-20"
 p2 <- nested_m %>% select(study, tidy) %>%
   unnest(tidy) %>%
   mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
@@ -380,9 +992,45 @@ p2 <- p2 %>%
 p2
 ```
 
-## Example Setup: Forest Plot Table 
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p2 <- nested_m %>% select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  filter(term == "p_value:married1")
+
+stdy_levs <-  tibble(num = 1:6, new = (p2 %>% arrange(desc(estimate)))$study)
+
+p2 <- p2 %>%
+  arrange(desc(estimate)) %>%
+  mutate(study = factor(study, stdy_levs$new)
+         , study2 = 1:n()) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), ~sprintf("%.2f", .)) %>%
+  mutate(est = sprintf("%s [%s, %s]", estimate, conf.low, conf.high)
+         , n = as.character(n)) %>%
+  select(study, study2, estimate, n, est) %>%
+  pivot_longer(
+    cols = c(est, n)
+    , values_to = "lab"
+    , names_to = "est"
+  )
+p2
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot Table {.smaller}  
+
+Let's build our base
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-7"
 p2 <- p2 %>%
   ggplot(aes(x = est, y = study2)) + 
     labs(
@@ -393,35 +1041,112 @@ p2 <- p2 %>%
 p2
 ```
 
-## Example Setup: Forest Plot Table 
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p2 <- p2 %>%
+  ggplot(aes(x = est, y = study2)) + 
+    labs(
+      x = NULL
+      , y = NULL
+      ) + 
+    my_theme()
+p2
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot Table  
+
+Add in the text:
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2"
 p2 <- p2 + 
   geom_text(aes(label = lab))
 p2
 ```
 
-## Example Setup: Forest Plot Table 
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p2 <- p2 + 
+  geom_text(aes(label = lab))
+p2
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot Table  
+
+Set the theme
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2"
 p2 <- p2 + 
   theme_void()
 p2
 ```
 
-## Example Setup: Forest Plot Table 
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p2 <- p2 + 
+  theme_void()
+p2
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot Table {.smaller}  
+
+We'll add a horizontal line at the top and bottom to match the forest plot:  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-3"
 p2 <- p2 + 
   geom_hline(aes(yintercept = 6.5)) + 
   theme(axis.line.x = element_line(color = "black"))
 p2
 ```
 
-## Example Setup: Forest Plot Table 
+:::
+:::{.column}
 
-```{r}
-# "My~bold(Partly~Bold)~and~italic(Partly~Italic)~Text"
+```{r, echo = F}
+p2 <- p2 + 
+  geom_hline(aes(yintercept = 6.5)) + 
+  theme(axis.line.x = element_line(color = "black"))
+p2
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot Table {.smaller}  
+
+Add the column labels: 
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|2-6|7-11"
 p2 <- p2 + 
   annotate("text"
            , x = "est" , y = 7
@@ -436,19 +1161,60 @@ p2 <- p2 +
 p2
 ```
 
-## Example Setup: Forest Plot Table 
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+p2 <- p2 + 
+  annotate("text"
+           , x = "est" , y = 7
+           , label = "b [CI]"
+           , fontface = "bold"
+           ) + 
+  annotate("text"
+           , x = "n", y = 7
+           , label = "N"
+           , fontface = "bold"
+           ) 
+p2
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot Table  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2"
 p2 <- p2 + 
   scale_y_continuous(limits = c(.4,7.1))
 p2
 ```
 
-## Example Setup: Back to the Forest Plot  
+:::
+:::{.column}
+
+```{r, echo = F}
+p2 <- p2 + 
+  scale_y_continuous(limits = c(.4,7.1))
+p2
+```
+
+:::
+::::
+
+## Example Setup: Back to the Forest Plot  {.smaller} 
 
 We added an extra row at the top of the table, so we need to do that for the forest plot, too
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|6|9-11|12-17"
 p1 <- nested_m %>% select(study, tidy) %>%
   unnest(tidy) %>%
   mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
@@ -469,11 +1235,42 @@ p1 <- p1 %>%
 p1
 ```
 
-## Example Setup: Forest Plot  
+:::
+:::{.column}
+
+```{r, echo = F}
+p1 <- nested_m %>% select(study, tidy) %>%
+  unnest(tidy) %>%
+  mutate_at(vars(estimate, conf.low, conf.high), exp) %>%
+  filter(term == "p_value:married1")
+
+stdy_levs <-  tibble(num = 1:6, new = (p1 %>% arrange(desc(estimate)))$study)
+
+p1 <- p1 %>%
+  arrange(desc(estimate)) %>%
+  mutate(study = factor(study, stdy_levs$new)
+         , study2 = 1:n()) %>%
+  ggplot(aes(x = estimate, y = study2)) + 
+    labs(
+      x = "Model Estimated OR (CI)"
+      , y = NULL
+      ) + 
+    my_theme()
+p1
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot  {.smaller}  
 
 Add our point estimates and uncertainty intervals, along with the vertical line at OR = 1
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-7"
 p1 <- p1 + 
   stat_gradientinterval(
     aes(xdist = dist_student_t(df = df.resid, mu = estimate, sigma = std.error))
@@ -484,11 +1281,32 @@ p1 <- p1 +
 p1
 ```
 
-## Example Setup: Forest Plot  
+:::
+:::{.column}
+
+```{r, echo = F}
+p1 <- p1 + 
+  stat_gradientinterval(
+    aes(xdist = dist_student_t(df = df.resid, mu = estimate, sigma = std.error))
+    , .width = c(.95, .99)
+    , shape = "square"
+  ) + 
+  geom_vline(aes(xintercept = 1), linetype = "dashed") 
+p1
+```
+
+:::
+::::
+
+## Example Setup: Forest Plot   
 
 Change the y scale back  
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-5"
 p1 <- p1 + 
   scale_y_continuous(limits = c(.4,7.1)
                      , breaks = seq(1,6,1)
@@ -496,32 +1314,83 @@ p1 <- p1 +
 p1 
 ```
 
+:::
+:::{.column}
+
+```{r, echo = F}
+p1 <- p1 + 
+  scale_y_continuous(limits = c(.4,7.1)
+                     , breaks = seq(1,6,1)
+                     , labels = stdy_levs$new)
+p1 
+```
+
+:::
+::::
+
 ## Example Setup: Forest Plot  
 
 Add in that top bar
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2"
 p1 <- p1 + 
   geom_hline(aes(yintercept = 6.5))
 p1 
 ```
 
+:::
+:::{.column}
+
+```{r, echo = F}
+p1 <- p1 + 
+  geom_hline(aes(yintercept = 6.5))
+p1 
+```
+
+:::
+::::
+
 ## Example Setup: Forest Plot  
 
 Remove the y axis line
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-3"
 p1 <- p1 + 
   theme(axis.line.y = element_blank(), 
         axis.ticks.y = element_blank())
 p1 
 ```
 
+:::
+:::{.column}
+
+```{r, echo = F}
+p1 <- p1 + 
+  theme(axis.line.y = element_blank(), 
+        axis.ticks.y = element_blank())
+p1 
+```
+
+:::
+::::
+
 ## Example Setup: Forest Plot  
 
 And let's block out where the dashed line touches the top:  
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-7"
 p1 <- p1 + 
   annotate("rect"
            , xmin = -Inf
@@ -532,8 +1401,26 @@ p1 <- p1 +
 p1
 ```
 
+:::
+:::{.column}
 
-## `plot_grid()`
+```{r, echo = F}
+p1 <- p1 + 
+  annotate("rect"
+           , xmin = -Inf
+           , xmax = Inf
+           , ymin = 6.51
+           , ymax = Inf
+           , fill = "white")
+p1
+```
+
+:::
+::::
+
+# `patchwork`
+
+## Piecing the Plots Together  
 
 * I know that was a lot, but such is the reality of ggplot -- we have to hack it!
   + `annotate()` is a great tool for this
@@ -541,16 +1428,651 @@ p1
   + and our `theme` elements also let us hack many more parts! 
 * The biggest trick to `ggplot2` is simply having lots of tricks up your sleeve, which come from knowledge (and StackOverflow)
 
+## Piecing the Plots Together  
+
+* `patchwork` is great, and a little more intuitive for simple use cases
+* (We'll still talk some about cowplot and a more full demo of it is at the end of the slides and in the workbook)
+* `patchwork` allows you to use the `+` to piece plots together and makes a lot of default assumptions about alignment
+* It also let's you continue to layer on top of figures that are pieced together, which `cowplot` doesn't do (easily)
+
+## `patchwork`: Piecing the Plots Together  
+
+We can just use the `+` operator!  
+
+```{r}
+p1 + p2
+```
+
+## `patchwork`: Piecing the Plots Together  
+
+We can also add rows using the `/`
+
+```{r}
+p1 / p2
+```
+
+## `patchwork`: Piecing the Plots Together  
+
+And change their arrangement using `plot_layout()`  
+
+```{r}
+#| code-line-numbers: "2"
+p1 / p2 + 
+  plot_layout(heights = c(3,7))
+```
+
+## `patchwork`: Piecing the Plots Together  
+
+And change their arrangement using `plot_layout()`  
+
+```{r}
+#| code-line-numbers: "2"
+p1 + p2 + 
+  plot_layout(widths = c(6,4))
+```
+
+## `patchwork`: Piecing the Plots Together  {.smaller}
+
+We can add titles using `plot_annotation()`
+
+<!-- ```{r} -->
+<!-- title / (p1 + p2) + plot_layout(heights = c(1,10)) -->
+<!-- ``` -->
+
+::::{.columns}
+:::{.column width="40%"}
+
+```{r, eval = F}
+#| code-line-numbers: "3-7"
+p1 + p2 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    ) 
+```
+
+:::
+:::{.column width="60%"}
+
+```{r, echo = F, fig.dim=c(7,4)}
+p1 + p2 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    ) 
+```
+
+:::
+::::
+
+## `patchwork`: Piecing the Plots Together  {.smaller}
+
+We can add labels to plot using `plot_annotation()`
+
+::::{.columns}
+:::{.column  width="40%"}
+
+```{r, eval = F}
+#| code-line-numbers: "7"
+p1 + p2 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    , tag_levels = 'A'
+    ) 
+```
+
+:::
+:::{.column  width="60%"}
+
+```{r, echo = F, fig.dim=c(7,4)}
+p1 + p2 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    , tag_levels = 'A'
+    ) 
+```
+
+:::
+::::
+
+## `patchwork`: Piecing the Plots Together  {.smaller}
+
+We can add labels to plot using `plot_annotation()`
+
+::::{.columns}
+:::{.column width="40%"}
+
+```{r, eval = F}
+#| code-line-numbers: "8-9|10-11"
+p1 + p2 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    , tag_levels = 'A'
+    , tag_prefix = 'Fig. '
+    , tag_suffix = ':'
+    ) & 
+  theme(plot.tag = element_text(size = 8, face = "bold"))
+```
+
+:::
+:::{.column width="60%"}
+
+```{r, echo = F, fig.dim=c(7,4)}
+p1 + p2 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    , tag_levels = 'A'
+    , tag_prefix = 'Fig. '
+    , tag_suffix = ':'
+    ) & 
+  theme(plot.tag = element_text(size = 8, face = "bold"))
+```
+
+:::
+::::
+
+## Example Setup: Simple Effects  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-10|2|3-4|5-9|8|13"
+pred_fun <- function(m){
+  m$data %>%
+    data_grid(married, p_value = seq_range(p_value, n = 100)) %>%
+    drop_na() %>%
+    augment(m
+            , newdata = .
+            , se_fit = T
+            , type.predict = "response"
+            )
+}
+
+nested_m <- nested_m %>%
+  mutate(pred = map(m, pred_fun)) 
+nested_m
+```
+
+:::
+:::{.column}
+::::{.fragment}
+
+```{r, echo = F}
+pred_fun <- function(m){
+  m$data %>%
+    data_grid(married, p_value = seq_range(p_value, n = 100)) %>%
+    drop_na() %>%
+    augment(m
+            , newdata = .
+            , se_fit = T
+            , type.predict = "response"
+            )
+}
+
+nested_m <- nested_m %>%
+  mutate(pred = map(m, pred_fun)) 
+nested_m
+```
+
+::::
+:::
+::::
+
+## Example Setup: Simple Effects  
+
+```{r}
+#| code-line-numbers: "2|3-4"
+nested_m %>% 
+  mutate(df.resid = map_dbl(m, df.residual)) %>%
+  select(study, pred, df.resid) %>%
+  unnest(pred) 
+```
+
+## Example Setup: Simple Effects {.smaller}  
+
+Let's set up the core part of the simple effects  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "5-12|5|6|7-10|11|12"
+p3 <- nested_m %>% 
+  mutate(df.resid = map_dbl(m, df.residual)) %>%
+  select(study, pred, df.resid) %>%
+  unnest(pred) %>%
+  mutate(married = factor(married, c(0,1), c("Never Married", "Married"))) %>%
+  ggplot(aes(x = p_value, y = .fitted, fill = study, color = study)) + 
+  labs(x = "Conscientiousness (POMP, 0-10)"
+       , y = "Predicted Odds Ratio\nof Mortality (95% CI)"
+       , fill = NULL
+       , color = NULL) + 
+  facet_grid(~married) + 
+  my_theme()  
+p3
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p3 <- nested_m %>% 
+  mutate(df.resid = map_dbl(m, df.residual)) %>%
+  select(study, pred, df.resid) %>%
+  unnest(pred) %>%
+  mutate(married = factor(married, c(0,1), c("Never Married", "Married"))) %>%
+  ggplot(aes(x = p_value, y = .fitted, fill = study, color = study)) + 
+  labs(x = "Conscientiousness (POMP, 0-10)"
+       , y = "Predicted Odds Ratio\nof Mortality (95% CI)"
+       , fill = NULL
+       , color = NULL) + 
+  facet_grid(~married) + 
+  my_theme()  
+p3
+```
+
+:::
+::::
+
+## Example Setup: Simple Effects  {.smaller}  
+
+Add in our lineribbon:
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "2-8|2-6|7-8"
+p3 <- p3 + 
+  stat_lineribbon(
+      aes(ydist = dist_student_t(df = df.resid, mu = .fitted, sigma = .se.fit))
+      , alpha = .25
+      , .width = c(.95,.99)
+      ) + 
+    scale_fill_brewer(palette = "Set2") +
+    scale_color_brewer(palette = "Dark2") 
+p3
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p3 <- p3 + 
+  stat_lineribbon(
+      aes(ydist = dist_student_t(df = df.resid, mu = .fitted, sigma = .se.fit))
+      , alpha = .25
+      , .width = c(.95,.99)
+      ) + 
+    scale_fill_brewer(palette = "Set2") +
+    scale_color_brewer(palette = "Dark2") 
+p3
+```
+
+:::
+::::
+
+## `patchwork`: Piecing the Plots Together  
+
+```{r, fig.dim=c(10,7)}
+(p1 + p2) / p3
+```
+
+## `patchwork`: Piecing the Plots Together  {.smaller}
+
+::::{.columns}
+:::{.column width="30%"}
+
+```{r, fig.dim=c(10,7), eval = F}
+#| code-line-numbers: "2-7"
+(p1 + p2) / p3 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    ) 
+```
+
+:::
+:::{.column width="70%"}
+
+```{r, fig.dim=c(10,7), echo = F}
+(p1 + p2) / p3 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    ) 
+```
+
+:::
+::::
+
+## `patchwork`: Piecing the Plots Together  {.smaller}
+
+::::{.columns}
+:::{.column width="30%"}
+
+```{r, fig.dim=c(10,7), eval = F}
+#| code-line-numbers: "8"
+(p1 + p2) / p3 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    ) + 
+  plot_layout(guides = 'collect')
+```
+
+:::
+:::{.column width="70%"}
+
+```{r, fig.dim=c(10,7), echo = F}
+(p1 + p2) / p3 + 
+  plot_layout(widths = c(6,4)) + 
+  plot_annotation(
+    title = "Mortality Odds"
+    , subtitle = "Conscientiousness x Marital Status"
+    , theme = my_theme()
+    ) + 
+  plot_layout(guides = 'collect')
+```
+
+:::
+::::
+
+# cowplot  
+
+## New grobs for drawing on our plots
+
+* Relative to `patchwork`, `cowplot` also adds some other new tools to our repertoire: 
+  + `ggdraw()`
+  + `draw_label()`
+  + `draw_plot_label()`
+  + `draw_grob()`
+  + `draw_image()`
+  
+## New grobs: `ggdraw()` + `draw_label()`
+
+* `ggdraw()` is more or a setup function that allows us to add grobs on top
+* We'll use it with `draw_label()` to make our title (just some text to put on the plot)
+
+## New grobs: `ggdraw()` + `draw_label()`
+
+It'd be nice if the title was centered, right?  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+(p1 +
+  labs(
+    subtitle = "Conscientiousness x Marital Status"
+    , title = "Mortality Odds"
+    )) + 
+  p2 + 
+  plot_layout(widths = c(6,4))
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+(p1 +
+  labs(
+    subtitle = "Conscientiousness x Marital Status"
+    , title = "Mortality Odds"
+    )) + 
+  p2 + 
+  plot_layout(widths = c(6,4))
+```
+
+:::
+::::
+
+## New grobs: `ggdraw()` + `draw_label()`
+
+It'd be nice if the title was centered, right?  
+
+```{r}
+p1 + p2 + plot_layout(widths = c(6,4))
+```
+
+
+## New grobs: `ggdraw()` + `draw_label()` {.smaller}
+
+We could use `cowplot::draw_label()` to add a `title` and `subtitle` to our plot:
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1|2-8|9-15|16"
+title <- ggdraw() + 
+  draw_label(
+    "Mortality Odds"
+    , fontface = 'bold'
+    , x = .5
+    , hjust = .5
+    , y = .8
+  ) +
+  draw_label(
+    "Conscientiousness x Marital Status"
+    , fontface = 'italic'
+    , x = .5
+    , hjust = .5
+    , y = .2
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7))
+title
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+title <- ggdraw() + 
+  draw_label(
+    "Mortality Odds"
+    , fontface = 'bold'
+    , x = .5
+    , hjust = .5
+    , y = .8
+  ) +
+  draw_label(
+    "Conscientiousness x Marital Status"
+    , fontface = 'italic'
+    , x = .5
+    , hjust = .5
+    , y = .2
+  ) +
+  theme(
+    # add margin on the left of the drawing canvas,
+    # so title is aligned with left edge of first plot
+    plot.margin = margin(0, 0, 0, 7)
+  )
+title
+```
+
+:::
+::::
+
+## New grobs: `ggdraw()` + `draw_label()`
+
+```{r}
+#| code-line-numbers: "|1|4"
+p <- title / (p1 + p2) + 
+  plot_layout(
+    widths = c(6,4)
+    , heights = c(1,9)
+    )
+p
+```
+
+## New grobs: `draw_label()`
+
+* `draw_label()` is meant to be a better wrapper for `geom_text()` that requires less customization  
+* Say for example, we want to put a wordmark on our plots (there are journals that require this!)
+* Doing this with `geom_text()` would require 10+ arguments and has no easy application to figures put together with cowplot (or other packages for doing so) 
+ 
+## New grobs: `draw_label()`
+
+```{r}
+#| code-line-numbers: "2"
+ggdraw(p) + 
+  draw_label("Draft", color = "grey80", size = 100, angle = 45)
+```
+
+
+## New grobs: `draw_plot()` {.smaller}
+
+Imagine you want to put a plot inside of another
+
+::::{.columns}
+:::{.column}
+::::{.fragment}
+
+```{r}
+#| code-line-numbers: "|2-3|4|7|5-6,8-9"
+inset <- 
+  pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(y = gender, x = SRhealth, fill = gender)) + 
+    scale_fill_manual(values = c("cornflowerblue", "coral")) + 
+    scale_y_discrete(labels = c("Male", "Female")) + 
+    stat_halfeye(alpha = .8) + 
+    my_theme() + 
+    theme(legend.position = "none") + theme_half_open(12)
+```
+
+::::
+:::
+:::{.column}
+::::{.fragment}
+
+```{r}
+#| code-line-numbers: "|1-2|3|4|5-6"
+p4 <- pred_data %>% 
+  filter(study == "Study1") %>%
+  ggplot(aes(x = p_value, SRhealth, fill = gender)) + 
+    geom_point(shape = 21, color = "grey20", size = 3) + 
+    scale_fill_manual(values = c("cornflowerblue", "coral"), labels = c("Male", "Female")) + 
+    my_theme()
+```
+
+::::
+:::
+::::
+
+## New grobs: `draw_plot()` {.smaller}
+
+Imagine you want to put a plot inside of another
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+ggdraw(p4) + 
+  draw_plot(inset, .1, .2, .6, .4)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+ggdraw(p4) + 
+  draw_plot(inset, .1, .2, .6, .4)
+```
+
+:::
+::::
+
+## New grobs: `draw_image()` {.smaller}
+
+We can also add images!
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+p
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p
+```
+
+:::
+::::
+
+
+## New grobs: `draw_image()` {.smaller}  
+
+We can also add images!
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "3-7"
+ggdraw() + 
+  draw_plot(p) + 
+  draw_image(
+    "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+    , x = 1, y = 0.05, hjust = 1, vjust = 1, halign = 1, valign = 1,
+    width = 0.15
+  )
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+ggdraw() + 
+  draw_plot(p) + 
+  draw_image(
+    "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+    , x = 1, y = 0.05, hjust = 1, vjust = 1, halign = 1, valign = 1,
+    width = 0.15
+  )
+```
+
+:::
+::::
+
+
+# Extra Slides: `cowplot::plot_grid()`
+
 ## `plot_grid()` {.smaller}
 
-* But now that we have our plot, we want to put it together! Remember these? 
-
-::::{.fragment}
+* The core function of `cowplot` is `plot_grid()`, which allows us to place differnt figures within the same figure in a grid, and it has a lot of useful arguments
+* It's the alternative to `+`, `/` in `patchwork
 
 ::::{.columns}
 :::{.column width="34%"}
-
-:::{.nonincremental}  
 
 * `plotlist = NULL`
 * `align = c("none", "h", "v", "hv")`
@@ -561,9 +2083,7 @@ p1
 * `rel_heights = 1`
 
 :::
-:::
 :::{.column width="33%"}
-:::{.nonincremental}  
 
 * `labels = NULL`
 * `label_size = 14`
@@ -574,9 +2094,7 @@ p1
 * `label_y = 1`
 
 :::
-:::
 :::{.column width="33%"}
-:::{.nonincremental}  
 
 * `hjust = -0.5`
 * `vjust = 1.5`
@@ -587,8 +2105,6 @@ p1
 * `rows = NULL`
 
 :::
-:::
-::::
 ::::
 
 ## `plot_grid()` {.smaller}
@@ -707,7 +2223,7 @@ plot_grid(p1, p2, axis = "b")
 
 ::::
 :::
-:::{.column width="34%"}
+:::{.column width="33%"}
 ::::{.fragment}
 
 ```{r}
@@ -735,7 +2251,10 @@ plot_grid(
 
 ## `plot_grid()` {.smaller}
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
 plot_grid(
   p1, p2
   , align = "hv"
@@ -743,6 +2262,21 @@ plot_grid(
   , rel_heights = c(.6, .4)
   )
 ```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+plot_grid(
+  p1, p2
+  , align = "hv"
+  , nrow = 2
+  , rel_heights = c(.6, .4)
+  )
+```
+
+:::
+::::
 
 ### We wouldn't do this, but note that when we have rows, we use `rel_heights`
 
@@ -770,9 +2304,12 @@ plot_grid(
 :::
 ::::
 
-## `plot_grid()`: Labels  
+## `plot_grid()`: Labels  {.smaller}
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
 plot_grid(
   p1, p2, align = "h", nrow = 1
   , rel_widths = c(.6, .4)
@@ -784,9 +2321,30 @@ plot_grid(
   )
 ```
 
-## `plot_grid()`: Labels  
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+plot_grid(
+  p1, p2, align = "h", nrow = 1
+  , rel_widths = c(.6, .4)
+  , labels = "AUTO"
+  , label_size = 18 # 14 default
+  , label_fontface = "bold.italic"
+  , label_fontfamily = "Times"
+  , label_colour = "purple" # u is sensitive
+  )
+```
+
+:::
+::::
+
+## `plot_grid()`: Labels  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
 plot_grid(
   p1, p2, align = "h", nrow = 1
   , rel_widths = c(.6, .4)
@@ -800,9 +2358,32 @@ plot_grid(
   )
 ```
 
-## `plot_grid()`: Labels  
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+plot_grid(
+  p1, p2, align = "h", nrow = 1
+  , rel_widths = c(.6, .4)
+  , labels = "AUTO"
+  , label_size = 18 # 14 default
+  , label_fontface = "bold.italic"
+  , label_fontfamily = "Times"
+  , label_colour = "purple" # u is sensitive
+  , label_x = .5
+  , label_y = .5
+  )
+```
+
+:::
+::::
+
+## `plot_grid()`: Labels  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
 plot_grid(
   p1, p2, align = "h", nrow = 1
   , rel_widths = c(.6, .4)
@@ -816,9 +2397,32 @@ plot_grid(
   )
 ```
 
-## `plot_grid()`: Labels  
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+plot_grid(
+  p1, p2, align = "h", nrow = 1
+  , rel_widths = c(.6, .4)
+  , labels = "AUTO"
+  , label_size = 18 # 14 default
+  , label_fontface = "bold.italic"
+  , label_fontfamily = "Times"
+  , label_colour = "purple" # u is sensitive
+  , label_x = c(.1,.85)
+  , label_y = c(.95,.1)
+  )
+```
+
+:::
+::::
+
+## `plot_grid()`: Labels  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
 plot_grid(
   p1, p2, align = "h", nrow = 1
   , rel_widths = c(.6, .4)
@@ -832,170 +2436,25 @@ plot_grid(
   )
 ```
 
-## `plot_grid()`: titles  
+:::
+:::{.column}
 
-It'd be nice if the title was centered, right?  
-
-```{r}
+```{r, echo = F}
 plot_grid(
-  p1 +
-  labs(
-    subtitle = "Conscientiousness x Marital Status"
-    , title = "Mortality Odds"
-    )
-  , p2
-  , align = "h"
-  , nrow = 1
+  p1, p2, align = "h", nrow = 1
   , rel_widths = c(.6, .4)
-)
-```
-
-## `plot_grid()`: titles  
-
-It'd be nice if the title was centered, right?  
-
-```{r}
-p3 <- plot_grid(
-  p1 
-  , p2
-  , align = "h"
-  , nrow = 1
-  , rel_widths = c(.6, .4)
-)
-p3
-```
-
-## New grobs for drawing on our plots
-
-* To add the title, we need some new functions
-*`cowplot` also adds some other new tools to our repertoire: 
-  + `ggdraw()`
-  + `draw_label()`
-  + `draw_plot_label()`
-  + `draw_grob()`
-  + `draw_image()`
-
-## New grobs: `ggdraw()` + `draw_label()`
-`* `ggdraw()` is more or a setup function that allows us to add grobs on top
-* We'll use it with `draw_label()` to make our title (just some text to put on the plot
-
-## `plot_grid()`: titles  
-
-```{r}
-title <- ggdraw() + 
-  draw_label(
-    "Mortality Odds"
-    , fontface = 'bold'
-    , x = .5
-    , hjust = .5
-    , y = .8
-  ) +
-  draw_label(
-    "Conscientiousness x Marital Status"
-    , fontface = 'italic'
-    , x = .5
-    , hjust = .5
-    , y = .2
-  ) +
-  theme(
-    # add margin on the left of the drawing canvas,
-    # so title is aligned with left edge of first plot
-    plot.margin = margin(0, 0, 0, 7)
-  )
-title
-```
-
-## `plot_grid()`: titles  
-
-```{r}
-p <- plot_grid(
-  title
-  , p3
-  , nrow = 2
-  , rel_heights = c(.1, .9)
-)
-p
-```
-
-## New grobs for drawing on our plots
-
-*`cowplot` also adds some other new tools to our repertoire: 
-  + `ggdraw()`
-  + `draw_label()`
-  
-
-## New grobs: `draw_label()`
-
-* `draw_label()` is meant to be a better wrapper for `geom_text()` that requires less customization  
-* Say for example, we want to put a wordmark on our plots (there are journals that require this!)
-* Doing this with `geom_text()` would require 10+ arguments and has no easy application to figures put together with cowplot (or other packages for doing so) 
- 
-```{r}
-ggdraw(p) + 
-  draw_label("Draft", color = "grey80", size = 100, angle = 45)
-```
-
-
-## New grobs: `draw_plot()`
-* Imagine you want to put a plot inside of another
-
-```{r}
-inset <- 
-  pred_data %>% 
-  filter(study == "Study1") %>%
-  ggplot(aes(y = gender, x = SRhealth, fill = gender)) + 
-    scale_fill_manual(values = c("cornflowerblue", "coral")) + 
-    scale_y_discrete(labels = c("Male", "Female")) + 
-    stat_halfeye(alpha = .8) + 
-    my_theme() + 
-    theme(legend.position = "none") + theme_half_open(12)
-
-p4 <- pred_data %>% 
-  filter(study == "Study1") %>%
-  ggplot(aes(x = p_value, SRhealth, fill = gender)) + 
-    geom_point(shape = 21, color = "grey20", size = 3) + 
-    scale_fill_manual(values = c("cornflowerblue", "coral"), labels = c("Male", "Female")) + 
-    my_theme()
-```
-
-## New grobs: `draw_plot()`
-* Imagine you want to put a plot inside of another
-
-```{r}
-ggdraw(p4) + 
-  draw_plot(inset, .1, .2, .6, .4)
-```
-
-## New grobs: `draw_image()`
-
-We can also add images!
-
-```{r}
-p3
-```
-
-
-## New grobs: `draw_image()`
-
-We can also add images!
-
-```{r}
-ggdraw() + 
-  draw_plot(p3) + 
-  draw_image(
-    "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
-    , x = 1, y = 0.05, hjust = 1, vjust = 1, halign = 1, valign = 1,
-    width = 0.15
+  , labels = "AUTO"
+  , label_size = 18 # 14 default
+  , label_fontface = "bold.italic"
+  , label_fontfamily = "Times"
+  , label_colour = "purple" # u is sensitive
+  , hjust = .5
+  , vjust = .5
   )
 ```
 
-
-
-
-
-+ `draw_plot_label()`
-  + `draw_grob()`
-  + `draw_image()`
+:::
+::::
 
 <!-- 1 column start -->
 <!-- 2 column start -->
