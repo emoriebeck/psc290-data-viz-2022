@@ -48,7 +48,7 @@ options(knitr.kable.NA = '')
 ## Packages  
 
 ```{r, echo = T}
-# | code-line-numbers: "11-13"
+#| code-line-numbers: "11-13"
 library(RColorBrewer)
 library(knitr)
 library(kableExtra)
@@ -727,7 +727,7 @@ And remember these models?
 Let's make two small changes
 
 ```{r}
-#| code-line-numbers: "|1-4|5"
+#| code-line-numbers: "|1-5|6"
 m_fun <- function(d) {
   glm(o_value ~ p_value + married + married:p_value
       , data = d
