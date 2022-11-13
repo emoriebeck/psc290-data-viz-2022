@@ -49,7 +49,7 @@ options(knitr.kable.NA = '')
 ## Packages  
 
 ```{r, echo = T}
-#| code-line-numbers: "11-13"
+#| code-line-numbers: "13-15"
 library(RColorBrewer)
 library(knitr)
 library(kableExtra)
@@ -63,6 +63,8 @@ library(ggdist)
 library(patchwork)
 library(cowplot)
 library(DiagrammeR)
+library(wordcloud)
+library(tidytext)
 library(ggExtra)
 library(distributional)
 library(gganimate)
@@ -119,7 +121,11 @@ my_theme <- function(){
 
 ## `DiagrammeR`: Graphviz  
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1|2|5|8-10"
 grViz("
 digraph ex1 {
 
@@ -134,10 +140,35 @@ digraph ex1 {
 )
 ```
 
+::::{.nonincremental}
+
 * `digraph` says we want the graph to be directed
 * `graph` lets us control elements of the graph in the `[]`
   + `overlap = true` means nodes can overlap
 * `node` means we're about to specify some nodes (and their properties in `[]`)
+
+::::
+
+:::
+:::{.column}
+
+```{r, echo=F}
+grViz("
+digraph ex1 {
+
+  # a 'graph' statement
+  graph [overlap = true, fontsize = 10]
+
+  # several 'node' statements
+  node [shape = box,
+        fontname = Helvetica]
+  A; B; C; D; E; F
+}"
+)
+```
+
+:::
+::::
 
 ## `DiagrammeR`: Graphviz  
 
@@ -146,43 +177,47 @@ We can control lots of properties of nodes (either as groups or individually):
 ::::{.columns}
 :::{.column width="34%"}
 
-* color
-* fillcolor
-* fontcolor
-* alpha
-* shape
-* style (like linestyle)
-* sides
+* `color`
+* `fillcolor`
+* `fontcolor`
+* `alpha`
+* `shape`
+* `style` (like linestyle)
+* `sides`
 
 :::
 :::{.column width="33%"}
 
-* peripheries
-* fixedsize
-* height
-* width
-* distortion
-* penwidth
+* `peripheries`
+* `fixedsize`
+* `height`
+* `width`
+* `distortion`
+* `penwidth`
 
 :::
 :::{.column width="33%"}
 
-* x
-* y
-* tooltip
-* fontname
-* fontsize
-* icon
+* `x`
+* `y`
+* `tooltip`
+* `fontname`
+* `fontsize`
+* `icon`
 :::
 ::::
 
 * See [documentation](http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#node-shapes) for more info!
 
-## `DiagrammeR`: Graphviz  
+## `DiagrammeR`: Graphviz  {.smaller}
 
 But we also want to add edges
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "12-13"
 grViz("
 digraph ex1 {
 
@@ -203,6 +238,30 @@ digraph ex1 {
 * `->` indicates directed edges
 * `--` indicates undirected edges
 * `A->{B,C}` is the same as `A->B A->C`
+
+:::
+:::{.column}
+
+```{r, echo = F}
+grViz("
+digraph ex1 {
+
+  # a 'graph' statement
+  graph [overlap = true, fontsize = 10]
+
+  # several 'node' statements
+  node [shape = box,
+        fontname = Helvetica]
+  A; B; C; D; E; F
+  
+  # several 'edge' statements
+  A->B B->C C->D D->E E->F
+}"
+)
+```
+
+:::
+::::
 
 ## `DiagrammeR`: Graphviz  
 Edge properties can be defined like node properties: 
@@ -233,12 +292,18 @@ Edge properties can be defined like node properties:
 
 * See [documentation](http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes) for more information on these!
 
-## `DiagrammeR`: Graphviz  
+## `DiagrammeR`: Graphviz  {.smaller}
 
+:::{.nonincremental}
 * Let's do the Big Five because why not? 
-* But they aren't orthogonal, so we need to let the factors correlate.
+:::
 
-```{r}
+::::{.fragment}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|2|4|6-8|10-16|18-23"
 grViz("
 digraph b5 {
 
@@ -266,12 +331,54 @@ digraph b5 {
 }"
 )
 ```
-## `DiagrammeR`: Graphviz  
 
-* But they aren't orthogonal, so we need to let the factors correlate.
-* Mess 
+:::
+:::{.column}
 
-```{r}
+```{r, echo = F}
+grViz("
+digraph b5 {
+
+  # a 'graph' statement
+  graph [overlap = true, fontsize = 10]
+
+  # def latent Big Five
+  node [shape = circle]
+  E; A; C; N; O
+  
+  # def observed indicators
+  node [shape = square]
+  e1; e2; e3
+  a1; a2; a3
+  c1; c2; c3
+  n1; n2; n3
+  o1; o2; o3
+  
+  # several 'edge' statements
+  E->{e1,e2,e3}
+  A->{a1,a2,a3}
+  C->{c1,c2,c3}
+  N->{n1,n2,n3}
+  O->{o1,o2,o3}
+}"
+)
+```
+
+:::
+::::
+::::
+
+* But they aren't orthogonal, so we need to let the factors correlate.  
+
+## `DiagrammeR`: Graphviz  {.smaller}
+
+But they aren't orthogonal, so we need to let the factors correlate.
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "25-28"
 grViz("
 digraph b5 {
 
@@ -305,12 +412,56 @@ digraph b5 {
 )
 ```
 
-## `DiagrammeR`: Graphviz  
+:::
+:::{.column}
 
-* But they aren't orthogonal, so we need to let the factors correlate.
-* Better   
+```{r, echo = F}
+grViz("
+digraph b5 {
 
-```{r}
+  # a 'graph' statement
+  graph [overlap = true, fontsize = 10]
+
+  # def latent Big Five
+  node [shape = circle]
+  E; A; C; N; O
+  
+  # def observed indicators
+  node [shape = square]
+  e1; e2; e3
+  a1; a2; a3
+  c1; c2; c3
+  n1; n2; n3
+  o1; o2; o3
+  
+  # several 'edge' statements
+  E->{e1,e2,e3}
+  A->{a1,a2,a3}
+  C->{c1,c2,c3}
+  N->{n1,n2,n3}
+  O->{o1,o2,o3}
+  
+  E->{A,C,N,O} [dir = both]
+  A->{C,N,O} [dir = both]
+  C->{N,O} [dir = both]
+  N->{O} [dir = both]
+}"
+)
+```
+
+:::
+::::
+
+## `DiagrammeR`: Graphviz  {.smaller}
+
+But they aren't orthogonal, so we need to let the factors correlate.
+Let's change the layout to `neato`:
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "5"
 grViz("
 digraph b5 {
 
@@ -345,6 +496,49 @@ digraph b5 {
 }"
 )
 ```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+grViz("
+digraph b5 {
+
+  # a 'graph' statement
+  graph [overlap = true, fontsize = 10, layout = neato]
+
+  # def latent Big Five
+  node [shape = circle]
+  E; A; C; N; O
+  
+  # def observed indicators
+  node [shape = square,
+        fixedsize = true,
+        width = 0.25]
+  e1; e2; e3
+  a1; a2; a3
+  c1; c2; c3
+  n1; n2; n3
+  o1; o2; o3
+  
+  # several 'edge' statements
+  E->{e1,e2,e3}
+  A->{a1,a2,a3}
+  C->{c1,c2,c3}
+  N->{n1,n2,n3}
+  O->{o1,o2,o3}
+  
+  E->{A,C,N,O} [dir = both]
+  A->{C,N,O} [dir = both]
+  C->{N,O} [dir = both]
+  N->{O} [dir = both]
+}"
+)
+```
+
+:::
+::::
+
 ## `DiagrammeR`: Graphviz
 * That was all very `lavaan`, wasn't it? 
 * Well, sometimes we want to create diagrams using code or pipelines, which isn't easy or intuitive using the syntax we've been using
@@ -353,23 +547,500 @@ digraph b5 {
 
 # Basic Text Visualization  
 
+## Basic Text Visualization  
+
+* In some ways, the hardest part of text visualization is *getting* the text into `R`. 
+* Once text is in `R`, there are lots of great tools for tokenizing, basic sentiment analysis, and more
+* Today, we'll use some data from an ongoing project of mine that applies NLP to *Letters from Jenny* (Anonymous, 1942), which were published in the *Journal of Abnormal and Social Psychology*  
+* The PDF's have been converted to a .txt file  
+
+## Basic Text Visualization  
+
+```{r}
+#| code-line-numbers: "|1|2|3-4|5"
+text_df <- read.table("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/08-week8-polishing/01-data/part2_pymupdf.txt", sep = "\n") %>%
+  setNames("text") %>%
+  mutate(line = 1:n()) %>%
+  as_tibble() %>%
+  mutate(text = str_remove_all(text, "[0-9]"))
+text_df$text[1:10]
+```
+
+## Basic Text Visualization  {.smaller}
+
+* The first step with text data is to clean and tokenize it. 
+* Cleaning basically means makoing sure that everything parsed correctly  
+* Tokenizing means that we break the text down into tokens that we can then analyze
+* We tokenize for lots of reasons. It let's us:  
+  + Remove filler words
+  + Group words in different forms, tenses
+  + Get rid of punctuation, etc.
+  + And more
+
+::::{.fragment}
+
+> A token is a meaningful unit of text, most often a word, that we are interested in using for further analysis, and tokenization is the process of splitting text into tokens (Silge & Robinson, *Tidy Text Mining in R*)
+
+::::
+
+## Basic Text Visualization: Tokens  
+
+```{r}
+#| code-line-numbers: "2"
+tidy_text <- text_df %>%
+  unnest_tokens(word, text)
+tidy_text
+```
+
+## Basic Text Visualization: Tokens  
+
+```{r}
+#| code-line-numbers: "|1|3-4"
+data(stop_words)
+
+tidy_text <- tidy_text %>%
+  anti_join(stop_words)
+```
+
+## Basic Text Visualization: Tokens  
+
+```{r}
+#| code-line-numbers: "2"
+tidy_text %>%
+  count(word, sort = T)
+```
+
+## Basic Text Visualization: Tokens  
+
+Let's visualize the count: 
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-3|4|5-8"
+tidy_text %>%
+  count(word, sort = T) %>%
+  top_n(20) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(n, word)) +
+  geom_col() +
+  labs(y = NULL) + 
+  my_theme()
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+tidy_text %>%
+  count(word, sort = T) %>%
+  top_n(20) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(n, word)) +
+  geom_col() +
+  labs(y = NULL) + 
+  my_theme()
+```
+
+:::
+::::
+
+## Basic Text Visualization: Tokens  
+
+How negative is Jenny? 
+
+```{r}
+#| code-line-numbers: "|2|3"
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, sort = T)
+```
+
+## Basic Text Visualization: Tokens  
+
+Does her negativity change over time?  
+
+```{r}
+#| code-line-numbers: "3"
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, index = line%/%100, sort = T)
+```
+
+## Basic Text Visualization: Tokens  
+
+Does her negativity change over time?  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "4-7"
+p <- tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, index = line%/%100, sort = T) %>%
+  ggplot(aes(x = index, y = n, color = sentiment)) + 
+    geom_line() + 
+    geom_point() + 
+    my_theme()
+p
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p <- tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, index = line%/%100, sort = T) %>%
+  ggplot(aes(x = index, y = n, color = sentiment)) + 
+    geom_line() + 
+    geom_point() + 
+    my_theme()
+p
+```
+
+:::
+::::
+
+## Basic Text Visualization: Tokens  {.smaller}
+
+Does her negativity change over time?  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|2-3,17-18|4-10|11-16"
+p + 
+  scale_color_manual(values = c("grey40", "goldenrod")) + 
+  scale_x_continuous(limits = c(0,18), breaks = seq(0,15,5)) + 
+  annotate("label"
+           , label = "negative"
+           , y = 32
+           , x = 15.5
+           , hjust = 0
+           , fill = "grey40"
+           , color = "white") + 
+  annotate("label"
+           , label = "positive"
+           , y = 13
+           , x = 15.5
+           , hjust = 0
+           , fill = "goldenrod")  +
+  labs(x = "Chunk", y = "Count") + 
+  theme(legend.position = "none")
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p + 
+  scale_color_manual(values = c("grey40", "goldenrod")) + 
+  scale_x_continuous(limits = c(0,18), breaks = seq(0,15,5)) + 
+  annotate("label"
+           , label = "negative"
+           , y = 32
+           , x = 15.5
+           , hjust = 0
+           , fill = "grey40"
+           , color = "white") + 
+  annotate("label"
+           , label = "positive"
+           , y = 13
+           , x = 15.5
+           , hjust = 0
+           , fill = "goldenrod")  +
+  labs(x = "Chunk", y = "Count") + 
+  theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Basic Text Visualization: Tokens  {.smaller}
+
+We can also look at most common negative and positive words: 
+
+```{r}
+#| code-line-numbers: "|3|4-5"
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  group_by(sentiment) %>%
+  top_n(10)
+```
+
+## Basic Text Visualization: Tokens  {.smaller}
+
+We can also look at most common negative and positive words: 
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|7|8-12"
+p <- tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = n, y = word, fill = sentiment)) +
+  geom_col() +
+  labs(y = NULL) + 
+  facet_wrap(~sentiment, scales = "free_y") +
+  my_theme()
+p
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p <- tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = n, y = word, fill = sentiment)) +
+  geom_col() +
+  labs(y = NULL) + 
+  facet_wrap(~sentiment, scales = "free_y") +
+  my_theme()
+p
+```
+
+:::
+::::
+
+## Basic Text Visualization: Tokens  
+
+::::{.columns}
+:::{.column width="35%"}
+
+```{r, eval = F}
+#| code-line-numbers: "2-4"
+p + 
+  scale_fill_manual(
+    values = c("grey40", "goldenrod")
+    ) + 
+  theme(legend.position = "none")
+```
+
+:::
+:::{.column width="65%"}
+
+```{r, echo = F}
+p + 
+  scale_fill_manual(values = c("grey40", "goldenrod")) + 
+  theme(legend.position = "none")
+```
+
+:::
+::::
+
+## Basic Text Visualizations: Word Clouds
+
+::::{.columns}
+:::{.column width="35%"}
+
+```{r, eval = F}
+#| code-line-numbers: "|2|3-7"
+tidy_text %>%
+  count(word) %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100)
+    )
+```
+
+:::
+:::{.column width="65%"}
+
+```{r, echo = F}
+tidy_text %>%
+  count(word) %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100)
+    )
+```
+
+:::
+::::
+
+## Basic Text Visualizations: Word Clouds
+
+::::{.columns}
+:::{.column width="35%"}
+
+```{r, eval = F}
+#| code-line-numbers: "1,8"
+pal <- brewer.pal(6,"Dark2")
+tidy_text %>%
+  count(word) %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = pal)
+    )
+```
+
+:::
+:::{.column width="65%"}
+
+```{r, echo = F}
+pal <- brewer.pal(6,"Dark2")
+tidy_text %>%
+  count(word) %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = pal)
+    )
+```
+
+:::
+::::
+
+## Basic Text Visualizations: Word Clouds {.smaller}
+
+::::{.columns}
+:::{.column width="40%"}
+
+```{r, eval = F}
+#| code-line-numbers: "1|2-12|14-24"
+par(mar = c(0, 0, 0, 0), mfrow = c(1,2))
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  filter(sentiment == "negative") %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = "grey40")
+    )
+title("Negative", line = -2)
+
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  filter(sentiment == "positive") %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = "goldenrod")
+    )
+title("Positive", line = -2)
+```
+
+:::
+:::{.column width="60%"}
+
+```{r, echo = F}
+par(mar = c(0, 0, 0, 0), mfrow = c(1,2))
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  filter(sentiment == "negative") %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = "grey40")
+    )
+title("Negative", line = -2)
+
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  filter(sentiment == "positive") %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = "goldenrod")
+    )
+title("Positive", line = -2)
+```
+
+:::
+::::
+
+## Basic Text Visualizations: Word Clouds {.smaller}
+
+```{r, echo = F}
+par(mar = c(0, 0, 0, 0), mfrow = c(1,2))
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  filter(sentiment == "negative") %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = "grey40")
+    )
+title("Negative", line = -2)
+
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word, sort = T) %>%
+  filter(sentiment == "positive") %>%
+  with(wordcloud(
+    word
+    , n
+    , max.words = 100
+    , colors = "goldenrod")
+    )
+title("Positive", line = -2)
+```
+
 # `ggplot2` hacks  
 
-## Data  
+## Data  {.smaller}
+
+::::{.columns}
+:::{.column}
 
 * Data cleaning is often the hardest, most time consuming part of our research flow
 * Whether we are cleaning raw data, or cleaning data that come out of a model object, we have to be able to wrangle it to the shape we need for whatever program we're using  
 * Other than lots of tools in your toolbox for reshaping (see [Week 1](https://emoriebeck.github.io/psc290-data-viz-2022/01-week1-slides-code.html#/title-slide)), the biggest data cleaning hack I have has nothing to do with cleaning, per se
+
+:::
+:::{.column}
+
 * Specifically, it requires two things: 
   + You have to know what the output you want is (in our case, plots)
-  + You have know how what the data need to look like to produce that
+  + You have to know how what the data need to look like to produce that
+  
+:::
+::::
   
 ## Data  
 
-* Let's consider an example, going back to when we wanted to make correlelograms / heat maps. 
-* Here's the plot we wanted to create: 
+::::{.columns}
+:::{.column width="40%"}
 
-```{r}
+* Let's consider an example, going back to when we wanted to make correlelograms / heat maps. 
+* Here's the plot we wanted to create:  
+
+:::
+:::{.column width="60%"}
+
+```{r, echo = F, fig.align='center', fig.dim= c(6,6), out.width="100%"}
 load(url("https://github.com/emoriebeck/psc290-data-viz-2022/blob/main/04-week4-associations/04-data/week4-data.RData?raw=true"))
 
 r_data <- pred_data %>%
@@ -421,9 +1092,16 @@ hmp <- r_data$r_long[[1]] %>%
     , plot.subtitle = element_text(face = "italic", hjust = .5)
     , panel.background = element_rect(color = "black", size = 1)
   )
+hmp
 ```
 
+:::
+::::
+
 ## Data  
+
+::::{.columns}
+:::{.column width="40%"}
 
 :::{.nonincremental}
 * Let's consider an example, going back to when we wanted to make correlelograms / heat maps. 
@@ -431,27 +1109,32 @@ hmp <- r_data$r_long[[1]] %>%
 :::
 * This seems like it should be straightforward because we're taking a correlation matrix and... visualizing it as a matrix  
 * But `ggplot2` doesn't communicate with correlation matrices because they are in **wide format**
-* So we need to figure out how to make the correlation matrix long format in ways that gives us: 
-  + Variables on the x-axis
-  + Variables on the y-axis
-  + Correlations for fill
-  + Correlations (rounded) for text
-  + **no double dipping on values**
 
-```{r}
+:::
+:::{.column width="60%"}
+
+```{r, echo = F, fig.align='center', fig.dim= c(6,6), out.width="100%"}
 hmp
 ```
 
+:::
+::::
+
 ## Data  
 
-:::{.nonincremental}
+::::{.columns}
+:::{.column}
+
 * So we need to figure out how to make the correlation matrix long format in ways that gives us: 
   + Variables on the x-axis
   + Variables on the y-axis
   + Correlations for fill
   + Correlations (rounded) for text
   + **no double dipping on values**
+
 :::
+:::{.column}
+
 * If you remember nothing else from this course, please remember this:
   + **AESTHETIC MAPPINGS CORRESPOND TO COLUMNS IN THE DATA FRAME YOU ARE PLOTTING**
 * So if want all of the above we need the following columns: 
@@ -459,7 +1142,13 @@ hmp
   + V2 (y)
   + r (fill, text)
 
+:::
+::::
+
 ## Data  
+
+::::{.columns}
+:::{.column}
 
 * But what do we currently have? 
   + A p*p correlation matrix
@@ -469,10 +1158,15 @@ hmp
 * Where are our correlations? 
   + In wide format (unindexed by explicit columns)
 
+:::
+:::{.column}
 
 ```{r}
 r_data$r[[1]]
 ```
+
+:::
+::::
 
 ## Data  
 
@@ -491,19 +1185,25 @@ r_data$r[[1]]
   + Must be a data frame
   + V1 (x)
   + V2 (y); r (fill, text)
+
+## Data  
+
 * Last but, BUT we have also been learning lots about `ggplot2` default behavior, and one of those things is that it will treat columns of `class()` `character` as something that should be ordered alphabetically via `scale_[map]_discrete()`
   + If we don't want it to, we need to make it a `factor` with `levels` and/or `labels` we provide
   + For a heat map / correlelogram, it is *imperative* that this order is the same order you gave `cor()` with the raw data. 
   
 ## Data  
 
-* You can see that order by looking at the row and column names: 
+You can see that order by looking at the row and column names: 
 
 ```{r}
 r_data$r[[1]]
 ```
 
 ## Data  
+
+::::{.columns}
+:::{.column}
 
 :::{.nonincremental}
 * It should be these steps:
@@ -515,13 +1215,23 @@ r_data$r[[1]]
   + Preserve variable order through factors
 :::
 
+:::
+:::{.column}
+
 ```{r}
+#| code-line-numbers: "|1|2"
 r <- r_data$r[[1]]
 coln <- colnames(r)
 coln
 ```
 
+:::
+::::
+
 ## Data  
+
+::::{.columns}
+:::{.column}
 
 :::{.nonincremental}
 * It should be these steps:
@@ -533,14 +1243,24 @@ coln
   + Preserve variable order through factors
 :::
 
+:::
+:::{.column}
+
 ```{r}
+#| code-line-numbers: "3"
 r <- r_data$r[[1]]
 coln <- colnames(r)
 r[lower.tri(r, diag = T)] <- NA
 r
 ```
 
+:::
+::::
+
 ## Data  
+
+::::{.columns}
+:::{.column}
 
 :::{.nonincremental}
 * It should be these steps:
@@ -552,6 +1272,9 @@ r
   + Preserve variable order through factors
 :::
 
+:::
+:::{.column}
+
 ```{r}
 r <- r_data$r[[1]]
 coln <- colnames(r)
@@ -559,7 +1282,13 @@ r[lower.tri(r, diag = T)] <- NA
 r %>% data.frame()
 ```
 
+:::
+::::
+
 ## Data  
+
+::::{.columns}
+:::{.column}
 
 :::{.nonincremental}
 * It should be these steps:
@@ -571,7 +1300,11 @@ r %>% data.frame()
   + Preserve variable order through factors
 :::
 
+:::
+:::{.column}
+
 ```{r}
+#| code-line-numbers: "4-5"
 r <- r_data$r[[1]]
 coln <- colnames(r)
 r[lower.tri(r, diag = T)] <- NA
@@ -579,7 +1312,13 @@ r %>% data.frame() %>%
   rownames_to_column("V1")
 ```
 
+:::
+::::
+
 ## Data  
+
+::::{.columns}
+:::{.column}
 
 :::{.nonincremental}
 * It should be these steps:
@@ -591,7 +1330,11 @@ r %>% data.frame() %>%
   + Preserve variable order through factors
 :::
 
+:::
+:::{.column}
+
 ```{r}
+#| code-line-numbers: "6-10"
 r <- r_data$r[[1]]
 coln <- colnames(r)
 r[lower.tri(r, diag = T)] <- NA
@@ -604,7 +1347,13 @@ r %>% data.frame() %>%
   )
 ```
 
+:::
+::::
+
 ## Data  
+
+::::{.columns}
+:::{.column}
 
 :::{.nonincremental}
 * It should be these steps:
@@ -616,7 +1365,11 @@ r %>% data.frame() %>%
   + **Preserve variable order through factors**
 :::
 
+:::
+:::{.column}
+
 ```{r}
+#| code-line-numbers: "11-12"
 r <- r_data$r[[1]]
 coln <- colnames(r)
 r[lower.tri(r, diag = T)] <- NA
@@ -631,7 +1384,13 @@ r %>% data.frame() %>%
          , V2 = factor(V2, levels = coln))
 ```
 
-## Data: Final Words  
+:::
+::::
+
+## Data: Final Words  {.smaller}
+
+::::{.columns}
+:::{.column}
 
 * Data cleaning is anxiety-provoking for lots of really valid reasons  
 * You probably outline your writing, so why not outline your data cleaning? It's writing, too
@@ -641,6 +1400,10 @@ r %>% data.frame() %>%
   + What do your data need to look like to be able to feed into that final product? 
 * Then, start filling out the middle: 
   + How you do get to that end point? 
+
+:::
+:::{.column}
+
 * Don't be afraid to use cheat sheets!
   + `tidyr`
   + `dplyr`
@@ -648,62 +1411,316 @@ r %>% data.frame() %>%
   + `purrr`
 * And also don't be afraid to ask questions!
 
-## Axes  
-
-* Your most flexible scale will always be a continuous one! 
-* The challenge with using a continuous scale for a discrete one is keeping track of what the numbers mean. 
-* I find the easiest way to do this is using data frames  
-
-```{r}
-studies <- pred_data %>%
-  select(study) %>%
-  distinct() %>%
-  mutate(study2 = 1:n())
-studies
-```
-```{r}
-studies <- pred_data %>%
-  mutate(study2 = mapvalues(study, unique(.$study), 1:length(unique(.$study)))) %>%
-  select(study, study2) %>%
-  distinct() 
-studies
-```
+:::
+::::
 
 ## Axes  
 
+## Axes: Bar Charts 
+
+::::{.columns}
+:::{.column}
+
+* Remember when we talked about bar charts? 
+* When we measure things, we are careful about scales, wording, etc. 
+* But when we plot our measures, we sometimes fail to give it the same thoughtfulness
+* Our axes should be representative of our measures!
+
+:::
+:::{.column}
+
 ```{r}
-std_dat <- pred_data %>%
-  group_by(study) %>%
-  summarize(, m = mean(p_value, na.rm = T)
-            , sd = sd(p_value, na.rm = T)
-            , se = sd/sqrt(n())
-            , ci = 1.96*se) %>%
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/01-data/ipcs_data.RData"))
+```
+
+:::
+::::
+
+## Axes: Bar Charts 
+
+```{r}
+#| code-line-numbers: "|1-3|4-9|10"
+ipcs_long <- ipcs_data %>%
+  filter(SID == "02") %>%
+  select(SID:purposeful) %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , values_to = "value"
+    , names_to = "var"
+    , values_drop_na = T
+  ) %>%
+  mutate(valence = ifelse(var %in% c("afraid", "angry", "guilty"), "Negative", "Positive"))
+ipcs_long
+```
+
+## Axes: Bar Charts {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-4|5|6-9|10-13|14-15"
+ipcs_long %>%
+  group_by(var, valence) %>%
+  summarize_at(vars(value), lst(mean, sd)) %>%
   ungroup() %>%
-  drop_na() 
-std_dat
+  ggplot(aes(x = var, y = mean, fill = valence)) + 
+    geom_bar(
+      stat = "identity"
+      , position = "dodge"
+      ) + 
+    geom_errorbar(
+      aes(ymin = mean - sd, ymax = mean + sd)
+      , width = .1
+      ) +
+    facet_grid(~valence, scales = "free_x", space = "free_x") + 
+    my_theme()
 ```
 
-## Axes  
+:::
+:::{.column}
 
-```{r}
-std_dat %>%
-  left_join(studies) 
+```{r, echo = F}
+ipcs_long %>%
+  group_by(var, valence) %>%
+  summarize_at(vars(value), lst(mean, sd)) %>%
+  ungroup() %>%
+  ggplot(aes(x = var, y = mean, fill = valence)) + 
+    geom_bar(
+      stat = "identity"
+      , position = "dodge"
+      ) + 
+    geom_errorbar(
+      aes(ymin = mean - sd, ymax = mean + sd)
+      , width = .1
+      ) +
+    facet_grid(~valence, scales = "free_x", space = "free_x") + 
+    my_theme()
 ```
 
-## Axes  
+:::
+::::
 
-```{r}
-ord <- arrange(std_dat, gender, m)$study
-std_dat %>%
-  left_join(studies) %>%
-  
+## Axes: Bar Charts {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "5,11,14,15"
+ipcs_long %>%
+  group_by(var, valence) %>%
+  summarize_at(vars(value), lst(mean, sd)) %>%
+  ungroup() %>%
+  ggplot(aes(x = var, y = mean - 1, fill = valence)) + 
+    geom_bar(
+      stat = "identity"
+      , position = "dodge"
+      ) + 
+    geom_errorbar(
+      aes(ymin = mean - 1 - sd, ymax = mean - 1 + sd)
+      , width = .1
+      ) +
+    scale_y_continuous(limits = c(0,4), breaks = seq(0,4,1), labels = 1:5) + 
+    facet_grid(~valence, scales = "free_x", space = "free_x") + 
+    my_theme()
 ```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+ipcs_long %>%
+  group_by(var, valence) %>%
+  summarize_at(vars(value), lst(mean, sd)) %>%
+  ungroup() %>%
+  ggplot(aes(x = var, y = mean - 1, fill = valence)) + 
+    geom_bar(
+      stat = "identity"
+      , position = "dodge"
+      ) + 
+    geom_errorbar(
+      aes(ymin = mean - 1 - sd, ymax = mean - 1 + sd)
+      , width = .1
+      ) +
+    scale_y_continuous(limits = c(0,4), breaks = seq(0,4,1), labels = 1:5) + 
+    facet_grid(~valence, scales = "free_x", space = "free_x") + 
+    my_theme()
+```
+
+:::
+::::
+
+### But our scale doesn't start at 0!  
+
+## Axes: Bar Charts {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "10-18"
+p <- ipcs_long %>%
+  group_by(var, valence) %>%
+  summarize_at(vars(value), lst(mean, sd)) %>%
+  ungroup() %>%
+  ggplot(aes(x = var, y = mean - 1, fill = valence)) + 
+    geom_bar(
+      stat = "identity"
+      , position = "dodge"
+      ) + 
+    geom_jitter(
+      data = ipcs_long
+      , aes(y = value - 1, fill = valence)
+      , color = "black"
+      , shape = 21
+      , alpha = .5
+      , width = .2
+      , height = .1
+    ) + 
+    geom_errorbar(
+      aes(ymin = mean - 1 - sd, ymax = mean - 1 + sd)
+      , width = .1
+      ) +
+    scale_y_continuous(limits = c(-.1,4), breaks = seq(0,4,1), labels = 1:5) +
+    facet_grid(~valence, scales = "free_x", space = "free_x") + 
+    my_theme()
+p
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p <- ipcs_long %>%
+  group_by(var, valence) %>%
+  summarize_at(vars(value), lst(mean, sd)) %>%
+  ungroup() %>%
+  ggplot(aes(x = var, y = mean - 1, fill = valence)) + 
+    geom_bar(
+      stat = "identity"
+      , position = "dodge"
+      ) + 
+    geom_jitter(
+      data = ipcs_long
+      , aes(y = value - 1, fill = valence)
+      , color = "black"
+      , shape = 21
+      , alpha = .5
+      , width = .2
+      , height = .1
+    ) + 
+    geom_errorbar(
+      aes(ymin = mean - 1 - sd, ymax = mean - 1 + sd)
+      , width = .1
+      ) +
+    scale_y_continuous(limits = c(-.1,4), breaks = seq(0,4,1), labels = 1:5) +
+    facet_grid(~valence, scales = "free_x", space = "free_x") + 
+    my_theme()
+p
+```
+
+:::
+::::
+
+## Axes: Bar Charts {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+p + 
+  labs(
+    x = NULL
+    , y = "Mean Rating (1-5) + SD"
+  ) + 
+  theme(
+    legend.position = "none"
+    , axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+p + 
+  labs(
+    x = NULL
+    , y = "Mean Rating (1-5) + SD"
+  ) + 
+  theme(
+    legend.position = "none"
+    , axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+```
+
+:::
+::::
+
+
+<!-- ## Axes: Bar Charts   -->
+<!-- * Your most flexible scale will always be a continuous one!  -->
+<!-- * The challenge with using a continuous scale for a discrete one is keeping track of what the numbers mean.  -->
+<!-- * I find the easiest way to do this is using data frames   -->
+
+<!-- ```{r} -->
+<!-- studies <- pred_data %>% -->
+<!--   select(study) %>% -->
+<!--   distinct() %>% -->
+<!--   mutate(study2 = 1:n()) -->
+<!-- studies -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- studies <- pred_data %>% -->
+<!--   mutate(study2 = mapvalues(study, unique(.$study), 1:length(unique(.$study)))) %>% -->
+<!--   select(study, study2) %>% -->
+<!--   distinct()  -->
+<!-- studies -->
+<!-- ``` -->
+
+<!-- ## Axes   -->
+
+<!-- ```{r} -->
+<!-- std_dat <- pred_data %>% -->
+<!--   group_by(study) %>% -->
+<!--   summarize(, m = mean(p_value, na.rm = T) -->
+<!--             , sd = sd(p_value, na.rm = T) -->
+<!--             , se = sd/sqrt(n()) -->
+<!--             , ci = 1.96*se) %>% -->
+<!--   ungroup() %>% -->
+<!--   drop_na()  -->
+<!-- std_dat -->
+<!-- ``` -->
+
+<!-- ## Axes   -->
+
+<!-- ```{r} -->
+<!-- std_dat %>% -->
+<!--   left_join(studies)  -->
+<!-- ``` -->
+
+<!-- ## Axes   -->
+
+<!-- ```{r} -->
+<!-- ord <- arrange(std_dat, gender, m)$study -->
+<!-- std_dat %>% -->
+<!--   left_join(studies) %>% -->
+
+<!-- ``` -->
 
 ## Axes: Another Example  
+
+::::{.columns}
+:::{.column}
 
 * Here's a plot I was making for a grant last week, demonstrating different mean-level patterns of a behavior across situations from 1 to n. 
 * Note the ... in the axis, which is normal notation to indicate some unknown quantity. 
 * How would we create this? 
+
+:::
+:::{.column}
 
 ```{r, echo = F}
 tibble(
@@ -725,11 +1742,15 @@ tibble(
           , plot.background = element_rect(color = "white", fill = "white"))
 ```
 
+:::
+::::
+
 ## Axes: Another Example  
 
 Here's the data: 
 
 ```{r}
+#| code-line-numbers: "|2|3|4"
 tibble(
   p = as.character(rep(1, 4))
   , x = paste0("S", c(1,2,3,"p"))
@@ -741,7 +1762,11 @@ tibble(
 
 Let's add the core ggplot code:  
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "6"
 tibble(
   p = as.character(rep(1, 4))
   , x = paste0("S", c(1,2,3,"p"))
@@ -750,30 +1775,90 @@ tibble(
   ggplot(aes(x = x, y = y, group = p))
 ```
 
+:::
+:::{.column}
+
+```{r, echo = F}
+tibble(
+  p = as.character(rep(1, 4))
+  , x = paste0("S", c(1,2,3,"p"))
+  , y = c(1, 2, 4, 3)
+  ) %>%
+  ggplot(aes(x = x, y = y, group = p))
+```
+
+:::
+::::
+
 ## Axes: Another Example  
 
 And our `geoms`, `labs`, and `theme`:
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|7|8-12|13-19"
 tibble(
   p = as.character(rep(1, 4))
   , x = paste0("S", c(1,2,3,"p"))
   , y = c(1, 2, 4, 3)
   ) %>%
   ggplot(aes(x = x, y = y, group = p)) + 
-  geom_line(size = 1, color = "#8cdbbe") + 
-    geom_point(size = 2.5, color = "black", shape = "square") + 
-    labs(x = "Situation", y = "Mean Response", title = "Intraindividual Variability", subtitle = "Person 1") + 
+    geom_line(size = 1, color = "#8cdbbe") + 
+    geom_point(
+      size = 2.5
+      , color = "black"
+      , shape = "square"
+      ) + 
+    labs(
+      x = "Situation"
+      , y = "Mean Response"
+      , title = "Intraindividual Variability"
+      , subtitle = "Person 1"
+      ) + 
     my_theme()
 ```
 
+:::
+:::{.column}
+
+```{r, echo = F}
+tibble(
+  p = as.character(rep(1, 4))
+  , x = paste0("S", c(1,2,3,"p"))
+  , y = c(1, 2, 4, 3)
+  ) %>%
+  ggplot(aes(x = x, y = y, group = p)) + 
+    geom_line(size = 1, color = "#8cdbbe") + 
+    geom_point(
+      size = 2.5
+      , color = "black"
+      , shape = "square"
+      ) + 
+    labs(
+      x = "Situation"
+      , y = "Mean Response"
+      , title = "Intraindividual Variability"
+      , subtitle = "Person 1"
+      ) + 
+    my_theme()
+```
+
+:::
+::::
+
 ### But how do we add the ...?
 
-## Axes: Another Example  
+## Axes: Another Example  {.smaller}
 
 Let's switch to a continuous scale, then we can use `labels` to add it!
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "3-4,6"
 tibble(
   p = as.character(rep(1, 4))
   , x = paste0("S", c(1,2,3,"p"))
@@ -781,17 +1866,90 @@ tibble(
   , y = c(1, 2, 4, 3)
   ) %>%
   ggplot(aes(x = x2, y = y, group = p)) + 
-  geom_line(size = 1, color = "#8cdbbe") + 
-    geom_point(size = 2.5, color = "black", shape = "square") + 
-    labs(x = "Situation", y = "Mean Response", title = "Intraindividual Variability", subtitle = "Person 1") + 
+    geom_line(size = 1, color = "#8cdbbe") + 
+    geom_point(
+      size = 2.5
+      , color = "black"
+      , shape = "square"
+      ) + 
+    labs(
+      x = "Situation"
+      , y = "Mean Response"
+      , title = "Intraindividual Variability"
+      , subtitle = "Person 1"
+      ) + 
     my_theme()
 ```
 
-## Axes: Another Example  
+:::
+:::{.column}
+
+```{r, echo = F}
+tibble(
+  p = as.character(rep(1, 4))
+  , x = paste0("S", c(1,2,3,"p"))
+  , x2 = 1:4
+  , y = c(1, 2, 4, 3)
+  ) %>%
+  ggplot(aes(x = x2, y = y, group = p)) + 
+    geom_line(size = 1, color = "#8cdbbe") + 
+    geom_point(
+      size = 2.5
+      , color = "black"
+      , shape = "square"
+      ) + 
+    labs(
+      x = "Situation"
+      , y = "Mean Response"
+      , title = "Intraindividual Variability"
+      , subtitle = "Person 1"
+      ) + 
+    my_theme()
+```
+
+:::
+::::
+
+## Axes: Another Example  {.smaller}
 
 Let's switch to a continuous scale, then we can use `labels` to add it!
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "14-18"
+tibble(
+  p = as.character(rep(1, 4))
+  , x = paste0("S", c(1,2,3,"p"))
+  , x2 = 1:4
+  , y = c(1, 2, 4, 3)
+  ) %>%
+  ggplot(aes(x = x2, y = y, group = p)) + 
+    geom_line(size = 1, color = "#8cdbbe") + 
+    geom_point(
+      size = 2.5
+      , color = "black"
+      , shape = "square"
+      ) + 
+    scale_x_continuous(
+      limits = c(.9, 4.1)
+      , breaks = c(1,2,3,3.5,4)
+      , labels = c("S1", "S2", "S3", "...", "S4")
+      ) + 
+    labs(
+      x = "Situation"
+      , y = "Mean Response"
+      , title = "Intraindividual Variability"
+      , subtitle = "Person 1"
+      ) + 
+    my_theme()
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
 tibble(
   p = as.character(rep(1, 4))
   , x = paste0("S", c(1,2,3,"p"))
@@ -810,13 +1968,20 @@ tibble(
     my_theme()
 ```
 
+:::
+::::
+
 ### Almost there, but we don't want the tick mark at ...
 
-## Axes: Another Example  
+## Axes: Another Example  {.smaller}
 
 We can actually supply a vector of length `breaks` to `axis.ticks.x` specifying the `size` of the ticks!  
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "26"
 tibble(
   p = as.character(rep(1, 4))
   , x = paste0("S", c(1,2,3,"p"))
@@ -824,31 +1989,270 @@ tibble(
   , y = c(1, 2, 4, 3)
   ) %>%
   ggplot(aes(x = x2, y = y, group = p)) + 
-  geom_line(size = 1, color = "#8cdbbe") + 
-    geom_point(size = 2.5, color = "black", shape = "square") + 
+    geom_line(size = 1, color = "#8cdbbe") + 
+    geom_point(
+      size = 2.5
+      , color = "black"
+      , shape = "square"
+      ) + 
     scale_x_continuous(
       limits = c(.9, 4.1)
       , breaks = c(1,2,3,3.5,4)
       , labels = c("S1", "S2", "S3", "...", "Sn")
       ) + 
-    labs(x = "Situation", y = "Mean Response", title = "Intraindividual Variability", subtitle = "Person 1") + 
+    labs(
+      x = "Situation"
+      , y = "Mean Response"
+      , title = "Intraindividual Variability"
+      , subtitle = "Person 1"
+      ) + 
     my_theme() + 
     theme(axis.ticks.x = element_line(color = c(rep(.5, 3), 0, .5)))
 ```
 
-## Points  
+:::
+:::{.column}
 
-* You can make points any text character  
+```{r, echo = F}
+tibble(
+  p = as.character(rep(1, 4))
+  , x = paste0("S", c(1,2,3,"p"))
+  , x2 = 1:4
+  , y = c(1, 2, 4, 3)
+  ) %>%
+  ggplot(aes(x = x2, y = y, group = p)) + 
+    geom_line(size = 1, color = "#8cdbbe") + 
+    geom_point(
+      size = 2.5
+      , color = "black"
+      , shape = "square"
+      ) + 
+    scale_x_continuous(
+      limits = c(.9, 4.1)
+      , breaks = c(1,2,3,3.5,4)
+      , labels = c("S1", "S2", "S3", "...", "Sn")
+      ) + 
+    labs(
+      x = "Situation"
+      , y = "Mean Response"
+      , title = "Intraindividual Variability"
+      , subtitle = "Person 1"
+      ) + 
+    my_theme() + 
+    theme(axis.ticks.x = element_line(color = c(rep(.5, 3), 0, .5)))
+```
+
+:::
+::::
+
+## Scales
+
+* `coord_cartesian()`: the default and what you'll use most of the time
+* `coord_polar()`: remember Trig and Calculus? 
+* `coord_quickmap()`: sets you up to plot maps
+* `coord_trans()`: apply transformations to coordinate plane
+* `coord_flip()`: flip `x` and `y`
+
+## Scales: `coord_polar()`  
 
 ```{r}
+ipcs_m <- ipcs_data %>% 
+  filter(SID %in% c(216, 211, 174)) %>%
+  select(SID, Full_Date, afraid:purposeful, Adversity:Sociability)
+ipcs_m
+```
+
+## Scales: `coord_polar()`  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1|2-8|9-12"
+vars <- colnames(ipcs_m)[c(-1, -2)]
+ipcs_m <- ipcs_m %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , values_to = "value"
+    , names_to = "var"
+    , values_drop_na = T
+  ) %>%
+  group_by(SID, var) %>%
+  summarize(m = mean(value)
+         , sd = sd(value)) %>%
+  ungroup()
+ipcs_m
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+vars <- colnames(ipcs_m)[c(-1, -2)]
+ipcs_m <- ipcs_m %>%
+  pivot_longer(
+    cols = c(-SID, -Full_Date)
+    , values_to = "value"
+    , names_to = "var"
+    , values_drop_na = T
+  ) %>%
+  group_by(SID, var) %>%
+  summarize(m = mean(value)
+         , sd = sd(value)) %>%
+  ungroup()
+ipcs_m
+```
+
+:::
+::::
+
+## Scales: `coord_polar()`  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-5|7-8|11|12|13-14"
+vars <- tibble(
+  var = vars
+  , cat = c(rep("Emotion", 10), rep("Situation", 8))
+  , num = 1:length(vars)
+)
+
+ipcs_m <- ipcs_m %>%
+  left_join(vars %>% rename(var2 = num)) 
+
+p <- ipcs_m %>%
+  ggplot(aes(x = var2, y = m, fill = cat)) + 
+    geom_bar(stat = "identity", position = "dodge") +
+    my_theme() +
+    facet_wrap(~SID)
+p
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+vars <- tibble(
+  var = vars
+  , cat = c(rep("Emotion", 10), rep("Situation", 8))
+  , num = 1:length(vars)
+)
+
+ipcs_m <- ipcs_m %>%
+  left_join(vars %>% rename(var2 = num)) 
+
+p <- ipcs_m %>%
+  ggplot(aes(x = var2, y = m, fill = cat)) + 
+    geom_bar(stat = "identity", position = "dodge") +
+    my_theme() +
+    facet_wrap(~SID)
+p
+```
+
+:::
+::::
+
+## Scales: `coord_polar()`  
+
+```{r}
+#| code-line-numbers: "2"
+p <- p + 
+  scale_fill_brewer(palette = "Set2")
+p
+```
+
+## Scales: `coord_polar()`  
+
+```{r, fig.dim=c(10,5)}
+#| code-line-numbers: "2"
+p <- p + 
+  coord_polar()
+p
+```
+
+## Scales: `coord_polar()`  {.smaller}
+
+```{r, fig.dim=c(10,5)}
+#| code-line-numbers: "|1|4-5|6"
+angle <- 90 - 360 * (ipcs_m$var2-0.5) / nrow(vars)
+
+p <- p + 
+  geom_text(aes(label = var, y = m + .5), angle = angle
+            , hjust = 0, size = 3, alpha = .6) + 
+  scale_y_continuous(limits = c(-2, 6.5))
+p
+```
+
+## Scales: `coord_polar()`  {.smaller}
+
+```{r, fig.dim=c(10,5)}
+p <- p + 
+  labs(
+    fill = "Feature Category"
+    , title = "Relative Differences in Intraindividual Means"
+    , subtitle = "Across Emotions and Situation Perceptions"
+    ) + 
+  theme(
+    axis.line = element_blank()
+    , axis.text = element_blank()
+    , axis.ticks = element_blank()
+    , axis.title = element_blank()
+    , panel.background = element_rect(color = "black", fill = NA, size = 1)
+  ) 
+p
+```
+
+## Points  
+
+You can make points any text character  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-2|3|4-8|9-11|12-14"
 pred_data %>%
   filter(study == "Study1") %>%
   ggplot(aes(x = p_value, y = SRhealth)) + 
-    geom_point(aes(shape = gender, color = gender), size = 3, alpha = .75) + 
-    scale_shape_manual(values = c("M", "W")) + 
-    scale_color_manual(values = c("blue", "red")) + 
+    geom_point(
+      aes(shape = gender, color = gender)
+      , size = 3
+      , alpha = .75
+      ) + 
+    scale_shape_manual(
+      values = c("M", "W")
+      ) + 
+    scale_color_manual(
+      values = c("blue", "red")
+      ) + 
     my_theme()
 ```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+pred_data %>%
+  filter(study == "Study1") %>%
+  ggplot(aes(x = p_value, y = SRhealth)) + 
+    geom_point(
+      aes(shape = gender, color = gender)
+      , size = 3
+      , alpha = .75
+      ) + 
+    scale_shape_manual(
+      values = c("M", "W")
+      ) + 
+    scale_color_manual(
+      values = c("blue", "red")
+      ) + 
+    my_theme()
+```
+
+:::
+::::
 
 ## Annotations  
 
@@ -866,11 +2270,15 @@ pred_data %>%
 * You've already seen lots of example of using `annotate("text", ...)`
 * But we can also use `annotate("text", label = "mu", parse = T)` or `annotate("text", label = expression(mu[i]), parse = T)` to produce math text in our geoms  
 
-## Text  
+## Text  {.smaller}
 
 Here's another figure from a grant I'm working on that uses several of the features we've been discussing: 
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|1-6|9|10|11|12|13-16|17-19"
 set.seed(11)
 
 dist_df = tibble(
@@ -893,6 +2301,35 @@ dist_df %>%
 
 ```
 
+:::
+:::{.column}
+
+```{r, echo = F}
+set.seed(11)
+
+dist_df = tibble(
+  dist = dist_normal(3,0.75),
+  dist_name = format(dist)
+)
+
+dist_df %>%
+  ggplot(aes(y = 1, xdist = dist)) +
+  stat_slab(fill = "#8cdbbe") + 
+  annotate("point", x = 3, y = 1, size = 3) +
+  annotate("text", label = "mu", x = 3, y = .92, parse = T, size = 8) + 
+  annotate("text", label = "people", x = 2, y = .95) + 
+  annotate("segment", arrow = arrow(type = "closed", length=unit(2, "mm")), size = 1, x = 2.8, xend = 1.2, y = .98, yend = .98) + 
+  annotate("text", label = "people", x = 4, y = .95) + 
+  annotate("segment", arrow = arrow(type = "closed", length=unit(2, "mm")), size = 1, x = 3.2, xend = 4.8, y = .98, yend = .98) + 
+  labs(title = "Between-Person Differences") + 
+  theme_void()+ 
+  theme(plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5))
+
+```
+
+:::
+::::
+
 ## Legends  
 
 * There are several ways to control legends: 
@@ -902,25 +2339,49 @@ dist_df %>%
 
 ## Legends: `theme()`
 
+::::{.columns}
+:::{.column}
+
 * `legend.position` takes two kinds of arguments
   + text: `"none"`, `"left"`, `"right"` (default), `"bottom"`, `"top"`
   + vector: x and y position (e.g. `c(1,1)`)
 
+:::
+:::{.column}
+
 ```{r}
+#| code-line-numbers: "2"
 hmp + 
   theme(legend.position = "right")
 ```
 
-## Legends: `theme()`
+:::
+::::
+
+## Legends: `theme()` 
+
+::::{.columns}
+:::{.column}
+
+:::{.nonincremental}
 
 * `legend.position` takes two kinds of arguments
   + text: `"none"`, `"left"`, `"right"` (default), `"bottom"`, `"top"`
   + vector: x and y position (e.g. `c(1,1)`)
 
+:::
+
+:::
+:::{.column}
+
 ```{r}
+#| code-line-numbers: "2"
 hmp + 
   theme(legend.position = c(.8, .35))
 ```
+
+:::
+::::
 
 ## Legends: `labs`
 
@@ -939,11 +2400,11 @@ hmp +
 * `scale_[map]_[type]` lets you control limits, breaks, and labels
 * `guides()` lets your control individual legend components  
 
-## Legends: `guides()`
+## Legends: `guides()`  
 
 Remember correlelograms? Do we need the size legend?  
 
-```{r. echo = F}
+```{r, echo = F}
 p <- r_data$r_long[[1]] %>%
   ggplot(aes(x = V1, y = V2, fill = r, size = abs(r))) + 
   geom_point(shape = 21) + 
@@ -968,22 +2429,42 @@ p <- r_data$r_long[[1]] %>%
     , plot.subtitle = element_text(face = "italic", hjust = .5)
     , panel.background = element_rect(color = "black", size = 1)
   )
+p
 ```
 
 ## Legends: `guides()`
 
 Remember correlelograms? Do we need the size legend?  
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F, fig.dim=c(6,6)}
+#| code-line-numbers: "2"
 p + 
   guides(size = "none")
 ```
 
+:::
+:::{.column}
+
+```{r, echo = F, fig.dim=c(6,6)}
+p + 
+  guides(size = "none")
+```
+
+:::
+::::
+
 ## Legends: `guides()`
 
 Remember correlelograms? Do we need the size legend?  
 
-```{r}
+::::{.columns}
+:::{.column}
+
+```{r, eval = F, fig.dim=c(6,6)}
+#| code-line-numbers: "|3-6,9"
 p + 
   guides(
     size = "none"
@@ -994,5 +2475,23 @@ p +
     ) + 
   theme(legend.position = c(.7,.3))
 ```
+
+:::
+:::{.column}
+
+```{r, echo = F, fig.dim=c(6,6)}
+p + 
+  guides(
+    size = "none"
+    , fill = guide_legend(
+      direction = "vertical"
+      , ncol = 2
+      )
+    ) + 
+  theme(legend.position = c(.7,.3))
+```
+
+:::
+::::
 
 # AMA  
