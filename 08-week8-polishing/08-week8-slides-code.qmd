@@ -551,6 +551,7 @@ digraph b5 {
 
 * In some ways, the hardest part of text visualization is *getting* the text into `R`. 
 * Once text is in `R`, there are lots of great tools for tokenizing, basic sentiment analysis, and more
+* We'll be relying on [*Tidy Text Analysis in R*](https://www.tidytextmining.com/index.html) 
 * Today, we'll use some data from an ongoing project of mine that applies NLP to *Letters from Jenny* (Anonymous, 1942), which were published in the *Journal of Abnormal and Social Psychology*  
 * The PDF's have been converted to a .txt file  
 
