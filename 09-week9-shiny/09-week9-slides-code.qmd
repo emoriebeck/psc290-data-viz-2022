@@ -1,0 +1,111 @@
+---
+title: "Week 9: A Beginner's Introduction to R Shiny"
+author: "Emorie D Beck"
+format: 
+  revealjs:
+    incremental: true
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    preview-links: true
+    slide-number: true
+    self-contained: true
+    auto-play-media: true
+    fig-height: 4
+    fig-width: 6
+    fig-align: center
+    css: custom.css
+    theme: psc290
+    # highlight-style: tango
+    margin-left: "0"
+    margin-right: "0"
+    width: 1400
+    # height: 900
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+  # pptx: 
+  #   incremental: true  
+  #   # code-tools: true
+  #   # code-copy: true
+  #   # code-line-numbers: true
+  #   # code-link: true
+  #   css: custom.css
+  #   theme: psc290
+  #   highlight-style: atom-one-dark
+  #   footer: "PSC 290 - Data Visualization"
+  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F, out.width = "90%", fig.align="center")
+options(knitr.kable.NA = '')
+```
+
+## 
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/main/PNG/shiny.png")
+```
+
+
+## Packages  
+
+```{r, echo = T}
+#| code-line-numbers: "17"
+library(RColorBrewer)
+library(knitr)
+library(kableExtra)
+library(plyr)
+library(broom)
+library(modelr)
+library(lme4)
+library(broom.mixed)
+library(tidyverse)
+library(ggdist)
+library(patchwork)
+library(cowplot)
+library(DiagrammeR)
+library(wordcloud)
+library(tidytext)
+library(ggExtra)
+library(shiny)
+library(distributional)
+library(gganimate)
+```
+
+<!-- ## Custom Theme:  -->
+
+<!-- ```{r} -->
+<!-- my_theme <- function(){ -->
+<!--   theme_classic() +  -->
+<!--   theme( -->
+<!--     legend.position = "bottom" -->
+<!--     , legend.title = element_text(face = "bold", size = rel(1)) -->
+<!--     , legend.text = element_text(face = "italic", size = rel(1)) -->
+<!--     , axis.text = element_text(face = "bold", size = rel(1.1), color = "black") -->
+<!--     , axis.title = element_text(face = "bold", size = rel(1.2)) -->
+<!--     , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5) -->
+<!--     , plot.subtitle = element_text(face = "italic", size = rel(1.2), hjust = .5) -->
+<!--     , strip.text = element_text(face = "bold", size = rel(1.1), color = "white") -->
+<!--     , strip.background = element_rect(fill = "black") -->
+<!--     ) -->
+<!-- } -->
+<!-- ``` -->
+
+## What is Shiny?  
+
+* R package that allows you to create interactive GUIs in `R`
+* Highly flexible and customization
+
+### Applications  
+
+* Intuitive tools for science
+* Presenting results
+* Collecting data
+* Teaching
+
+
