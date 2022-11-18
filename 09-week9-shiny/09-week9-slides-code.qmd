@@ -108,4 +108,15 @@ library(gganimate)
 * Collecting data
 * Teaching
 
+# Examples  
+
+## 
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/dist.gif")
+```
+
+[http://shiny.psy.gla.ac.uk/ShinyPsyTeachR/ug1/normal-distributions/
+](http://shiny.psy.gla.ac.uk/ShinyPsyTeachR/ug1/normal-distributions/
+)
 
