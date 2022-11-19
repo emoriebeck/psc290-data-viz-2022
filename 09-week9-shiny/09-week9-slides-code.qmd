@@ -427,7 +427,57 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 :::
 ::::
 
-## Old Faithful - server  
+## Old Faithful - server  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+}
+```
+
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic1.png")
+```
+
+:::
+::::
+
+## Old Faithful - server  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+  output$distPlot <- renderPlot({
+    
+  })
+}
+```
+
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic2.png")
+```
+
+:::
+::::
+
+## Old Faithful - server  {.smaller}
+
+::::{.columns}
+:::{.column}
 
 ```{r, eval = F}
 # Define server logic required to draw a histogram
@@ -445,4 +495,14 @@ server <- function(input, output) {
     })
 }
 ```
+
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic3.png")
+```
+
+:::
+::::
 
