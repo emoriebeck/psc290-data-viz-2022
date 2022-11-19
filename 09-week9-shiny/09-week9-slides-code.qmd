@@ -9,6 +9,7 @@ format:
     code-line-numbers: true
     code-link: true
     preview-links: true
+    page-layout: custom
     slide-number: true
     self-contained: true
     auto-play-media: true
@@ -24,8 +25,8 @@ format:
     # height: 900
     footer: "PSC 290 - Data Visualization"
     logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
-  # pptx: 
-  #   incremental: true  
+  # pptx:
+  #   incremental: true
   #   # code-tools: true
   #   # code-copy: true
   #   # code-line-numbers: true
@@ -35,6 +36,7 @@ format:
   #   highlight-style: atom-one-dark
   #   footer: "PSC 290 - Data Visualization"
   #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+server: shiny
 editor_options: 
   chunk_output_type: console
 ---
@@ -72,6 +74,7 @@ library(DiagrammeR)
 library(wordcloud)
 library(tidytext)
 library(ggExtra)
+library(quarto)
 library(shiny)
 library(distributional)
 library(gganimate)
@@ -110,13 +113,48 @@ library(gganimate)
 
 # Examples  
 
-## 
+
+## How Does Shiny Work  
+
+::::{.columns}
+
+:::{.column}
+
+### ui
+
+* Runs once
+* Specifies the user interface
+* Defined as an object
+* Stable and unchanging
+
+:::
+
+
+:::{.column}
+
+### server
+
+* Runs continually
+* Specifies the logic
+* Defined as a function
+* Can change in response to input
+
+
+:::
+::::
+
+---
 
 ```{r, echo = F}
-knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/dist.gif")
+sliderInput("bins", "Number of bins:", min = 1, max = 50, value = 30)
+plotOutput("distPlot")
 ```
 
-[http://shiny.psy.gla.ac.uk/ShinyPsyTeachR/ug1/normal-distributions/
-](http://shiny.psy.gla.ac.uk/ShinyPsyTeachR/ug1/normal-distributions/
-)
-
+```{r, echo = F}
+#| context: server
+output$distPlot <- renderPlot({
+  x <- faithful[, 2]  # Old Faithful Geyser data
+  bins <- seq(min(x), max(x), length.out = input$bins + 1)
+  hist(x, breaks = bins, col = 'darkgray', border = 'white')
+})
+```
