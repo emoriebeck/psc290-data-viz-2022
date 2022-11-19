@@ -480,6 +480,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 :::{.column}
 
 ```{r, eval = F}
+#| code-line-numbers: "|7"
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
@@ -506,3 +507,77 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 :::
 ::::
 
+## Old Faithful  
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alllogic1.png")
+```
+
+## Old Faithful  
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alllogic2.png")
+```
+
+## Deploying Shiny Apps  
+
+### Running Locally
+* The easiest way to share a Shiny app is by sharing the code (e.g. on GitHub). 
+* These can then be downloaded and run locally.
+
+### Running Online
+* If you want to make your Shiny app available as a web app online you will need a Shiny server:
+  + You can deploy to https://www.shinyapps.io/ for free
+  + If you have a web server, you can host your own Shiny server
+  
+# Exercise  
+
+## Exercise  
+
+* I started writing my own exercise, then stumbled across one [Lisa DeBruine](https://www.gla.ac.uk/schools/psychologyneuroscience/staff/lisadebruine/) made, which is an excellent starting point. 
+* Go to [https://psyteachr.github.io/shiny-tutorials/01-first-app.html](https://psyteachr.github.io/shiny-tutorials/01-first-app.html)
+* Walk through the steps, and we'll come back together in ~20-30 minutes  
+
+# Digging Deeper  
+
+## The `.app` file  
+
+* In the .app file, everything outside of the `ui()` and `server()` calls is fair game. 
+* I use this space to: 
+  + load packages
+  + load data 
+  + create data frames that help me rename inputs and outputs  
+
+## The `.app` file: Load packages  
+
+## The `.app` file: Load data  
+
+## The `.app` file: Rename inputs and outputs  
+
+## Reactive Input  
+
+* Often, my inputs are things like participant ID's that can number in the hundreds to thousands and differ across dimensions of the study  
+* In these cases, we need to create reactive inputs, using `observe()` calls within the `server()` function of the app   
+
+## Storing your data  
+
+* One of the most important considerations with your app is trying to make sure that it runs as speedily as possible  
+* If you have tons of images, tables, etc., pre-loading all of them can make your app crash or take a long time to load
+* `ggplot2` figures with lots of data points can take a fair amount of time to plot (remember `ggdist`?)
+
+## Storing your data  
+
+* So what are your options: 
+  + Only load raw data and create plots directly within the app, one at a time, according to inputs  
+  + Load already created ggplot objects and use `plot()` to call them individually (directly with the app or via GitHub)
+  + Pre-save images as .png and display them via `html` (via GitHub; this is my preferred because it gives me the most control over sizing)  
+  
+## Storing your data: raw data within the app  
+
+## Storing your data: raw data from GitHub  
+
+## Storing your data: `ggplot2` objects within the app  
+
+## Storing your data: `ggplot2` objects from GitHub  
+
+## Storing your data: presaved images
