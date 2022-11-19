@@ -9,10 +9,8 @@ format:
     code-line-numbers: true
     code-link: true
     preview-links: true
-    page-layout: custom
     slide-number: true
     self-contained: true
-    auto-play-media: true
     fig-height: 4
     fig-width: 6
     fig-align: center
@@ -25,22 +23,7 @@ format:
     # height: 900
     footer: "PSC 290 - Data Visualization"
     logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
-  # pptx:
-  #   incremental: true
-  #   # code-tools: true
-  #   # code-copy: true
-  #   # code-line-numbers: true
-  #   # code-link: true
-  #   css: custom.css
-  #   theme: psc290
-  #   highlight-style: atom-one-dark
-  #   footer: "PSC 290 - Data Visualization"
-  #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
-# server: shiny
-editor_options: 
-  chunk_output_type: console
 ---
-
 
 ```{r, echo = F}
 knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F, out.width = "90%", fig.align="center")
@@ -759,7 +742,10 @@ load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-t
 
 <!-- ## Storing your data: `ggplot2` objects from GitHub   -->
 
-## Storing your data: presaved images  {.smaller}
+## Storing your data: presaved images  {.smaller}  
+
+::::{.columns}
+:::{.column}
 
 ```{r, eval = F}
 # Define UI for application that draws a histogram
@@ -795,3 +781,45 @@ ui <- fluidPage(
   ))
 ```
 
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/app3-ui-tab1.png")
+```
+
+:::
+::::
+
+## Storing your data: presaved images  {.smaller}  
+
+```{r, eval = F}
+server <- function(input, output, session) {
+  
+  ############# Sequence Plots of Feature Categories #############################
+  output$seq_plot <- renderText({
+    o <- mapvalues(input$outcome1, outcomes$long_name, outcomes$trait, warn_missing = F)
+    file <- sprintf("https://github.com/emoriebeck/behavior-prediction/raw/main/05-results/05-figures/05-seq-plots/%s.png"
+                    , o)
+    dims <- image_info(image_read(file))
+    screen_wdth <- shinybrowser::get_width()
+    img_wdth <- screen_wdth*.5
+    img_ht <- (img_wdth*dims$height)/dims$width
+    return(c('<center><img src="',file,'" width="', img_wdth, '" height="', img_ht,'"></center>', sep = ""))
+  })
+  
+  output$seq_plot_text <- renderText({
+    paste("<style=color: blue; text-align: center; background-color: white; padding: 20px>"
+          , "These supplementary figures are sequence plots of the proportion of features from psychological, situational, and time feature categories for each participants' best models for each outcome and model. These are analogous to Figure 3 in the manuscript."
+          , "</style>"
+          , collapse = "")
+  })
+  
+}
+```
+
+## Storing your data: presaved images  {.smaller}  
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/app3.png")
+```
