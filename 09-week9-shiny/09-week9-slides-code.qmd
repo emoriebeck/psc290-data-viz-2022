@@ -161,9 +161,13 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 * Double check `shiny` is installed (if not, `install.packages("shiny")`)
 * File -> New File -> Shiny Web App...
 
+::: {.fragment}
+
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/old-faithful.png")
 ```
+
+:::
 
 ## Old Faithful  
 
@@ -412,6 +416,40 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ## ui  
 
+* The ui let's you specify widgets for input 
+
+::: {.fragment}
+
+```{r, echo = F, out.width="550%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/basic-widgets.png")
+```
+
+:::
+
+## ui  
+
+* They look like this
+
+::: {.fragment}
+
+```{r, echo = F, out.width="40%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/widgets.png")
+```
+
+:::
+
+## ui  
+
+* In the ui, you also have to specify the kind of output you want to create, which will be matched to server functions (more on this later): 
+
+::: {.fragment}
+
+```{r, echo = F, out.width="30%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/output.png")
+```
+
+:::
+
 ## Old Faithful - server  {.smaller}
 
 ::::{.columns}
@@ -505,6 +543,28 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 ```
 
 ## server  
+
+* Once you specify the inputs in the `ui()` function, you need to specify **matching** outputs in the `server()` function  
+
+::: {.fragment}
+
+::::{.columns}
+:::{.column}
+
+```{r, echo = F, out.width="60%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/output.png")
+```
+
+:::
+:::{.column}
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/render.png")
+```
+
+:::
+::::
+:::
 
 ## Deploying Shiny Apps  
 
@@ -823,3 +883,26 @@ server <- function(input, output, session) {
 ```{r, echo=F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/app3.png")
 ```
+
+# Learning More:  
+
+## Learning More: 
+
+* This is necessarily abbreviated! 
+* But there are lots of additional resources online: 
+  + [RStudio's tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/): 7 lessons!
+  + [RStudio's gallery](https://shiny.rstudio.com/gallery/): I often start with these to steal layouts and look/feel
+  + [RStudio's more advanced documentation](https://shiny.rstudio.com/articles/)
+  + [Hadley Wickham's *Mastering Shiny*](https://mastering-shiny.org)
+  + And more (checkout YouTube, for example)
+
+## References  
+
+* PsyRTutorial's [Introduction to Shiny](https://psyteachr.github.io/shiny-tutorials/pres/00-intro.pptx)
+* RStudio's [Shiny Website](https://shiny.rstudio.com/tutorial/)
+* Some of my own apps: 
+  + [A Taxonomy of Data Synthesis](https://emoriebeck.shinyapps.io/data-synth-tutorial/)
+  + [Personality Predictors of Dementia Diagnosis and Neuropathic Burden: A Mega-Analysis](https://emoriebeck.shinyapps.io/personality-dementia-neuropath/)
+  + [Persons, Situations, and Time: Idiographic Behavior Prediction](https://emoriebeck.shinyapps.io/behavior-prediction/)
+  + [A Mega Analysis of Personality Prediction: Robustness and Boundary Conditions](https://emoriebeck.shinyapps.io/Big-5-Prediction)
+  + [Lifespan Changes in Loneliness](https://emoriebeck.shinyapps.io/loneliness-trajectories)

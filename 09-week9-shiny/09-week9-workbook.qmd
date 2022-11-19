@@ -1,0 +1,873 @@
+---
+title: "Week 9: A Beginner's Introduction to R Shiny"
+author: "Emorie D Beck"
+format: 
+  html:
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-link: true
+    theme: united
+    highlight-style: tango
+    df-print: paged
+    code-fold: show
+    toc: true
+    toc-float: true
+    self-contained: true
+    # height: 900
+    footer: "PSC 290 - Data Visualization"
+    logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F, out.width = "90%", fig.align="center")
+options(knitr.kable.NA = '')
+```
+
+```{r, echo = F, fig.align='center', fig.dim=c(3,3), out.width="40%"}
+knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/main/PNG/shiny.png")
+```
+
+
+# Packages  
+
+```{r, echo = T}
+#| code-line-numbers: "17"
+library(RColorBrewer)
+library(knitr)
+library(kableExtra)
+library(plyr)
+library(broom)
+library(modelr)
+library(lme4)
+library(broom.mixed)
+library(tidyverse)
+library(ggdist)
+library(patchwork)
+library(cowplot)
+library(DiagrammeR)
+library(wordcloud)
+library(tidytext)
+library(ggExtra)
+library(shiny)
+library(distributional)
+library(gganimate)
+```
+
+<!-- ## Custom Theme:  -->
+
+<!-- ```{r} -->
+<!-- my_theme <- function(){ -->
+<!--   theme_classic() +  -->
+<!--   theme( -->
+<!--     legend.position = "bottom" -->
+<!--     , legend.title = element_text(face = "bold", size = rel(1)) -->
+<!--     , legend.text = element_text(face = "italic", size = rel(1)) -->
+<!--     , axis.text = element_text(face = "bold", size = rel(1.1), color = "black") -->
+<!--     , axis.title = element_text(face = "bold", size = rel(1.2)) -->
+<!--     , plot.title = element_text(face = "bold", size = rel(1.2), hjust = .5) -->
+<!--     , plot.subtitle = element_text(face = "italic", size = rel(1.2), hjust = .5) -->
+<!--     , strip.text = element_text(face = "bold", size = rel(1.1), color = "white") -->
+<!--     , strip.background = element_rect(fill = "black") -->
+<!--     ) -->
+<!-- } -->
+<!-- ``` -->
+
+# What is Shiny?  
+
+* R package that allows you to create interactive GUIs in `R`
+* Highly flexible and customization
+
+## Applications  
+
+* Intuitive tools for science
+* Presenting results
+* Collecting data
+* Teaching
+
+# Examples  
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/dist.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/diff.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/data.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/maps.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alcohol.gif")
+```
+
+# How Does Shiny Work  
+
+::::{.columns}
+
+:::{.column}
+
+## ui
+
+* Runs once
+* Specifies the user interface
+* Defined as an object
+* Stable and unchanging
+
+:::
+
+
+:::{.column}
+
+## server
+
+* Runs continually
+* Specifies the logic
+* Defined as a function
+* Can change in response to input
+
+
+:::
+::::
+
+## Widgets    
+
+* The ui let's you specify widgets for input 
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/basic-widgets.png")
+```
+
+* They look like this
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/widgets.png")
+```
+
+* In the ui, you also have to specify the kind of output you want to create, which will be matched to server functions (more on this later): 
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/output.png")
+```
+
+## server  
+
+* Once you specify the inputs in the `ui()` function, you need to specify **matching** outputs in the `server()` function  
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/render.png")
+```
+
+
+# Old Faithful  
+
+* Open `RStudio`
+* Double check `shiny` is installed (if not, `install.packages("shiny")`)
+* File -> New File -> Shiny Web App...
+
+The app looks like this:  
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/old-faithful.png")
+```
+
+And works like this:  
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/oldfaithful.gif")
+```
+
+## Old Faithful - ui  
+
+### `ui()` Shell  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic1.png")
+```
+
+
+:::
+::::
+
+### `titlepanel()` {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data")
+  
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic2.png")
+```
+
+
+:::
+::::
+
+### `sidebarLayout()` {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic3.png")
+```
+
+
+:::
+::::
+
+### `sidebarPanel()`
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic4.png")
+```
+
+:::
+::::
+
+### Inputs: `sliderInput()`
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic5.png")
+```
+
+:::
+::::
+
+### `mainpanel()`
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30),
+
+  # Show a plot of the generated distribution
+      mainPanel(
+        
+      )
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic6.png")
+```
+
+:::
+::::
+
+### Outputs: `plotOutput()`
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30),
+
+  # Show a plot of the generated distribution
+      mainPanel(
+        plotOutput("distPlot")
+      )
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic7.png")
+```
+
+:::
+::::
+
+
+## Old Faithful - server  {.smaller}
+
+### `server()`
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+}
+```
+
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic1.png")
+```
+
+:::
+::::
+
+### Render: `renderPlot()`
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+  output$distPlot <- renderPlot({
+    
+  })
+}
+```
+
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic2.png")
+```
+
+:::
+::::
+
+### Add plotting code
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+#| code-line-numbers: "|7"
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+    output$distPlot <- renderPlot({
+        # generate bins based on input$bins from ui.R
+        x    <- faithful[, 2]
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+        # draw the histogram with the specified number of bins
+        hist(x, breaks = bins, col = 'darkgray', border = 'white',
+             xlab = 'Waiting time to next eruption (in mins)',
+             main = 'Histogram of waiting times')
+    })
+}
+```
+
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic3.png")
+```
+
+:::
+::::
+
+Together, the logic comes together like this:  
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alllogic1.png")
+```
+
+## Old Faithful  
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alllogic2.png")
+```
+
+
+
+# Deploying Shiny Apps  
+
+## Running Locally
+* The easiest way to share a Shiny app is by sharing the code (e.g. on GitHub). 
+* These can then be downloaded and run locally.
+
+## Running Online
+* If you want to make your Shiny app available as a web app online you will need a Shiny server:
+  + You can deploy to https://www.shinyapps.io/ for free
+  + If you have a web server, you can host your own Shiny server
+  
+# Exercise  
+
+## Exercise  
+
+* I started writing my own exercise, then stumbled across one [Lisa DeBruine](https://www.gla.ac.uk/schools/psychologyneuroscience/staff/lisadebruine/) made, which is an excellent starting point. 
+* Go to [https://psyteachr.github.io/shiny-tutorials/01-first-app.html](https://psyteachr.github.io/shiny-tutorials/01-first-app.html)
+* Walk through the steps, and we'll come back together in ~20-30 minutes  
+
+# Digging Deeper  
+
+## The `.app` file  
+
+* In the .app file, everything outside of the `ui()` and `server()` calls is fair game. 
+* I use this space to: 
+  + load packages
+  + load data 
+  + create data frames that help me rename inputs and outputs  
+
+### Load packages 
+
+```{r, eval = F}
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(shiny)
+library(patchwork)
+library(plyr)
+library(tidyverse)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Old Faithful Geyser Data"),
+
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
+
+        # Show a plot of the generated distribution
+        mainPanel(
+           plotOutput("distPlot")
+        )
+    )
+)
+```
+
+### Load data  
+
+```{r, eval = F}
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(shiny)
+library(patchwork)
+library(readxl)
+library(plyr)
+library(tidyverse)
+
+load("data.RData")
+d1 <- read_csv("data.csv")
+d2 <- read_excel("data.xlsx", sheet = "sheet1")
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Old Faithful Geyser Data"),
+
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
+
+        # Show a plot of the generated distribution
+        mainPanel(
+           plotOutput("distPlot")
+        )
+    )
+)
+```
+
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/loadData.png")
+```
+
+### Rename inputs and outputs  
+
+```{r, eval = F}
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(shiny)
+library(patchwork)
+library(plyr)
+library(tidyverse)
+
+traits <- tribble(
+  ~old,              ~new, 
+  "Extraversion"     , "E",
+  "Agreeablenss"     , "A",
+  "Conscientiousness", "C",
+  "Neuroticism"      , "N",
+  "Openness"         , "O"
+)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Old Faithful Geyser Data"),
+
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
+
+        # Show a plot of the generated distribution
+        mainPanel(
+           plotOutput("distPlot")
+        )
+    )
+)
+```
+
+## Reactive Input  
+
+* Often, my inputs are things like participant ID's that can number in the hundreds to thousands and differ across dimensions of the study  
+* In these cases, we need to create reactive inputs, using `observe()` calls within the `server()` function of the app   
+
+## Storing your data  
+
+* One of the most important considerations with your app is trying to make sure that it runs as speedily as possible  
+* If you have tons of images, tables, etc., pre-loading all of them can make your app crash or take a long time to load
+* `ggplot2` figures with lots of data points can take a fair amount of time to plot (remember `ggdist`?)
+
+* So what are your options: 
+  + Only load raw data and create plots directly within the app, one at a time, according to inputs  
+  + Load already created ggplot objects and use `plot()` to call them individually (directly with the app or via GitHub)
+  + Pre-save images as .png and display them via `html` (via GitHub; this is my preferred because it gives me the most control over sizing)  
+  
+### raw data within the app  
+
+```{r, eval = F}
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(shiny)
+library(plyr)
+library(tidyverse)
+library(patchwork)
+
+load("ipcs_data.RData")
+```
+
+
+### raw data from GitHub  
+
+```{r, eval = F}
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(shiny)
+library(plyr)
+library(tidyverse)
+library(patchwork)
+
+load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-time-series/01-data/ipcs_data.RData"))
+```
+
+
+<!-- ## Storing your data: `ggplot2` objects within the app   -->
+
+<!-- ## Storing your data: `ggplot2` objects from GitHub   -->
+
+### presaved images  
+
+#### Input Side  
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Persons, Situations, and Time: Idiographic Behavior Prediction"),
+    
+  tabsetPanel(
+    
+  ############# Sequence Plots of Feature Categories #############################
+    tabPanel(
+      "Feature Proportions"
+      , sidebarLayout(
+          sidebarPanel(
+            selectInput(
+                  "outcome1"
+                  , label = "Choose Outcome"
+                  , selected = "Procrastinating"
+                  , choices = c(
+                    "Procrastinating", "Lonely", "Tired", "Sick",
+                    "Studying", "Argument", "Interacted"
+                    )
+                  )
+                )
+              , mainPanel(
+                htmlOutput("seq_plot_text")
+                , shinybrowser::detect()
+                , htmlOutput("seq_plot")
+                )
+              )
+          )
+  ))
+```
+
+:::
+:::{.column}
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/app3-ui-tab1.png")
+```
+
+:::
+::::
+
+#### Output Side  
+
+```{r, eval = F}
+server <- function(input, output, session) {
+  
+  ############# Sequence Plots of Feature Categories #############################
+  output$seq_plot <- renderText({
+    o <- mapvalues(input$outcome1, outcomes$long_name, outcomes$trait, warn_missing = F)
+    file <- sprintf("https://github.com/emoriebeck/behavior-prediction/raw/main/05-results/05-figures/05-seq-plots/%s.png"
+                    , o)
+    dims <- image_info(image_read(file))
+    screen_wdth <- shinybrowser::get_width()
+    img_wdth <- screen_wdth*.5
+    img_ht <- (img_wdth*dims$height)/dims$width
+    return(c('<center><img src="',file,'" width="', img_wdth, '" height="', img_ht,'"></center>', sep = ""))
+  })
+  
+  output$seq_plot_text <- renderText({
+    paste("<style=color: blue; text-align: center; background-color: white; padding: 20px>"
+          , "These supplementary figures are sequence plots of the proportion of features from psychological, situational, and time feature categories for each participants' best models for each outcome and model. These are analogous to Figure 3 in the manuscript."
+          , "</style>"
+          , collapse = "")
+  })
+  
+}
+```
+
+
+Ultimately, it looks like this: 
+
+```{r, echo=F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/app3.png")
+```
+
+# Learning More:  
+
+* This is necessarily abbreviated! 
+* But there are lots of additional resources online: 
+  + [RStudio's tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/): 7 lessons!
+  + [RStudio's gallery](https://shiny.rstudio.com/gallery/): I often start with these to steal layouts and look/feel
+  + [RStudio's more advanced documentation](https://shiny.rstudio.com/articles/)
+  + [Hadley Wickham's *Mastering Shiny*](https://mastering-shiny.org)
+  + And more (checkout YouTube, for example)
+
+# References  
+
+* PsyRTutorial's [Introduction to Shiny](https://psyteachr.github.io/shiny-tutorials/pres/00-intro.pptx)
+* RStudio's [Shiny Website](https://shiny.rstudio.com/tutorial/)
+* Some of my own apps: 
+  + [A Taxonomy of Data Synthesis](https://emoriebeck.shinyapps.io/data-synth-tutorial/)
+  + [Personality Predictors of Dementia Diagnosis and Neuropathic Burden: A Mega-Analysis](https://emoriebeck.shinyapps.io/personality-dementia-neuropath/)
+  + [Persons, Situations, and Time: Idiographic Behavior Prediction](https://emoriebeck.shinyapps.io/behavior-prediction/)
+  + [A Mega Analysis of Personality Prediction: Robustness and Boundary Conditions](https://emoriebeck.shinyapps.io/Big-5-Prediction)
+  + [Lifespan Changes in Loneliness](https://emoriebeck.shinyapps.io/loneliness-trajectories)
