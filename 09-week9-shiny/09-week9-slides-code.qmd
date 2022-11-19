@@ -113,8 +113,34 @@ library(gganimate)
 
 # Examples  
 
+---
+
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/dist.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/diff.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/data.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/maps.gif")
+```
+
+---
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alcohol.gif")
 ```
 
 ## How Does Shiny Work  
@@ -145,3 +171,278 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 :::
 ::::
+
+## Old Faithful  
+
+* Open `RStudio`
+* Double check `shiny` is installed (if not, `install.packages("shiny")`)
+* File -> New File -> Shiny Web App...
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/old-faithful.png")
+```
+
+## Old Faithful  
+
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/oldfaithful.gif")
+```
+
+## Old Faithful - ui  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic1.png")
+```
+
+
+:::
+::::
+
+## Old Faithful - ui  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data")
+  
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic2.png")
+```
+
+
+:::
+::::
+
+## Old Faithful - ui  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic3.png")
+```
+
+
+:::
+::::
+
+## Old Faithful - ui  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic4.png")
+```
+
+:::
+::::
+
+## Old Faithful - ui  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic5.png")
+```
+
+:::
+::::
+
+## Old Faithful - ui  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30),
+
+  # Show a plot of the generated distribution
+      mainPanel(
+        
+      )
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic6.png")
+```
+
+:::
+::::
+
+## Old Faithful - ui  {.smaller}
+
+::::{.columns}
+:::{.column}
+
+```{r, eval = F}
+library(shiny)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30),
+
+  # Show a plot of the generated distribution
+      mainPanel(
+        plotOutput("distPlot")
+      )
+    )
+  )
+)
+```
+
+:::
+:::{.column}
+
+```{r, echo = F, out.width="80%"}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic7.png")
+```
+
+:::
+::::
+
+## Old Faithful - server  
+
+```{r, eval = F}
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+    output$distPlot <- renderPlot({
+        # generate bins based on input$bins from ui.R
+        x    <- faithful[, 2]
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+        # draw the histogram with the specified number of bins
+        hist(x, breaks = bins, col = 'darkgray', border = 'white',
+             xlab = 'Waiting time to next eruption (in mins)',
+             main = 'Histogram of waiting times')
+    })
+}
+```
+
