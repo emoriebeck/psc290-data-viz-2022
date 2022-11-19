@@ -41,20 +41,23 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ```{r, echo = F}
 knitr::opts_chunk$set(echo = TRUE, warning = F, message = F, error = F, out.width = "90%", fig.align="center")
 options(knitr.kable.NA = '')
 ```
 
+
 ## 
+
 
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/rstudio/hex-stickers/raw/main/PNG/shiny.png")
 ```
 
 
+
 ## Packages  
+
 
 ```{r, echo = T}
 #| code-line-numbers: "17"
@@ -79,6 +82,7 @@ library(shiny)
 library(distributional)
 library(gganimate)
 ```
+
 
 <!-- ## Custom Theme:  -->
 
@@ -115,33 +119,43 @@ library(gganimate)
 
 ---
 
+
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/dist.gif")
 ```
 
+
 ---
+
 
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/diff.gif")
 ```
 
+
 ---
+
 
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/data.gif")
 ```
 
+
 ---
+
 
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/maps.gif")
 ```
 
+
 ---
+
 
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alcohol.gif")
 ```
+
 
 ## How Does Shiny Work  
 
@@ -178,20 +192,25 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 * Double check `shiny` is installed (if not, `install.packages("shiny")`)
 * File -> New File -> Shiny Web App...
 
+
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/old-faithful.png")
 ```
 
+
 ## Old Faithful  
+
 
 ```{r, echo = F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/oldfaithful.gif")
 ```
 
+
 ## Old Faithful - ui  {.smaller}
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 library(shiny)
@@ -202,12 +221,15 @@ ui <- fluidPage(
 )
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo = F, out.width="80%"}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic1.png")
 ```
+
 
 
 :::
@@ -217,6 +239,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 library(shiny)
@@ -230,12 +253,15 @@ ui <- fluidPage(
 )
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo = F, out.width="80%"}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic2.png")
 ```
+
 
 
 :::
@@ -245,6 +271,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 library(shiny)
@@ -262,12 +289,15 @@ ui <- fluidPage(
 )
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo = F, out.width="80%"}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic3.png")
 ```
+
 
 
 :::
@@ -277,6 +307,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 library(shiny)
@@ -296,12 +327,15 @@ ui <- fluidPage(
 )
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo = F, out.width="80%"}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic4.png")
 ```
+
 
 :::
 ::::
@@ -310,6 +344,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 library(shiny)
@@ -333,12 +368,15 @@ ui <- fluidPage(
 )
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo = F, out.width="80%"}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic5.png")
 ```
+
 
 :::
 ::::
@@ -347,6 +385,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 library(shiny)
@@ -375,12 +414,15 @@ ui <- fluidPage(
 )
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo = F, out.width="80%"}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic6.png")
 ```
+
 
 :::
 ::::
@@ -389,6 +431,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 library(shiny)
@@ -417,12 +460,15 @@ ui <- fluidPage(
 )
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo = F, out.width="80%"}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/shinylogic7.png")
 ```
+
 
 :::
 ::::
@@ -434,6 +480,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 ::::{.columns}
 :::{.column}
 
+
 ```{r, eval = F}
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -441,12 +488,15 @@ server <- function(input, output) {
 }
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo=F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic1.png")
 ```
+
 
 :::
 ::::
@@ -455,6 +505,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 # Define server logic required to draw a histogram
@@ -466,12 +517,15 @@ server <- function(input, output) {
 }
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo=F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic2.png")
 ```
+
 
 :::
 ::::
@@ -480,6 +534,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
 
 ::::{.columns}
 :::{.column}
+
 
 ```{r, eval = F}
 #| code-line-numbers: "|7"
@@ -499,27 +554,34 @@ server <- function(input, output) {
 }
 ```
 
+
 :::
 :::{.column}
+
 
 ```{r, echo=F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/serverlogic3.png")
 ```
+
 
 :::
 ::::
 
 ## Old Faithful  
 
+
 ```{r, echo=F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alllogic1.png")
 ```
 
+
 ## Old Faithful  
+
 
 ```{r, echo=F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/alllogic2.png")
 ```
+
 
 ## server  
 
@@ -553,6 +615,7 @@ knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/
   + create data frames that help me rename inputs and outputs  
 
 ## The `.app` file: Load packages  {.smaller}
+
 
 ```{r, eval = F}
 #
@@ -593,7 +656,9 @@ ui <- fluidPage(
 )
 ```
 
+
 ## The `.app` file: Load data  {.smaller}  
+
 
 ```{r, eval = F}
 #
@@ -639,13 +704,17 @@ ui <- fluidPage(
 )
 ```
 
+
 ## The `.app` file: Load data  {.smaller}  
+
 
 ```{r, echo=F}
 knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/loadData.png")
 ```
 
+
 ## The `.app` file: Rename inputs and outputs  {.smaller}
+
 
 ```{r, eval = F}
 #
@@ -695,6 +764,7 @@ ui <- fluidPage(
 )
 ```
 
+
 ## Reactive Input  
 
 * Often, my inputs are things like participant ID's that can number in the hundreds to thousands and differ across dimensions of the study  
@@ -715,6 +785,7 @@ ui <- fluidPage(
   
 ## Storing your data: raw data within the app  
 
+
 ```{r, eval = F}
 #
 # This is a Shiny web application. You can run the application by clicking
@@ -734,7 +805,9 @@ load("ipcs_data.RData")
 ```
 
 
+
 ## Storing your data: raw data from GitHub  
+
 
 ```{r, eval = F}
 #
@@ -755,11 +828,13 @@ load(url("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/05-week5-t
 ```
 
 
+
 <!-- ## Storing your data: `ggplot2` objects within the app   -->
 
 <!-- ## Storing your data: `ggplot2` objects from GitHub   -->
 
 ## Storing your data: presaved images  {.smaller}
+
 
 ```{r, eval = F}
 # Define UI for application that draws a histogram
