@@ -36,7 +36,7 @@ format:
   #   highlight-style: atom-one-dark
   #   footer: "PSC 290 - Data Visualization"
   #   logo: "https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/01-week1-intro/02-code/02-images/ucdavis_logo_blue.png"
-server: shiny
+# server: shiny
 editor_options: 
   chunk_output_type: console
 ---
@@ -113,6 +113,9 @@ library(gganimate)
 
 # Examples  
 
+```{r, echo = F}
+knitr::include_graphics("https://github.com/emoriebeck/psc290-data-viz-2022/raw/main/09-week9-shiny/01-images/dist.gif")
+```
 
 ## How Does Shiny Work  
 
@@ -142,19 +145,3 @@ library(gganimate)
 
 :::
 ::::
-
----
-
-```{r, echo = F}
-sliderInput("bins", "Number of bins:", min = 1, max = 50, value = 30)
-plotOutput("distPlot")
-```
-
-```{r, echo = F}
-#| context: server
-output$distPlot <- renderPlot({
-  x <- faithful[, 2]  # Old Faithful Geyser data
-  bins <- seq(min(x), max(x), length.out = input$bins + 1)
-  hist(x, breaks = bins, col = 'darkgray', border = 'white')
-})
-```
